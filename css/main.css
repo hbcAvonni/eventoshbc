@@ -474,7 +474,6 @@ h2 {
 #about, #about1 {
   background-position: center top;
   background-repeat:no-repeat;
-  background-attachment: fixed;
   position: relative;  
   width: 100%;
   display: flex;

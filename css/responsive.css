@@ -3,6 +3,10 @@
   .carousel-inner2 {
       height: 100vh;
   }
+
+  #about, #about1 {
+    background-attachment: fixed;
+  }
 }
 
 /* md */
