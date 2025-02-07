@@ -10,7 +10,7 @@
 }
 
 /* md */
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 992px) and (max-width: 1400px) {
 
   .navbar-right {
     padding: 0 30px 0 0;
