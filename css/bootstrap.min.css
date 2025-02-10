@@ -6720,6 +6720,13 @@ button.close {
     height: 100%;
 }
 
+.carousel-inner>.itemAbout {
+    background-color: #555353c2;
+    padding: 25px;
+    margin: 25px;
+    border-radius: 12px;
+}
+
 .carousel-inner>.item>img,
 .carousel-inner>.item>a>img {
     line-height: 1;

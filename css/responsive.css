@@ -4,7 +4,7 @@
       height: 100vh;
   }
 
-  #about, #about1 {
+  #about, #about1, #event1, .contact-section{
     background-attachment: fixed;
   }
 }
