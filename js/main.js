@@ -56,95 +56,52 @@ jQuery(function($) {'use strict',
 		menuToggle();
 	});
 
-	$('.main-nav ul').onePageNav({
-		currentClass: 'active',
-	    changeHash: false,
-	    scrollSpeed: 900,
-	    scrollOffset: 0,
-	    scrollThreshold: 0.3,
-	    filter: ':not(.no-scroll)'
+	$(document).ready(function () {
+		$('.scroll a').on('click', function (event) {
+			event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+	
+			var target = $(this).attr('href'); // Obtiene el ID del destino
+			if ($(target).length) {
+				$('html, body').animate({
+					scrollTop: $(target).offset().top
+				}, 900);
+	
+				// Elimina la clase "active" de todos los elementos y la añade al clicado
+				$('.scroll').removeClass('active');
+				$(this).parent().addClass('active');
+			}
+		});
+	
+		// Detectar el scroll y actualizar la clase "active" en el menú
+		$(window).on('scroll', function () {
+			var scrollPos = $(window).scrollTop();
+	
+			$('.scroll a').each(function () {
+				var target = $(this).attr('href');
+				if ($(target).length) {
+					var sectionTop = $(target).offset().top - 50; // Ajuste para detectar correctamente
+					var sectionBottom = sectionTop + $(target).outerHeight();
+	
+					if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+						$('.scroll').removeClass('active');
+						$(this).parent().addClass('active');
+					}
+				}
+			});
+		});
 	});
 
 });
 
+function googleTranslateElementInit() {
+	new google.translate.TranslateElement({ pageLanguage: 'es' }, 'google_translate_element');
+}
 
-// Google Map Customization
-// (function(){
-
-// 	var map;
-
-// 	map = new GMaps({
-// 		el: '#gmap',
-// 		lat: 37.42037671938043,
-// 		lng: -6.004178902333268,
-// 		scrollwheel:true,
-// 		zoom: 16,
-// 		zoomControl : true,
-// 		panControl : true,
-// 		streetViewControl : true,
-// 		mapTypeControl: true,
-// 		overviewMapControl: true,
-// 		clickable: true
-// 	});
-
-// 	var image = 'images/map-icon.png';
-// 	map.addMarker({
-// 		lat: 37.42037671938043,
-// 		lng: -6.004178902333268,
-// 		icon: image,
-// 		animation: google.maps.Animation.DROP,
-// 		verticalAlign: 'bottom',
-// 		horizontalAlign: 'center',
-// 		backgroundColor: '#3e8bff',
-// 	});
-
-
-// 	var styles = [ 
-
-// 	{
-// 		"featureType": "road",
-// 		"stylers": [
-// 		{ "color": "#b4b4b4" }
-// 		]
-// 	},{
-// 		"featureType": "water",
-// 		"stylers": [
-// 		{ "color": "#d8d8d8" }
-// 		]
-// 	},{
-// 		"featureType": "landscape",
-// 		"stylers": [
-// 		{ "color": "#f1f1f1" }
-// 		]
-// 	},{
-// 		"elementType": "labels.text.fill",
-// 		"stylers": [
-// 		{ "color": "#000000" }
-// 		]
-// 	},{
-// 		"featureType": "poi",
-// 		"stylers": [
-// 		{ "color": "#d9d9d9" }
-// 		]
-// 	},{
-// 		"elementType": "labels.text",
-// 		"stylers": [
-// 		{ "saturation": 1 },
-// 		{ "weight": 0.1 },
-// 		{ "color": "#000000" }
-// 		]
-// 	}
-
-// 	];
-
-// 	map.addStyle({
-// 		styledMapName:"Styled Map",
-// 		styles: styles,
-// 		mapTypeId: "map_style"  
-// 	});
-
-// 	map.setStyle("map_style");
-// }());
-
-
-
+function changeLanguage(item) {
+	var lang = item.getAttribute("data-lang");
+	var select = document.querySelector(".goog-te-combo");
+	if (select) {
+		select.value = lang;
+		select.dispatchEvent(new Event("change"));
+	}
+}

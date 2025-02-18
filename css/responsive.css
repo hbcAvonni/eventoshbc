@@ -132,6 +132,10 @@
 /* xs */
 @media (max-width: 767px) {
 
+  .header-top {
+    display: none;
+  }
+
   .main-nav .container {
     /* display: none; */
   }
