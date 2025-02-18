@@ -88,6 +88,7 @@
 						<ul class="nav navbar-nav navbar-right">
 							<li class="scroll active"><a href="#home">Home</a></li>
 							<li class="scroll"><a href="#explore">Explorar</a></li>
+							<li class="scroll"><a href="#services">Nuestros Servicios</a></li>
 							<li class="scroll"><a href="#event">Videos</a></li>
 							<li class="scroll"><a href="#about">Sobre el Evento</a></li>
 							<li><a class="no-scroll" href="#">COMPRAR ENTRADAS</a></li>
@@ -184,7 +185,47 @@
 				<a href="#contact"><i class="fa fa-shopping-cart"></i> <span>Comprar Entradas</span></a>
 			</div>
 		</div>
-	</section><!--/#explore-->
+	</section>
+	<!--/#explore-->
+
+	<section id="services">
+		<div class="title-services">
+			<h2>Nuestro Servicios</h2>
+		</div>
+		<div class="container-services">
+			<div class="card-services" data-hover="images/slider/Sonido-Slider-1024x320.jpg">
+				<div class="card-services-text">Sonido Profesional</div>
+			</div>
+			<div class="card-services" data-hover="images/slider/Iluminacion-slider-1024x320.jpg">
+				<div class="card-services-text">Iluminación</div>
+			</div>
+			<div class="card-services" data-hover="images/slider/Escenario-slider-1024x320.jpg">
+				<div class="card-services-text">Escenarios</div>
+			</div>
+			<div class="card-services" data-hover="images/slider/LED-slider-1024x320.jpg">
+				<div class="card-services-text">Pantallas LED</div>
+			</div>
+			<div class="card-services" data-hover="images/slider/Otros-slider-1024x320.jpg">
+				<div class="card-services-text">Otros Servicios</div>
+			</div>
+		</div>
+	
+		<script>
+			const cards = document.querySelectorAll('.card-services');
+	
+			cards.forEach(card => {
+				card.addEventListener('mouseenter', () => {
+					const newImage = card.getAttribute('data-hover');
+					cards.forEach((c, index) => {
+						c.style.backgroundImage = `url(${newImage})`;
+						c.style.backgroundSize = '500% 100%';
+						c.style.backgroundPosition = `${index * 25}% 0`;
+					});
+				});
+			});
+		</script>
+	</section>
+	<!--/#explore1-->
 
 	<section id="about1">
 		<div class="guitar2">
@@ -198,7 +239,8 @@
 			<a href="https://open.spotify.com/intl-es/artist/6bW3XJqQrNppHJO1ks2Z8V" target="_blank" class="btn btn-primary">Escuchalo en Spotify <i class="fa fa-angle-right"></i></a>
 
 		</div>
-	</section><!--/#about-->
+	</section>
+	<!--/#about1-->
 
 	<section id="event">
 		<div class="container">
@@ -269,7 +311,8 @@
 				</div>
 			</div>
 		</div>
-	</section><!--/#event-->
+	</section>
+	<!--/#event-->
 
 	<section id="about">
 		<div class="guitar2">
@@ -294,7 +337,8 @@
 			<a href="#" class="btn btn-primary">Ver Fechas & Precios <i class="fa fa-angle-right"></i></a>
 
 		</div>
-	</section><!--/#about-->
+	</section>
+	<!--/#about-->
 
 	<section id="event1">
 		<div class="container">
@@ -363,7 +407,8 @@
 				</div>
 			</div>
 		</div>
-	</section><!--/#event-->
+	</section>
+	<!--/#event1-->
 
 	<section id="contact">
 		<div class="contact-section">

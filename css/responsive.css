@@ -4,7 +4,7 @@
       height: 100vh;
   }
 
-  #about, #about1, #event1, .contact-section{
+  #explore, #services, #about, #about1, #event1, .contact-section{
     background-attachment: fixed;
   }
 }
@@ -135,10 +135,6 @@
   .header-top {
     display: none;
   }
-
-  .main-nav .container {
-    /* display: none; */
-  }
   
   .fixed-menu .container {
     display: block;
@@ -159,10 +155,6 @@
 
   .fixed-menu .navbar-right li a {
     padding: 7px 25px;
-  }
-
-  #home {
-    /* margin-top: 10%; */
   }
 
   #main-slider .carousel-caption {
@@ -298,10 +290,6 @@
 /* XS Portrait */
 @media (max-width: 479px) {
 
-  .main-nav .container {
-    /* display: none; */
-  }
-
   .fixed-menu .container {
     display: block;
   }
@@ -311,10 +299,6 @@
   }
 
   /* Home */
-
-  #home {
-    /* margin-top: 18%; */
-  }
 
   .fixed-menu .container {
     width: 100%;
