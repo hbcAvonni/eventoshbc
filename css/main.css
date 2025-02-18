@@ -414,7 +414,7 @@ h2 {
 .card-services {
   flex: 1;
   height: 100%;
-  background-image: url('images/slider/Sonido-Slider-1024x320.jpg');
+  background-image: url('../images/slider/Sonido-Slider-1024x320.jpg');
   background-size: 500% 100%;
   background-position: center;
   transition: background-image 0.5s ease-in-out;
