@@ -87,9 +87,8 @@
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
 							<li class="scroll active"><a href="#home">Home</a></li>
-							<li class="scroll"><a href="#explore">Explorar</a></li>
-							<li class="scroll"><a href="#services">Nuestros Servicios</a></li>
-							<li class="scroll"><a href="#event">Videos</a></li>
+							<li class="scroll"><a href="#services">Servicios Taiko</a></li>
+							<li class="scroll"><a href="#explore">próximo Evento</a></li>
 							<li class="scroll"><a href="#about">Sobre el Evento</a></li>
 							<li><a class="no-scroll" href="#">COMPRAR ENTRADAS</a></li>
 							<li class="scroll"><a href="#contact">Contactanos</a></li>
@@ -151,6 +150,66 @@
 	</section>
 	<!--/#home-->
 
+	<section id="services">
+		<div class="title-services">
+			<h2>Servicios Taiko</h2>
+		</div>
+		<div class="container-services">
+			<div class="card-services" data-hover="images/slider/Sonido-Slider-1024x320.jpg">
+				<div class="card-services-text">SONIDO PROFECIONAL</div>
+			</div>
+			<div class="card-services" data-hover="images/slider/Iluminacion-slider-1024x320.jpg">
+				<div class="card-services-text">ILUMINACIÓN</div>
+			</div>
+			<div class="card-services" data-hover="images/slider/Escenario-slider-1024x320.jpg">
+				<div class="card-services-text">ESCENARIOS</div>
+			</div>
+			<div class="card-services" data-hover="images/slider/LED-slider-1024x320.jpg">
+				<div class="card-services-text">PANTALLAS LED</div>
+			</div>
+			<div class="card-services" data-hover="images/slider/Otros-slider-1024x320.jpg">
+				<div class="card-services-text">OTROS SERVICIOS</div>
+			</div>
+		</div>
+	
+		<script>
+			const cards = document.querySelectorAll('.card-services');
+	
+			cards.forEach(card => {
+				card.addEventListener('mouseenter', () => {
+					const newImage = card.getAttribute('data-hover');
+					cards.forEach((c, index) => {
+						c.style.backgroundImage = `url(${newImage})`;
+						c.style.backgroundSize = '500% 100%';
+						c.style.backgroundPosition = `${index * 25}% 0`;
+					});
+				});
+			});
+		</script>
+	</section>
+	<!--/#explore1-->
+
+	<section id="espacios">
+		<div class="title-espacios">
+			<h2>Nuestro Espacios</h2>
+		</div>
+		<div class="container-espacios">
+			<div class="espacios-publicos">
+				<div class="card-espacios-text">ESPACIOS PÚBLICOS</div>
+			</div>
+			<div class="espacios-privados">
+				<div class="card-espacios-text">ESPACIOS PRIVADOS</div>
+			</div>
+			<div class="espacios-cubiertos">
+				<div class="card-espacios-text">ESPACIOS CUBIERTOS</div>
+			</div>
+			<div class="espacios-libres">
+				<div class="card-espacios-text">ESPACIOS AIRE LIBRE</div>
+			</div>
+		</div>
+	</section>
+	<!--/#explore1-->
+
 	<section id="explore">
 		<div class="container">
 			<div class="row">
@@ -187,45 +246,6 @@
 		</div>
 	</section>
 	<!--/#explore-->
-
-	<section id="services">
-		<div class="title-services">
-			<h2>Nuestro Servicios</h2>
-		</div>
-		<div class="container-services">
-			<div class="card-services" data-hover="images/slider/Sonido-Slider-1024x320.jpg">
-				<div class="card-services-text">Sonido Profesional</div>
-			</div>
-			<div class="card-services" data-hover="images/slider/Iluminacion-slider-1024x320.jpg">
-				<div class="card-services-text">Iluminación</div>
-			</div>
-			<div class="card-services" data-hover="images/slider/Escenario-slider-1024x320.jpg">
-				<div class="card-services-text">Escenarios</div>
-			</div>
-			<div class="card-services" data-hover="images/slider/LED-slider-1024x320.jpg">
-				<div class="card-services-text">Pantallas LED</div>
-			</div>
-			<div class="card-services" data-hover="images/slider/Otros-slider-1024x320.jpg">
-				<div class="card-services-text">Otros Servicios</div>
-			</div>
-		</div>
-	
-		<script>
-			const cards = document.querySelectorAll('.card-services');
-	
-			cards.forEach(card => {
-				card.addEventListener('mouseenter', () => {
-					const newImage = card.getAttribute('data-hover');
-					cards.forEach((c, index) => {
-						c.style.backgroundImage = `url(${newImage})`;
-						c.style.backgroundSize = '500% 100%';
-						c.style.backgroundPosition = `${index * 25}% 0`;
-					});
-				});
-			});
-		</script>
-	</section>
-	<!--/#explore1-->
 
 	<section id="about1">
 		<div class="guitar2">
