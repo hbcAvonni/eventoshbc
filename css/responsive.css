@@ -4,7 +4,10 @@
       height: 100vh;
   }
 
-  #explore, #services, #about, #about1, #event1, .contact-section{
+  #explore, #services, 
+  #about, #about1, 
+  #event1, .contact-section, 
+  #next-event, #previous-event{
     background-attachment: fixed;
   }
 }
@@ -126,6 +129,9 @@
     left: -5%;
   }
 
+  .card-services-text {
+    font-size: 18px;
+  }
 
 }
 
@@ -283,6 +289,10 @@
   .about-content {
     width: 100%;    
     padding: 70px 25px 110px;
+  }
+
+  .card-services-text {
+    display: none;
   }
 
 }

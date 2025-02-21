@@ -155,36 +155,49 @@
 			<h2>Servicios Taiko</h2>
 		</div>
 		<div class="container-services">
-			<div class="card-services" data-hover="images/slider/Sonido-Slider-1024x320.png">
+			<div class="card-services sonido" data-hover="images/slider/Sonido-Slider-1024x320.png">
 				<div class="card-services-text">SONIDO PROFECIONAL</div>
 			</div>
-			<div class="card-services" data-hover="images/slider/Iluminacion-slider-1024x320.png">
+			<div class="card-services iluminacion" data-hover="images/slider/Iluminacion-slider-1024x320.png">
 				<div class="card-services-text">ILUMINACIÓN</div>
 			</div>
-			<div class="card-services" data-hover="images/slider/Escenario-slider-1024x320.png">
+			<div class="card-services escenario" data-hover="images/slider/Escenario-slider-1024x320.png">
 				<div class="card-services-text">ESCENARIOS</div>
 			</div>
-			<div class="card-services" data-hover="images/slider/LED-slider-1024x320.png">
+			<div class="card-services led" data-hover="images/slider/LED-slider-1024x320.png">
 				<div class="card-services-text">PANTALLAS LED</div>
 			</div>
-			<div class="card-services" data-hover="images/slider/Otros-slider-1024x320.png">
+			<div class="card-services otrosSer" data-hover="images/slider/Otros-slider-1024x320.png">
 				<div class="card-services-text">OTROS SERVICIOS</div>
 			</div>
 		</div>
 	
 		<script>
 			const cards = document.querySelectorAll('.card-services');
-	
-			cards.forEach(card => {
-				card.addEventListener('mouseenter', () => {
-					const newImage = card.getAttribute('data-hover');
-					cards.forEach((c, index) => {
-						c.style.backgroundImage = `url(${newImage})`;
-						c.style.backgroundSize = '500% 100%';
-						c.style.backgroundPosition = `${index * 25}% 0`;
+
+			function handleHoverEffect() {
+				if (window.matchMedia('(min-width: 768px)').matches) { 
+					cards.forEach(card => {
+						card.addEventListener('mouseenter', () => {
+							const newImage = card.getAttribute('data-hover');
+							cards.forEach((c, index) => {
+								c.style.backgroundImage = `url(${newImage})`;
+								c.style.backgroundSize = '500% 100%';
+								c.style.backgroundPosition = `${index * 25}% 0`;
+							});
+						});
 					});
-				});
-			});
+				} else {
+					// Si la pantalla es más pequeña, eliminamos los eventos
+					cards.forEach(card => {
+						card.removeEventListener('mouseenter', () => {});
+					});
+				}
+			}
+			
+			// Ejecutar la función cuando se carga la página y cuando cambia el tamaño de la ventana
+			handleHoverEffect();
+			window.addEventListener('resize', handleHoverEffect);
 		</script>
 	</section>
 	<!--/#explore1-->
