@@ -402,27 +402,14 @@ h2 {
   justify-content: center;
   align-items: center;
   padding: 2% 5%;
-}
-
-.title-services h2 {
-  margin: 0;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
-}
-
-#services .container-services {
-  display: flex;
-  width: 100%;
-  height: 435px;
   position: relative; /* Mantener para el efecto de humo */
   overflow: hidden; /* Asegura que el humo no se salga del contenedor */
   background-color: #111; /* Un negro menos puro para contrastar con el humo */
 }
 
 /* Fondo de humo */
-.container-services::before,
-.container-services::after {
+#services::before,
+#services::after {
   content: "";
   position: absolute;
   top: -30%;
@@ -437,7 +424,7 @@ h2 {
   filter: blur(20px); /* Suaviza el efecto */
 }
 
-.container-services::after {
+#services::after {
   animation: smokeAnimation 12s infinite alternate ease-in-out;
   opacity: 0.4; /* Otra capa de humo con menor opacidad */
 }
@@ -449,6 +436,20 @@ h2 {
   100% {
     transform: translateY(-5%) scale(1.4);
   }
+}
+
+.title-services h2 {
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#services .container-services {
+  display: flex;
+  width: 100%;
+  height: 435px;
+  position: relative; /* Mantener para el efecto de humo */
 }
 
 .card-services {
