@@ -1,38 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Dosis:400,200,300,500,600,700,800);
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300,200,700);
 
-@keyframes background-gradient-animation {
-  0%,
-  100% {
-    background: linear-gradient(to right, #ff5e62, #ff9966, #ffcc67); /* Rojo coral a naranja */
-  }
-  25% {
-    background: linear-gradient(to right, #ff9a8b, #ff6a88, #ff99ac); /* Rosado tropical */
-  }
-  50% {
-    background: linear-gradient(to right, #ffde7d, #f7a440, #ff7b00); /* Amarillo sol y naranja vibrante */
-  }
-  75% {
-    background: linear-gradient(to right, #33ccff, #29abe2, #16a085); /* Azul caribe y verde esmeralda */
-  }
-}
-
-@keyframes background-color-animation{
-  0%,
-  100%{
-    background-color: #29abe2;
-  }
-  25%{
-    background-color: #f7a440;
-  }
-  50%{
-    background-color: #ff6a88;
-  }
-  75%{
-    background-color: #ff9966;
-  }
-}
-
 /*************************
 *******Typography******
 **************************/
@@ -41,7 +9,9 @@ body {
   font-family: 'Dosis', sans-serif;
   font-size: 17px;
   color: #fff;
-  animation: background-gradient-animation 10s ease-in-out infinite;
+  background: #1e9600;
+  background: -webkit-linear-gradient(to right, #1e9600, #fff200, #ff0000);
+  background: linear-gradient(to right, #1e9600, #fff200, #ff0000);
 }
 
 
@@ -134,7 +104,9 @@ h2 {
 }
 
 .navbar-brand {
-  animation: background-color-animation 10s ease-in-out infinite;
+  background: #fff200;
+  background: -webkit-linear-gradient(to right, #ff0000, #1e9600, #fff200);
+  background: linear-gradient(to right, #ff0000, #1e9600, #fff200);
   height: 90px;
   margin-bottom: 20px;
   position: relative;
@@ -147,7 +119,9 @@ h2 {
 }
 
 .navbar-right {
-  animation: background-color-animation 10s ease-in-out infinite;
+  background: #fff200;
+  background: -webkit-linear-gradient(to right, #ff0000, #1e9600, #fff200);
+  background: linear-gradient(to right, #ff0000, #1e9600, #fff200);
   padding:0 95px 0 0;
   opacity: .9
 }
@@ -1047,7 +1021,9 @@ h2 {
 **************************/
 
 #footer {
-  animation: background-color-animation 10s ease-in-out infinite;
+  background: #fff200;
+  background: -webkit-linear-gradient(to right, #ff0000, #1e9600, #fff200);
+  background: linear-gradient(to right, #ff0000, #1e9600, #fff200);
   color: #FFFFFF;
   font-size: 20px;
   padding: 35px 0;
