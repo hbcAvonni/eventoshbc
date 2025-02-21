@@ -57,9 +57,7 @@ jQuery(function($) {'use strict',
 	});
 
 	$(document).ready(function () {
-		$('.scroll a').on('click', function (event) {
-			event.preventDefault(); // Evita el comportamiento predeterminado del enlace
-	
+		$('.scroll a').on('click', function (event) {	
 			var target = $(this).attr('href'); // Obtiene el ID del destino
 			if ($(target).length) {
 				$('html, body').animate({
