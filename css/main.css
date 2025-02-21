@@ -689,21 +689,9 @@ h2 {
 /*************************
 *******Event CSS******
 **************************/
-#event {
-  background-image: url("../images/performar-bg.jpg");
-  background-size: contain;
-}
-
-#event1 {
-  background-image: url("../images/event-bg.jpg");
-  background-size: auto;
-}
 
 #event, #event1 {
-  background-color: #33888F;
-  background-position: 50% 0;
   position: relative;
-  background-repeat: no-repeat;
 }
 
 .guitar {
