@@ -5,7 +5,7 @@
   }
 
   #explore, #services, 
-  #about, #about1, 
+  #about, #about1, #about-sbk, 
   #event1, .contact-section, 
   #next-event, #previous-event{
     background-attachment: fixed;
@@ -36,7 +36,7 @@
   }
 
   
-  #countdown li {
+  .countdown li {
     margin-right: 30px;
   }
 
@@ -97,7 +97,7 @@
     font-size: 17px;
   }
  
- #countdown li {
+ .countdown li {
   margin-right: 15px;
  }
 
@@ -183,31 +183,31 @@
     color: #2da1c5;
   }
 
-  #explore {
+  .explore {
     background-size:cover;
   }
 
-  #explore h2 {
+  .explore h2 {
     float: inherit;
     font-size: 30px;
     margin-bottom: 30px;
   }  
 
-  #countdown li {
+  .countdown li {
     font-size: 14px;
     margin-right:35px;
     width:inherit;
   }
 
-  #countdown li span {
+  .countdown li span {
     font-size: 24px;
     height: 60px;
     line-height: 60px;
     width: 60px;
   }
 
-  #countdown li:before, 
-  #countdown li:after {
+  .countdown li:before, 
+  .countdown li:after {
     top:25px;
   }
 
@@ -344,31 +344,31 @@
   }
 
   /* Explore */
-  #explore {
+  .explore {
     background-size:cover;
   }
 
-  #explore h2 {
+  .explore h2 {
     float: inherit;
     font-size: 30px;
     margin-bottom: 30px;
   }  
 
-  #countdown li {
+  .countdown li {
     font-size: 14px;
     margin-right: 15px;
     width: 45px;
   }
 
-  #countdown li span {
+  .countdown li span {
     font-size: 20px;
     height: 45px;
     line-height: 45px;
     width: 45px;
   }
 
-  #countdown li:before, 
-  #countdown li:after {
+  .countdown li:before, 
+  .countdown li:after {
     top: 18px
   }
 

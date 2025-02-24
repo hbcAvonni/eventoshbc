@@ -1,19 +1,17 @@
 jQuery(function($) {'use strict',
 	
 	//Countdown js
-	 $("#countdown").countdown({
-			date: "11 October 2025 23:59:59",
-			format: "on"
-		},
-		
-		function() {
-			// callback function
-		});
+	 $("#countdown-tribute").countdown({
+		date: "11 October 2025 23:59:59",
+		format: "on"
+	});
 	
+	$("#countdown-sbk").countdown({
+		date: "06 June 2025 13:59:59",
+		format: "on"
+	});
 
-	
 	//Scroll Menu
-
 	function menuToggle()
 	{
 		var windowWidth = $(window).width();

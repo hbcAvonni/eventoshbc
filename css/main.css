@@ -257,10 +257,19 @@ h2 {
 #next-event, 
 #previous-event {
   background-color: #000000;
-  background-image: url("../images/event-bg.jpg");
   background-position: center center;
-  background-size: auto;
   background-repeat:no-repeat;
+  background-size: cover;
+}
+
+.explore-tribute {
+  background-image: url("../images/event-bg.jpg");
+}
+
+.explore-sbk,
+#next-event, 
+#previous-event {
+  background-image: url("../images/logo-sbk.webp");
 }
 
 #explore {
@@ -278,19 +287,19 @@ h2 {
 #explore h2 {
   font-size: 42px;
   font-weight: 900;
-  color: black;
+  color: white;
   text-transform: uppercase;
   text-align: center;
 }
 
-#countdown {
+.countdown {
   display: block;
   overflow: hidden;
   text-align: center;
   padding: 0
 }
 
-#countdown li {
+.countdown li {
   list-style: none;
   display:inline-block;
   margin-right: 40px;
@@ -300,11 +309,11 @@ h2 {
   position: relative;
 }
 
-#countdown li:last-child {
+.countdown li:last-child {
   margin-right: 0
 }
 
-#countdown li span {
+.countdown li span {
   display: block;
   font-size: 40px;
   font-weight: 700;
@@ -316,31 +325,31 @@ h2 {
   border-bottom: 1px solid #9e3e2e;
 }
 
-#countdown li .days {
+.countdown li .days {
   background-color: #45b29d;
   border-top: 1px solid #6ac1b1;
   border-left: 1px solid #6ac1b1;
 }
 
-#countdown li .hours {
+.countdown li .hours {
   background-color: #efc94c; 
   border-top: 1px solid #f2d470;
   border-left: 1px solid #f2d470;
 }
 
-#countdown li .minutes {
+.countdown li .minutes {
   background-color: #e27a3f;
   border-top: 1px solid #e89565;
   border-left: 1px solid #e89565;
 }
 
-#countdown li .seconds {
+.countdown li .seconds {
   background-color: #df5a49;
   border-top: 1px solid #e57b6d;
   border-left: 1px solid #e57b6d;
 }
 
-#countdown li:before {
+.countdown li:before {
   background-color: #FFFFFF;
   content: "";
   height: 11px;
@@ -350,7 +359,7 @@ h2 {
   width: 1px;
 }
 
-#countdown li:after {
+.countdown li:after {
   background-color: #FFFFFF;
   content: "";
   height: 11px;
@@ -812,7 +821,13 @@ h2 {
   background-size: cover;
 }
 
-#about, #about1 {
+#about-sbk {
+  background: #BA8B02;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #181818, #BA8B02);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #181818, #BA8B02); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#about, #about1, #about-sbk {
   background-position: center top;
   background-repeat:no-repeat;
   position: relative;  
