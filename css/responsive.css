@@ -460,5 +460,45 @@
     background-size: cover;
   }
 
+  #services .container-services {
+    flex-direction: column; /* Apila los elementos en columna */
+  }
+
+  .card-services {
+    width: 100%; /* Ocupa todo el ancho */
+    height: 200px; /* Altura ajustada para móviles */
+    background-size: cover; /* Ajusta el tamaño de la imagen */
+    background-position: center; /* Centra la imagen */
+  }
+
+  .card-services-text {
+    font-size: 20px; /* Reduce el tamaño del texto en móviles */
+    margin-bottom: 20px; /* Ajusta el margen */
+  }
+
+  #espacios .container-espacios, 
+  #next-event .container-next-event, 
+  #previous-event .container-previous-event {
+    flex-direction: column; /* Cambia la dirección a columna */
+    height: auto; /* Ajusta la altura automáticamente */
+    gap: 10px; /* Añade un espacio entre cada uno */
+  }
+
+  .espacios-publicos, 
+  .espacios-privados, 
+  .espacios-cubiertos, 
+  .espacios-libres,
+  .next-event-publicos, 
+  .next-event-privados, 
+  .next-event-cubiertos, 
+  .next-event-libres
+  .previous-event-publicos, 
+  .previous-event-privados, 
+  .previous-event-cubiertos, 
+  .previous-event-libres {
+    height: 100%; /* Establece una altura fija para cada uno */
+    width: 100%; /* Ocupa todo el ancho */
+  }
+
 }
 

@@ -531,6 +531,7 @@ h2 {
   display: flex;
   width: 100%;
   height: 435px;
+  gap: 2%;
 }
 
 .espacios-publicos, .espacios-privados, .espacios-cubiertos, .espacios-libres {
@@ -1168,6 +1169,7 @@ body {
   max-height: 80%;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: rgba(137, 140, 143, 0.705);
 }
 
 /* Botón de cerrar */
