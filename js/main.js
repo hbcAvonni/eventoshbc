@@ -103,3 +103,42 @@ function changeLanguage(item) {
 		select.dispatchEvent(new Event("change"));
 	}
 }
+
+function abrirPopPup(event) {
+    var imgSrc = event.currentTarget.getAttribute("data-hover");
+
+    var popup = document.getElementById("customPopup");
+    var popupImage = document.getElementById("popupImage");
+
+    if (!popup) {
+        popup = document.createElement("div");
+        popup.id = "customPopup";
+        popup.className = "popup-container";
+
+        popupImage = document.createElement("img");
+        popupImage.id = "popupImage";
+        popupImage.className = "popup-image";
+
+        var closeButton = document.createElement("span");
+        closeButton.innerHTML = "&times;";
+        closeButton.className = "popup-close";
+
+        closeButton.onclick = function() {
+            popup.style.display = "none";
+        };
+
+        popup.appendChild(closeButton);
+        popup.appendChild(popupImage);
+        document.body.appendChild(popup);
+
+        // **Evento para cerrar el popup al hacer clic fuera de la imagen**
+        popup.addEventListener("click", function(e) {
+            if (e.target === popup) {
+                popup.style.display = "none";
+            }
+        });
+    }
+
+    popupImage.src = imgSrc;
+    popup.style.display = "flex";
+}
