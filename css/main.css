@@ -1036,6 +1036,10 @@ h2 {
   position: relative !important;
 }
 
+.registro-contact .contact-section, .explore-registro {
+  background-position:center center !important;
+}
+
 .ear-piece {
   position: absolute;
   left: 0;
