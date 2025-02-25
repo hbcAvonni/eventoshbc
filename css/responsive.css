@@ -3,10 +3,14 @@
   .carousel-inner2 {
       height: 100vh;
   }
+  
+  .carousel-registro {
+      height: 80vh;
+  }
 
   #explore, #services, 
   #about, #about1, #about-sbk, 
-  #event1, .contact-section, 
+  #event1, .contact-section, .explore-registro,
   #next-event, #previous-event{
     background-attachment: fixed;
   }

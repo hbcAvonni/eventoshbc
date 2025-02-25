@@ -1011,31 +1011,29 @@ h2 {
   right: 10%
 }
 
-
-/*************************
-******Map CSS****
-**************************/
-/* #map {
-  position: relative;
-}
-
-#gmap {
-  height:450px;  
-} */
-
-
 /*************************
 ******Contact CSS****
 **************************/
 
 .contact-section {
-  background-color: #f7ab24;
   background-image: url("../images/contact-bg.jpg");
-  background-position:center bottom;
-  background-size:auto;
-  background-repeat:no-repeat; 
-  position: relative;
   color: #FFFFFF !important;
+}
+
+.contact-registro {
+  padding-top: 10%;
+}
+
+.explore-registro {
+  background-image: url("../images/contact-bg.jpg");
+}
+
+.contact-section, .explore-registro {
+  background-color: #f7ab24 !important;
+  background-position:center bottom !important;
+  background-size:auto !important;
+  background-repeat:no-repeat !important; 
+  position: relative !important;
 }
 
 .ear-piece {
@@ -1046,6 +1044,10 @@ h2 {
 
 #contact .container {
   padding-top:47px;
+}
+
+.container-registro {
+  margin-left: 20%;
 }
 
 #contact h3 {
