@@ -42,12 +42,25 @@ jQuery(function($) {'use strict',
 
 	// Contact form validation
 	var form = $('.contact-form');
-	form.submit(function () {'use strict',
-		$this = $(this);
-		$.post($(this).attr('action'), function(data) {
-			$this.prev().text(data.message).fadeIn().delay(3000).fadeOut();
-		},'json');
-		return false;
+
+	form.submit(function (event) {
+		event.preventDefault(); // Evita que el formulario se envíe de manera tradicional
+
+		var formData = form.serialize(); // Serializa los datos del formulario
+
+		$.ajax({
+			type: "POST",
+			url: form.attr("action"),
+			data: formData,
+			success: function (response) {
+				alert("Formulario enviado correctamente");
+				console.log(response);
+			},
+			error: function (error) {
+				alert("Hubo un error al enviar el formulario.");
+				console.error(error);
+			}
+		});
 	});
 
 	$( window ).resize(function() {
@@ -139,4 +152,13 @@ function abrirPopPup(event) {
 
     popupImage.src = imgSrc;
     popup.style.display = "flex";
+}
+
+function validateEmail() {
+	$email = $("#email").val();
+	if ($email == "") {
+		return false;
+	}
+	var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+	return emailReg.test($email);
 }

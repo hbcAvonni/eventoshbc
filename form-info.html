@@ -60,74 +60,6 @@
 	</header>
 	<!--/#header-->
 
-	<!-- <section id="home">
-		<div id="main-slider" class="carousel slide" data-ride="carousel">
-			<ol class="carousel-indicators">
-				<li data-target="#main-slider" data-slide-to="0" class="active"></li>
-				<li data-target="#main-slider" data-slide-to="1"></li>
-				<li data-target="#main-slider" data-slide-to="2"></li>
-				<li data-target="#main-slider" data-slide-to="3"></li>
-				<li data-target="#main-slider" data-slide-to="4"></li>
-				<li data-target="#main-slider" data-slide-to="5"></li>
-			</ol>
-			<div class="carousel-inner carousel-inner2 carousel-registro">
-				<div class="item active">
-					<img class="img-responsive" src="images/Poster-Flyers/IMG-20250219-WA0004.jpg" alt="slider">
-					<div class="carousel-caption">
-						<h2><b>BACHATASIA</b></h2>
-						<h4>06 al 09 de Marzo 2025,<br> Sevilla Sensual Congress<br> Hotel Vértice Aljarafe</h4>
-						<a href="form-info.html?evento=bachatasia">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
-					</div>
-				</div>
-				<div class="item">
-					<img class="img-responsive" src="images/Poster-Flyers/IMG-20250219-WA0008.jpg" alt="slider">
-					<div class="carousel-caption">
-						<h2><b>XIV <i>Tumba & Tumbao Beach</i></b></h2>
-						<h4>29, 30, 31 Mayo y 01 de Junio 2025,<br> C/ Diego de Almagro, 1<br> Cartaya | Huelva</h4>
-						<a href="form-info.html?evento=tumba-y-tumbao">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
-					</div>
-				</div>
-				<div class="item">
-					<img class="img-responsive" src="images/slider/bg1.jpg" alt="slider">
-					<div class="carousel-caption">
-						<h2><b>Remember ELVIS</b></h2>
-						<h4>11, 12 y 13 de Octubre 2025,<br> 64 Músicos<br> Para +60 Mil Personas</h4>
-						<a href="form-info.html?evento=king-tribute">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
-					</div>
-				</div>
-				<div class="item">
-					<img class="img-responsive" src="images/slider/bg5.jpg" alt="slider">
-					<div class="carousel-caption">
-						<h2><i>"Aloha From Hawaii"</i> el homenaje a Elvis Presley de Abdón Alcaraz</h2>
-						<h4>El virtuoso del piano y compositor murciano lanza el proyecto más importante de su vida,<br>
-							un homenaje al rey del rock, en concreto, al recital que el rey dio el 14 de enero de
-							1973<br> en el Honolulu International Center y fue transmitido vía satélite
-							a Asia y Oceania.</h4>
-						<a href="form-info.html?evento=king-tribute">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
-					</div>
-				</div>
-				<div class="item">
-					<img class="img-responsive" src="images/slider/bg3.jpg" alt="slider">
-					<div class="carousel-caption">
-						<h2>exhibición & Concentración<br> De Harley Davidson</h2>
-						<h4>Este evento reúnira a entusiastas de las motocicletas<br> de todo el mundo para un fin de
-							semana lleno de espectaculares<br> exhibiciones de motos</h4>
-						<a href="form-info.html?evento=king-tribute">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
-					</div>
-				</div>
-				<div class="item">
-					<img class="img-responsive" src="images/slider/bg2.jpg" alt="slider">
-					<div class="carousel-caption">
-						<h2>Subasta la moto de Elvis </h2>
-						<h4>La replica exacta de la moto de Elvis,<br> una Harley Davidson, a subasta</h4>
-						<a href="form-info.html?evento=king-tribute">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section> -->
-	<!--/#home-->
-
 	<section id="contact" class="registro-contact">
 		<div class="contact-section contact-registro">
 			<div class="container">
@@ -152,17 +84,17 @@
 					<div class="col-sm-5">
 						<div id="contact-section">
 							<h3>Registro al Evento</h3>
-							<div class="status alert alert-success" style="display: none"></div>
-							<form id="main-contact-form" class="contact-form" name="contact-form" method="post" action="#">
+							<div id="result"></div>
+							<form id="main-contact-form" class="contact-form" name="contact-form" method="POST" action="https://script.google.com/macros/s/AKfycbzxbN_s2Hq5oUfX-bh34tcWeAhCmq8RhNAgo9Ykxwy7UnQ3HYpy_CaQkqqRTpq6Kn_Y/exec">
 								<div class="form-group">
 									<input type="text" name="name" class="form-control" required="required" placeholder="Nombre Completo">
 								</div>
 								<div class="form-group">
-									<select class="form-control" name="tDocumento">
-										<option value=""> -- Tipo Documento -- </option>
-										<option value="DNI">DNI</option>
-										<option value="NIE">NIE</option>
-										<option value="PASSPORT">Pasaporte</option>
+									<select class="form-control" name="plaza" required="required">
+										<option value=""> -- Elegir Establecimiento -- </option>
+										<option value="PLAZA_1">Establecimiento #1</option>
+										<option value="PLAZA_2">Establecimiento #2</option>
+										<option value="PLAZA_3">Establecimiento #3</option>
 									</select>
 								</div>
 								<div class="form-group">
