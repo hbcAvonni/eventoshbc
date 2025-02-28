@@ -1051,7 +1051,23 @@ h2 {
 }
 
 .container-registro {
-  margin-left: 20%;
+  margin-left: 0;
+}
+
+.img-form {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 4%;
+  display: flex;
+  flex-wrap: wrap;
+  width: 40%;
+  border: 2px solid black;
+  border-radius: 20%;
+  object-fit: cover;
+}
+
+.btnComprar2 {
+  display: none;
 }
 
 #contact h3 {

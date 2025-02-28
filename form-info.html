@@ -81,36 +81,59 @@
 							</address>
 						</div>
 					</div>
-					<div class="col-sm-5">
+					<div class="col-sm-9">
 						<div id="contact-section">
 							<h3>Registro al Evento</h3>
 							<div id="result"></div>
-							<form id="main-contact-form" class="contact-form" name="contact-form" method="POST" action="https://script.google.com/macros/s/AKfycbzxbN_s2Hq5oUfX-bh34tcWeAhCmq8RhNAgo9Ykxwy7UnQ3HYpy_CaQkqqRTpq6Kn_Y/exec">
-								<div class="form-group">
-									<input type="text" name="name" class="form-control" required="required" placeholder="Nombre Completo">
+							<form id="main-contact-form" class="contact-form" name="contact-form" method="POST" action="https://script.google.com/macros/s/AKfycbwMEnr3sG9d1imBmTEpK9vajJIPZ__oJcGMhWx-4q8uLYBUxDMoK_lys_mTOaPeN-j8/exec" enctype="multipart/form-data">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<input type="text" name="name" class="form-control" required="required" placeholder="Nombre Completo">
+									</div>
+									<div class="form-group">
+										<select class="form-control" name="plaza" required="required">
+											<option value=""> -- Elegir Establecimiento -- </option>
+											<option value="PLAZA_1">Establecimiento #1</option>
+											<option value="PLAZA_2">Establecimiento #2</option>
+											<option value="PLAZA_3">Establecimiento #3</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<input type="text" name="nDocumento" class="form-control" placeholder="Nº Documento">
+									</div>
+									<div class="form-group">
+										<input type="text" name="edad" class="form-control" placeholder="Edad">
+									</div>
+									<div class="form-group">
+										<input type="text" name="celular" class="form-control" required="required" placeholder="Celular">
+									</div>
+									<div class="form-group">
+										<input type="email" name="email" class="form-control" required="required" placeholder="Email">
+									</div>
+									<div class="form-group btnComprar">
+										<button type="submit" class="btn btn-primary pull-right">Comprar Entrada</button>
+									</div>
 								</div>
-								<div class="form-group">
-									<select class="form-control" name="plaza" required="required">
-										<option value=""> -- Elegir Establecimiento -- </option>
-										<option value="PLAZA_1">Establecimiento #1</option>
-										<option value="PLAZA_2">Establecimiento #2</option>
-										<option value="PLAZA_3">Establecimiento #3</option>
-									</select>
-								</div>
-								<div class="form-group">
-									<input type="text" name="nDocumento" class="form-control" placeholder="Nº Documento">
-								</div>
-								<div class="form-group">
-									<input type="text" name="edad" class="form-control" placeholder="Edad">
-								</div>
-								<div class="form-group">
-									<input type="text" name="celular" class="form-control" required="required" placeholder="Celular">
-								</div>
-								<div class="form-group">
-									<input type="email" name="email" class="form-control" required="required" placeholder="Email">
-								</div>
-								<div class="form-group">
-									<button type="submit" class="btn btn-primary pull-right">Comprar Entrada</button>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Subir una Foto:</label>
+										<img src="https://placehold.co/400x600" class="img-form" alt="Foto usuario" id="imgUsuario"/>
+										<input type="file" id="customFile" accept="imagen/*" name="foto" class="form-control" onchange="actualizarFoto()" required="required">
+
+										<script>
+											function actualizarFoto() {
+												let img = document.getElementById("imgUsuario");
+												let input = document.getElementById("customFile");
+						
+												if(img && input.files[0]){
+													img.src= URL.createObjectURL(input.files[0]);
+												}
+											}
+										</script>
+									</div>
+									<div class="form-group btnComprar2">
+										<button type="submit" class="btn btn-primary pull-right">Comprar Entrada</button>
+									</div>
 								</div>
 							</form>
 						</div>
@@ -180,7 +203,7 @@
 		jQuery(function($) {'use strict',	
 			//Countdown js
 			$("#countdown-registro").countdown({
-				date: "26 February 2025 23:59:59",
+				date: "06 June 2025 13:59:59",
 				format: "on"
 			});
 		});

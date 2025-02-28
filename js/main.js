@@ -41,26 +41,43 @@ jQuery(function($) {'use strict',
 
 
 	// Contact form validation
-	var form = $('.contact-form');
-
-	form.submit(function (event) {
-		event.preventDefault(); // Evita que el formulario se envíe de manera tradicional
-
-		var formData = form.serialize(); // Serializa los datos del formulario
-
-		$.ajax({
-			type: "POST",
-			url: form.attr("action"),
-			data: formData,
-			success: function (response) {
-				alert("Formulario enviado correctamente");
-				console.log(response);
-			},
-			error: function (error) {
-				alert("Hubo un error al enviar el formulario.");
-				console.error(error);
-			}
-		});
+	document.querySelector("#main-contact-form").addEventListener("submit", async function (event) {
+		event.preventDefault(); // Evita el envío tradicional del formulario
+	
+		let img = document.getElementById("imgUsuario");
+		let formData = new FormData(this); // Captura los datos del formulario
+		let fileInput = this.querySelector("input[name='foto']"); // Selecciona el input de la imagen
+		let file = fileInput.files[0]; // Obtiene el archivo seleccionado
+	
+		if (file) {
+			let reader = new FileReader();
+			reader.readAsDataURL(file); // Convierte la imagen a base64
+			reader.onload = async function () {
+				let base64Image = reader.result.split(",")[1]; // Extrae solo la parte de datos base64
+				formData.append("fotoBase64", base64Image); // Agrega la imagen al formulario
+	
+				let response = await fetch(event.target.action, {
+					method: "POST",
+					body: formData
+				});
+	
+				let data = await response.text();
+				$("#result").hide().html('<div class="status alert alert-success">' + data + '</div>').slideDown(200);
+				event.target.reset(); // Borra el formulario después de enviarlo
+				img.src= 'https://placehold.co/400x600';
+			};
+		} else {
+			// Si no hay imagen, envía solo los datos del formulario
+			let response = await fetch(event.target.action, {
+				method: "POST",
+				body: formData
+			});
+	
+			let data = await response.text();
+			$("#result").hide().html('<div class="status alert alert-success">' + data + '</div>').slideDown(200);
+			event.target.reset(); // Borra el formulario después de enviarlo
+			img.src= 'https://placehold.co/400x600';
+		}
 	});
 
 	$( window ).resize(function() {

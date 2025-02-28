@@ -299,6 +299,14 @@
     display: none;
   }
 
+  .btnComprar, .img-form {
+    display: none;
+  }
+
+  .btnComprar2 {
+    display: block;
+  }
+
 }
 
 /* XS Portrait */
