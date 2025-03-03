@@ -41,44 +41,67 @@ jQuery(function($) {'use strict',
 
 
 	// Contact form validation
-	document.querySelector("#main-contact-form").addEventListener("submit", async function (event) {
-		event.preventDefault(); // Evita el envío tradicional del formulario
-	
-		let img = document.getElementById("imgUsuario");
-		let formData = new FormData(this); // Captura los datos del formulario
-		let fileInput = this.querySelector("input[name='foto']"); // Selecciona el input de la imagen
-		let file = fileInput.files[0]; // Obtiene el archivo seleccionado
-	
-		if (file) {
-			let reader = new FileReader();
-			reader.readAsDataURL(file); // Convierte la imagen a base64
-			reader.onload = async function () {
-				let base64Image = reader.result.split(",")[1]; // Extrae solo la parte de datos base64
-				formData.append("fotoBase64", base64Image); // Agrega la imagen al formulario
-	
+	const formContact = document.getElementById("main-contact-form");
+	if (formContact) {
+		document.querySelector("#main-contact-form").addEventListener("submit", async function (event) {
+			event.preventDefault(); // Evita el envío tradicional del formulario
+		
+			let img = document.getElementById("imgUsuario");
+			let formData = new FormData(this); // Captura los datos del formulario
+			let fileInput = this.querySelector("input[name='foto']"); // Selecciona el input de la imagen
+			let file = fileInput.files[0]; // Obtiene el archivo seleccionado
+		
+			if (file) {
+				let reader = new FileReader();
+				reader.readAsDataURL(file); // Convierte la imagen a base64
+				reader.onload = async function () {
+					let base64Image = reader.result.split(",")[1]; // Extrae solo la parte de datos base64
+					formData.append("fotoBase64", base64Image); // Agrega la imagen al formulario
+		
+					let response = await fetch(event.target.action, {
+						method: "POST",
+						body: formData
+					});
+		
+					let data = await response.text();
+					$("#result").hide().html('<div class="status alert alert-success">' + data + '</div>').slideDown(200);
+					event.target.reset(); // Borra el formulario después de enviarlo
+					img.src= 'https://placehold.co/400x600';
+				};
+			} else {
+				// Si no hay imagen, envía solo los datos del formulario
 				let response = await fetch(event.target.action, {
 					method: "POST",
 					body: formData
 				});
-	
+		
 				let data = await response.text();
 				$("#result").hide().html('<div class="status alert alert-success">' + data + '</div>').slideDown(200);
 				event.target.reset(); // Borra el formulario después de enviarlo
 				img.src= 'https://placehold.co/400x600';
-			};
-		} else {
+			}
+		});
+	}
+
+	// Contact form validation
+	const formCompraEntradas = document.getElementById("contact-form");
+	if (formCompraEntradas) {
+		document.querySelector("#contact-form").addEventListener("submit", async function (event) {
+			event.preventDefault(); // Evita el envío tradicional del formulario
+
+			let formData = new FormData(this); // Captura los datos del formulario
+		
 			// Si no hay imagen, envía solo los datos del formulario
 			let response = await fetch(event.target.action, {
 				method: "POST",
 				body: formData
 			});
-	
+
 			let data = await response.text();
 			$("#result").hide().html('<div class="status alert alert-success">' + data + '</div>').slideDown(200);
 			event.target.reset(); // Borra el formulario después de enviarlo
-			img.src= 'https://placehold.co/400x600';
-		}
-	});
+		});
+	}
 
 	$( window ).resize(function() {
 		menuToggle();
