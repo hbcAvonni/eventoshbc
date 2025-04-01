@@ -11,7 +11,7 @@
   #explore, #services, 
   #about, #about1, #about-sbk, 
   #event1, .contact-section, .explore-registro,
-  #next-event, #previous-event{
+  #next-event, #previous-event, .info-event {
     background-attachment: fixed;
   }
 }
