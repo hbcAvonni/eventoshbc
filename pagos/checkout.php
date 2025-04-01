@@ -1,5 +1,5 @@
 <?php
-require_once('../model/constantes.php');
+require_once('../constantes.php');
 require_once('../vendor/autoload.php');
 
 header('Content-Type: application/json');

@@ -1,14 +1,13 @@
 <?php
 switch($_SERVER['HTTP_HOST']){
 	case 'localhost':
-        define('RUTA_PROYECTO', $_SERVER['DOCUMENT_ROOT'].'/OceanBLue/crudosxc.com/');
-        define('REDIRECT_ROUTE', 'http://localhost/OceanBLue/crudosxc.com/');
-        //error_reporting (E_ALL ^ E_NOTICE ^ E_WARNING);
+        define('RUTA_PROYECTO', $_SERVER['DOCUMENT_ROOT'].'/AVONNI/productiontaiko.com/');
+        define('REDIRECT_ROUTE', 'http://localhost/AVONNI/productiontaiko.com/');
         break;
 
-        case 'crudosxc.com';
-        define('RUTA_PROYECTO', '/var/www/vhosts/crudosxc.com/httpdocs/');
-        define('REDIRECT_ROUTE', 'https://crudosxc.com/');
+        case 'sbksocialclub.com';
+        define('RUTA_PROYECTO', $_SERVER['DOCUMENT_ROOT'].'/');
+        define('REDIRECT_ROUTE', 'https://sbksocialclub.com/');
         error_reporting (E_ALL ^ E_NOTICE ^ E_WARNING);
         break;
 }
