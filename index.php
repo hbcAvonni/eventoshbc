@@ -2,132 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ✅ SEO META TAGS -->
-    <title>SBK Social - Conéctate y Comparte</title>
-    <meta name="description" content="SBK Social es la mejor plataforma para conectar, compartir y explorar contenido único. Únete hoy y forma parte de nuestra comunidad.">
-    <meta name="keywords" content="SBK Social, red social, compartir, conectar, comunidad, amigos, contenido, salsa, kisomba, bachata, bailes">
-    <meta name="author" content="Ocean Blue">
-    <meta name="robots" content="index, follow">
-    
-    <!-- ✅ OPEN GRAPH (Para Facebook, LinkedIn) -->
-    <meta property="og:title" content="SBK Social - Conéctate y Comparte">
-    <meta property="og:description" content="La mejor plataforma para conectar con amigos y compartir contenido exclusivo.">
-    <meta property="og:image" content="https://www.sbksocialclub.com/images/logo-sbk.webp">
-    <meta property="og:url" content="https://www.sbksocialclub.com">
-    <meta property="og:type" content="website">
-    
-    <!-- ✅ TWITTER CARD -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="SBK Social - Conéctate y Comparte">
-    <meta name="twitter:description" content="Únete a SBK Social y sé parte de la comunidad más vibrante.">
-    <meta name="twitter:image" content="https://www.sbksocialclub.com/images/logo-sbk.webp">
-    
-    <!-- ✅ FAVICONS -->
-    <link rel="icon" href="images/ico/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/ico/favicon.ico">
-    
-    <!-- ✅ CSS OPTIMIZADO -->
-    <link rel="preload" href="css/bootstrap.min.css" as="style">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/animate.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    
-    <!-- ✅ CARGA CONDICIONAL PARA IE -->
-    <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-        <script src="js/respond.min.js"></script>
-    <![endif]-->
-    
-    <!-- ✅ CARGA ASÍNCRONA DE SCRIPTS -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-XXXXX-Y');
-    </script>
+	<?php include('include/head.php'); ?>
 </head>
 
 <body>
-	<header id="header" role="banner">
-		<div class="main-nav">
-			<div class="container">
-				<div class="header-top">
-					<div class="pull-right social-icons">
-						<a href="#"><i class="fa fa-twitter"></i></a>
-						<a href="#"><i class="fa fa-facebook"></i></a>
-						<a href="#"><i class="fa fa-google-plus"></i></a>
-						<a href="#"><i class="fa fa-youtube"></i></a>
-					</div>
-					<div class="pull-left">
-						<div id="flags">
-							<a href="#" title="العربية" data-lang="ar" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/ar.svg" width="24" height="24" alt="ar">
-							</a>
-							<a href="#" title="简体中文" data-lang="zh-CN" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/zh-CN.svg" width="24" height="24" alt="zh-CN">
-							</a>
-							<a href="#" title="Nederlands" data-lang="nl" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/nl.svg" width="24" height="24" alt="nl">
-							</a>
-							<a href="#" title="English" data-lang="en" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/en-us.svg" width="24" height="24" alt="en">
-							</a>
-							<a href="#" title="Français" data-lang="fr" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/fr.svg" width="24" height="24" alt="fr">
-							</a>
-							<a href="#" title="Deutsch" data-lang="de" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/de.svg" width="24" height="24" alt="de">
-							</a>
-							<a href="#" title="Italiano" data-lang="it" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/it.svg" width="24" height="24" alt="it">
-							</a>
-							<a href="#" title="Português" data-lang="pt" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/pt.svg" width="24" height="24" alt="pt">
-							</a>
-							<a href="#" title="Русский" data-lang="ru" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/ru.svg" width="24" height="24" alt="ru">
-							</a>
-							<a href="#" title="Español" data-lang="es" onclick="changeLanguage(this)">
-								<img loading="lazy" src="images/flags/es.svg" width="24" height="24" alt="es">
-							</a>
-						</div>
-						<div id="google_translate_element"></div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse"
-							data-target=".navbar-collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand" href="index.html">
-		                	<img class="img-responsive" src="images/logo-vertical-rbg.png" alt="logo">
-						</a>
-					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li class="scroll active"><a href="#home">Home</a></li>
-							<li class="scroll"><a href="#services">Servicios SBK</a></li>
-							<li class="scroll"><a href="#explore">próximos Evento</a></li>
-							<!-- <li class="scroll"><a href="kingtribute.html">ROCK'S KING TRIBUTE</a></li> -->
-							<li class="scroll"><a href="sbksocial.html">SBK Social</a></li>
-							<!-- <li><a class="no-scroll" href="#">COMPRAR ENTRADAS</a></li> -->
-							<li class="scroll"><a href="#contact">Contactanos</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
+	<?php include('include/header.php'); ?>
 	<!--/#header-->
 
 	<section id="home">
@@ -144,7 +23,7 @@
 					<div class="carousel-caption">
 						<h2><b>BACHATASIA</b></h2>
 						<h4>06 al 09 de Marzo 2025,<br> Sevilla Sensual Congress<br> Hotel Vértice Aljarafe</h4>
-						<a href="form-info.html??plaza=PLAZA_1">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
+						<a href="form-info.php">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
 					</div>
 				</div>
 				<div class="item">
@@ -152,7 +31,7 @@
 					<div class="carousel-caption">
 						<h2><b>XIV <i>Tumba & Tumbao Beach</i></b></h2>
 						<h4>29, 30, 31 Mayo y 01 de Junio 2025,<br> C/ Diego de Almagro, 1<br> Cartaya | Huelva</h4>
-						<a href="form-info.html??plaza=PLAZA_1">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
+						<a href="form-info.php">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
 					</div>
 				</div>
 				<div class="item">
@@ -160,7 +39,7 @@
 					<div class="carousel-caption">
 						<h2><b>SUMMER FESTIVAL 2025</b></h2>
 						<h4>18 al 20 de Junio 2025,<br> Miguel & Sandra<br> EXE GRAN HOTEL SÓLUCAR</h4>
-						<a href="form-info.html??plaza=PLAZA_3">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
+						<a href="form-info.php">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
 					</div>
 				</div>
 				<div class="item">
@@ -168,7 +47,7 @@
 					<div class="carousel-caption">
 						<h2><b>BACHATA SPAIN</b></h2>
 						<h4>06 - 11 de Mayo 2025,<br> World Congress<br> Huelva</h4>
-						<a href="form-info.html??plaza=PLAZA_3">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
+						<a href="form-info.php">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
 					</div>
 				</div>
 			</div>
@@ -280,7 +159,7 @@
 				</div>
 			</div>
 			<div class="cart">
-				<a href="form-info.html??plaza=PLAZA_1"><i class="fa fa-shopping-cart"></i> <span>Comprar Entradas</span></a>
+				<a href="form-info.php"><i class="fa fa-shopping-cart"></i> <span>Comprar Entradas</span></a>
 			</div>
 		</div>
 	</section>
@@ -347,79 +226,12 @@
 		</div>
 	</section>
 
-	<section id="contact">
-		<div class="contact-section">
-			<div class="ear-piece">
-				<img class="img-responsive" src="images/ear-piece.png" alt="">
-			</div>
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-3 col-sm-offset-4">
-						<div class="contact-text">
-							<h3>Contactanos</h3>
-							<address>
-								E-mail: info@sbksocialclub.com<br>
-								Phone: +34 (613) 68 53 04
-							</address>
-						</div>
-						<div class="contact-address">
-							<h3>Contactanos</h3>
-							<address>
-								Calle virgen del luján, 6.<br>
-								Sevilla, Andalucia,<br>
-								41011, España
-							</address>
-						</div>
-					</div>
-					<div class="col-sm-5">
-						<div id="contact-section">
-							<h3>Enviar Mensaje</h3>
-							<div id="result"></div>
-							<form id="contact-form" class="contact-form" name="contact-form" method="POST" action="https://script.google.com/macros/s/AKfycbzfwiyYx0SIfFQ79vZe0IllqetVb1Tg4sLf2b9x048JPFHlEWqtT9Qpqn4I8s9iTMdm/exec" enctype="multipart/form-data">
-								<div class="form-group">
-									<input type="text" name="name" class="form-control" required="required" placeholder="Nombre">
-								</div>
-								<div class="form-group">
-									<input type="email" name="email" class="form-control" required="required" placeholder="Email">
-								</div>
-								<div class="form-group">
-									<textarea name="message" id="message" required="required" class="form-control" rows="4" placeholder="Ingresa tu mensaje"></textarea>
-								</div>
-								<div class="form-group">
-									<button type="submit" class="btn btn-primary pull-right">Enviar</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+	<?php include('include/contact.php'); ?>
 	<!--/#contact-->
-
-	<footer id="footer">
-		<div class="container">
-			<div class="text-center">
-				<p> Copyright &copy;2025<a target="_blank" href="#"> SBK Social Club</a>. All Rights Reserved. <br> Designed by <a target="_blank" href="https://developers.oceanblue.es/">Ocean Blue Developers</a></p>
-			</div>
-		</div>
-	</footer>
+	<?php include('include/footer.php'); ?>
 	<!--/#footer-->
 	<!-- jQuery -->
-	<script type="text/javascript" src="js/jquery.js"></script>
-
-	<!-- Plugins -->
-	<script type="text/javascript" src="js/jquery.nav.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/smoothscroll.js"></script>
-	<script type="text/javascript" src="js/jquery.parallax.js"></script>
-	<script type="text/javascript" src="js/coundown-timer.js"></script>
-	<script type="text/javascript" src="js/jquery.scrollTo.js"></script>
-
-	<!-- script personalizado -->
-	<script type="text/javascript" src="js/main.js"></script>
-
-	<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+	<?php include('include/scripts.php'); ?>
 </body>
 
 </html>
