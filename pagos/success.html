@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>¡Gracias por tu compra!</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Al cargar la página, vaciar el carrito del localStorage
+    window.onload = function() {
+      localStorage.removeItem('carrito');
+    };
+  </script>
+</head>
+<body>
+  <section>
+    <p>
+      ¡Gracias por tu pedido!<br>
+      Tu compra se ha completado exitosamente. En breve recibirás un correo con los detalles.<br>
+      Si tienes dudas, puedes escribirnos a <a href="mailto:contacto@crudo.com">contacto@crudo.com</a>
+    </p>
+    <button onclick="window.location.href='../shop.php'">Volver a la tienda</button>
+  </section>
+</body>
+</html>
