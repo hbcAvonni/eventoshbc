@@ -3,6 +3,7 @@
 :root {
   --primary-color: #16728fb0;
   --primary-color-oscuro: #0d617a;
+  --primary-color-trasparente: #16728f61;
   --secondary-color: #f7ab24;
   --text-color: #000;
   --text-color-secundary: #fff;
@@ -113,7 +114,6 @@ h2 {
 }
 
 .navbar-right li a {
-  padding: 35px 21px;
   font-size: 30px;
   color: #fff;
   text-transform: uppercase;
@@ -122,12 +122,14 @@ h2 {
 }
 
 .navbar-right li a:hover, 
-.navbar-right li a:focus,  
+.navbar-right li a:focus {
+  border-bottom: 5px solid var(--primary-color-oscuro);
+}
+
 .navbar-right .active a {
   color: var(--primary-color-oscuro);
   border-bottom: 2px solid var(--primary-color-oscuro);
 }
-
 
 .fixed-menu {
   position: fixed;
@@ -177,6 +179,40 @@ h2 {
   width: 100%
 }
 
+.carousel-caption {
+  background: none;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  text-align: center;
+  width: 100%;
+}
+
+.sbk-text {
+  font-family: "Anton", Sans-serif;
+  font-size: 290px;
+  font-weight: 900;
+  text-shadow: 0px 0px 20px #00000094;
+  mix-blend-mode: overlay;
+  color: var(--primary-color-trasparente);
+}
+
+#main-slider .item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Ajusta el nivel de oscuridad */
+  z-index: 1;
+}
+
+#main-slider .item img {
+  position: relative;
+  z-index: 0;
+}
+/* 
 #main-slider 
 .carousel-caption {
   background: none repeat scroll 0 0 #000000;
@@ -227,7 +263,7 @@ h2 {
   -ms-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
-}
+} */
 
 #main-slider 
 .carousel-indicators li {

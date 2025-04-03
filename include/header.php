@@ -60,7 +60,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="scroll"><a href="index.php">Inicio</a></li>
-                        <li class="scroll"><a href="roster.php">Roster</a></li>
+                        <!-- <li class="scroll"><a href="roster.php">Roster</a></li> -->
                         <li class="scroll"><a href="marcas.php">Marcas</a></li>
                         <li class="scroll"><a href="espacios.php">Espacios</a></li>
                         <li class="scroll"><a href="servicios.php">Servicios</a></li>

@@ -116,28 +116,28 @@ jQuery(function($) {'use strict',
 				}, 900);
 	
 				// Elimina la clase "active" de todos los elementos y la añade al clicado
-				$('.scroll').removeClass('active');
-				$(this).parent().addClass('active');
+				// $('.scroll').removeClass('active');
+				// $(this).parent().addClass('active');
 			}
 		});
 	
 		// Detectar el scroll y actualizar la clase "active" en el menú
-		$(window).on('scroll', function () {
-			var scrollPos = $(window).scrollTop();
+		// $(window).on('scroll', function () {
+		// 	var scrollPos = $(window).scrollTop();
 	
-			$('.scroll a').each(function () {
-				var target = $(this).attr('href');
-				if ($(target).length) {
-					var sectionTop = $(target).offset().top - 50; // Ajuste para detectar correctamente
-					var sectionBottom = sectionTop + $(target).outerHeight();
+		// 	$('.scroll a').each(function () {
+		// 		var target = $(this).attr('href');
+		// 		if ($(target).length) {
+		// 			var sectionTop = $(target).offset().top - 50; // Ajuste para detectar correctamente
+		// 			var sectionBottom = sectionTop + $(target).outerHeight();
 	
-					if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
-						$('.scroll').removeClass('active');
-						$(this).parent().addClass('active');
-					}
-				}
-			});
-		});
+		// 			if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+		// 				$('.scroll').removeClass('active');
+		// 				$(this).parent().addClass('active');
+		// 			}
+		// 		}
+		// 	});
+		// });
 	});
 
 });

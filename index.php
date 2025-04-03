@@ -13,41 +13,12 @@
 		<div id="main-slider" class="carousel slide" data-ride="carousel">
 			<ol class="carousel-indicators">
 				<li data-target="#main-slider" data-slide-to="0" class="active"></li>
-				<li data-target="#main-slider" data-slide-to="1"></li>
-				<li data-target="#main-slider" data-slide-to="2"></li>
-				<li data-target="#main-slider" data-slide-to="3"></li>
 			</ol>
 			<div class="carousel-inner carousel-inner2">
 				<div class="item active">
-					<img class="img-responsive" src="images/Poster-Flyers/IMG-20250219-WA0004.jpg" alt="slider">
+					<img class="img-responsive" src="images/fondo.png" alt="slider">
 					<div class="carousel-caption">
-						<h2><b>BACHATASIA</b></h2>
-						<h4>06 al 09 de Marzo 2025,<br> Sevilla Sensual Congress<br> Hotel Vértice Aljarafe</h4>
-						<a href="form-info.php">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
-					</div>
-				</div>
-				<div class="item">
-					<img class="img-responsive" src="images/Poster-Flyers/IMG-20250219-WA0008.jpg" alt="slider">
-					<div class="carousel-caption">
-						<h2><b>XIV <i>Tumba & Tumbao Beach</i></b></h2>
-						<h4>29, 30, 31 Mayo y 01 de Junio 2025,<br> C/ Diego de Almagro, 1<br> Cartaya | Huelva</h4>
-						<a href="form-info.php">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
-					</div>
-				</div>
-				<div class="item">
-					<img class="img-responsive" src="images/Poster-Flyers/IMG-20250219-WA0010.jpg" alt="slider">
-					<div class="carousel-caption">
-						<h2><b>SUMMER FESTIVAL 2025</b></h2>
-						<h4>18 al 20 de Junio 2025,<br> Miguel & Sandra<br> EXE GRAN HOTEL SÓLUCAR</h4>
-						<a href="form-info.php">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
-					</div>
-				</div>
-				<div class="item">
-					<img class="img-responsive" src="images/Poster-Flyers/IMG-20250219-WA0007.jpg" alt="slider">
-					<div class="carousel-caption">
-						<h2><b>BACHATA SPAIN</b></h2>
-						<h4>06 - 11 de Mayo 2025,<br> World Congress<br> Huelva</h4>
-						<a href="form-info.php">COMPRA TUS ENTRADAS <i class="fa fa-angle-right"></i></a>
+						<h2 class="sbk-text">SBK Social</h2>
 					</div>
 				</div>
 			</div>
