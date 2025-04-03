@@ -31,7 +31,7 @@ jQuery(function($) {'use strict',
 		}
 	}
 
-	menuToggle();
+	// menuToggle();
 	
 	
 	// Carousel Auto Slide Off

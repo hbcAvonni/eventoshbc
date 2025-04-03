@@ -1,5 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=Dosis:400,200,300,500,600,700,800);
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300,200,700);
+:root {
+  --primary-color: #16728fb0;
+  --primary-color-oscuro: #0d617a;
+  --secondary-color: #f7ab24;
+  --text-color: #000;
+  --text-color-secundary: #fff;
+}
 
 /*************************
 *******Typography******
@@ -8,7 +15,7 @@
 body {
   font-family: 'Dosis', sans-serif;
   font-size: 17px;
-  color: #fff
+  color: var(--text-color);
 }
 
 
@@ -84,24 +91,11 @@ h2 {
   padding-left:20px;  
 }
 
-.social-icons .fa-facebook:hover {
-  color: #3B5997
-}
-
-.social-icons .fa-twitter:hover {
-  color:#29C5F6
-}
-
-.social-icons .fa-google-plus:hover {
-  color:#D13D2F
-}
-
-.social-icons .fa-youtube:hover{
-  color: #ec5538
+.social-icons .fa:hover {
+  color: var(--primary-color-oscuro);
 }
 
 .navbar-brand {
-  background-color: #1B7B98;
   height: 90px;
   margin-bottom: 20px;
   position: relative;
@@ -114,30 +108,28 @@ h2 {
 }
 
 .navbar-right {
-  background-color: #1B7B98;
   padding:0 95px 0 0;
   opacity: .9
 }
 
 .navbar-right li a {
   padding: 35px 21px;
-  font-size: 22px;
+  font-size: 30px;
   color: #fff;
   text-transform: uppercase;
   font-family: 'Yanone Kaffeesatz', 'sans-serif';
-  font-weight: 300;
+  font-weight: 800;
 }
 
 .navbar-right li a:hover, 
 .navbar-right li a:focus,  
 .navbar-right .active a {
-  background-color: #fff;
-  color: #16728f
+  color: var(--primary-color-oscuro);
+  border-bottom: 2px solid var(--primary-color-oscuro);
 }
 
 
 .fixed-menu {
-  background-color: #1B7B98;
   position: fixed;
   top: 0;
 }
@@ -253,27 +245,6 @@ h2 {
 *******Explore CSS******
 **************************/
 
-#explore, 
-#next-event, 
-#previous-event,
-.info-event {
-  background-color: #000000;
-  background-position: center center;
-  background-repeat:no-repeat;
-  background-size: cover;
-}
-
-.explore-tribute {
-  background-image: url("../images/event-bg.jpg");
-}
-
-.explore-sbk,
-#next-event, 
-#previous-event,
-.info-event {
-  background-image: url("../images/logo-sbk.webp");
-}
-
 #explore {
   position: relative;
   overflow: hidden;
@@ -289,7 +260,6 @@ h2 {
 #explore h2 {
   font-size: 42px;
   font-weight: 900;
-  color: white;
   text-transform: uppercase;
   text-align: center;
 }
@@ -407,18 +377,17 @@ h2 {
 *******services CSS******
 **************************/
 
-#services {
+#services, .info-event {
   display: block;
-  background-color: #000000;
   justify-content: center;
   align-items: center;
   padding: 2% 5%;
-  position: relative; /* Mantener para el efecto de humo */
-  overflow: hidden; /* Asegura que el humo no se salga del contenedor */
-  background-color: #111; /* Un negro menos puro para contrastar con el humo */
+  position: relative;
+  /* overflow: hidden; */
+  background-color: var(--primary-color); /* Un negro menos puro para contrastar con el humo */
 }
 
-/* Fondo de humo */
+/* Fondo de humo
 #services::before,
 #services::after {
   content: "";
@@ -427,17 +396,17 @@ h2 {
   left: -30%;
   width: 160%;
   height: 160%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(0, 0, 0, 0) 80%);
-  opacity: 0.6; /* Aumentamos la opacidad */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(0, 45, 247, 0) 80%);
+  opacity: 0.6;
   animation: smokeAnimation 8s infinite alternate ease-in-out;
-  pointer-events: none; /* Evita interferencias con el mouse */
-  z-index: 0; /* Mantiene el humo detrás */
-  filter: blur(20px); /* Suaviza el efecto */
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(20px);
 }
 
 #services::after {
   animation: smokeAnimation 12s infinite alternate ease-in-out;
-  opacity: 0.4; /* Otra capa de humo con menor opacidad */
+  opacity: 0.4;
 }
 
 @keyframes smokeAnimation {
@@ -447,7 +416,7 @@ h2 {
   100% {
     transform: translateY(-5%) scale(1.4);
   }
-}
+} */
 
 .title-services h2 {
   margin: 0;
@@ -509,9 +478,8 @@ h2 {
 .card-services-text {
   width: 100%;
   text-align: center;
-  color: white;
+  color: var(--text-color-secundary);
   padding: 10px;
-  margin-bottom: 50px;
   font-size: 25px;
   font-weight: 800;
   font-family: Arial, sans-serif;
@@ -528,7 +496,6 @@ h2 {
   justify-content: center;
   align-items: center;
   padding: 2% 5%;
-  background-color: #000000;
 }
 
 .title-espacios h2 {
@@ -618,7 +585,6 @@ h2 {
 #next-event, 
 #previous-event,
 .info-event {
-  display: block;
   justify-content: center;
   align-items: center;
   padding: 2% 10%;
@@ -638,15 +604,20 @@ h2 {
 }
 
 #next-event .container-next-event, 
-#previous-event .container-previous-event {
+#previous-event .container-previous-event, 
+.info-event .container-info-event {
   display: flex;
+}
+
+#next-event .container-next-event, 
+#previous-event .container-previous-event {
   width: 100%;
   height: 435px;
   gap: 2%;
 }
 
 .explore-sbk, .next-event-publicos, .next-event-privados, .next-event-cubiertos, .next-event-libres, 
-.previous-event-publicos, .previous-event-privados, .previous-event-cubiertos, .previous-event-libres, .info-event {
+.previous-event-publicos, .previous-event-privados, .previous-event-cubiertos, .previous-event-libres {
   flex: 1;
   height: 100%;
   border: 1px solid #f5f5f5;
@@ -654,8 +625,7 @@ h2 {
   position: relative; /* Necesario para posicionar el texto */
   display: flex;
   align-items: flex-end; /* Asegura que el texto quede abajo */
-  background-position: center center;
-  background-size: cover;
+  background-color: var(--primary-color);
   overflow: hidden;
 }
 
@@ -668,7 +638,8 @@ h2 {
 .previous-event-privados::before, 
 .previous-event-cubiertos::before, 
 .previous-event-libres::before,
-.info-event::before {
+.info-event::before,
+#services::before {
   content: "";
   position: absolute;
   top: 0;
@@ -707,6 +678,13 @@ h2 {
   z-index: 1; /* Asegura que el texto esté encima de la imagen */
 }
 
+/* Estilos para el texto dentro de cada tarjeta */
+.card-next-event-text, 
+.card-previous-event-text,
+.card-espacios-text {
+  color: var(--text-color-secundary);
+}
+
 .next-event-publicos {
   background-image: url('../images/Poster-Flyers/IMG-20250219-WA0004.jpg');
 }
@@ -742,16 +720,6 @@ h2 {
 /*************************
 *******Event CSS******
 **************************/
-
-#event {
-  background-image: url("../images/performar-bg.jpg");
-  background-size: contain;
-}
-
-#event1 {
-  background-image: url("../images/event-bg.jpg");
-  background-size: auto;
-}
 
 #event, #event1 {
   background-color: #33888F;
@@ -820,16 +788,6 @@ h2 {
 /*************************
 *******About CSS**********
 **************************/
-
-#about {
-  background-image: url("../images/about-bg.jpg");
-  background-size: auto;
-}
-
-#about1 {
-  background-image: url("../images/slider/bg5.jpg");
-  background-size: cover;
-}
 
 #about-sbk {
   background: #BA8B02;  /* fallback for old browsers */
@@ -1025,11 +983,6 @@ h2 {
 ******Contact CSS****
 **************************/
 
-.contact-section {
-  background-image: url("../images/contact-bg.jpg");
-  color: #FFFFFF !important;
-}
-
 .contact-registro {
   padding-top: 10%;
 }
@@ -1039,7 +992,6 @@ h2 {
 }
 
 .contact-section, .explore-registro {
-  background-color: #f7ab24 !important;
   background-position:center bottom !important;
   background-size:auto !important;
   background-repeat:no-repeat !important; 
@@ -1082,7 +1034,6 @@ h2 {
 
 #contact h3 {
   text-transform:inherit;
-  color: #FFFFFF;
   font-weight: bold;
 }
 
@@ -1091,8 +1042,7 @@ h2 {
 }
 
 #contact address {
-  font-size: 18px;  
-  color: #FFFFFF;
+  font-size: 18px; 
   font-weight: bold; 
 }
 
@@ -1126,12 +1076,13 @@ h2 {
 
 #contact-section .btn-primary {
   background-color: #FFFFFF;
-  color: #f7ab24;
+  color: var(--secondary-color);
   border: none;
   font-size: 24px;
   padding: 6px 42px;
   margin-bottom: 110px;
-  margin-top: 10px
+  margin-top: 10px;
+  border: 2px solid var(--secondary-color);
 }
 
 #contact-section .btn-primary:hover {
@@ -1157,7 +1108,7 @@ h2 {
 }
 
 #footer a {
-  color:#f7ab24
+  color: var(--secondary-color);
 }
 
 #footer a:hover {

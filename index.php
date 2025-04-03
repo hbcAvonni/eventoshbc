@@ -215,14 +215,18 @@
 	<!--/#explore1-->
 
 	<section class="info-event">
-		<h3>CONFIAN EN NOSOTROS</h3>
 		<div class="title-info-event">
-			<img src="images/sponsor/fibroaljarafe-rbg.png" alt="Fibroaljarafe">
-			<h2>Fibroaljarafe</h2>
+			<h2>CONFÍAN EN NOSOTROS</h2>
 		</div>
-		<div class="title-info-event">
-			<img src="images/sponsor/albatros.png" alt="Albatros">
-			<h2>Albatros</h2>
+		<div class="container-info-event">
+			<div class="title-info-event">
+				<img src="images/sponsor/fibroaljarafe-rbg.png" alt="Fibroaljarafe">
+				<h2>Fibroaljarafe</h2>
+			</div>
+			<div class="title-info-event">
+				<img src="images/sponsor/albatros.png" alt="Albatros">
+				<h2>Albatros</h2>
+			</div>
 		</div>
 	</section>
 

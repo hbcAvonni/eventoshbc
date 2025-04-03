@@ -59,11 +59,11 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="scroll"><a href="#services">Servicios SBK</a></li>
-                        <li class="scroll"><a href="#explore">próximos Evento</a></li>
-                        <!-- <li class="scroll"><a href="kingtribute.php">ROCK'S KING TRIBUTE</a></li> -->
-                        <li class="scroll"><a href="sbksocial.php">SBK Social</a></li>
-                        <!-- <li><a class="no-scroll" href="#">COMPRAR ENTRADAS</a></li> -->
+                        <li class="scroll"><a href="index.php">Inicio</a></li>
+                        <li class="scroll"><a href="roster.php">Roster</a></li>
+                        <li class="scroll"><a href="marcas.php">Marcas</a></li>
+                        <li class="scroll"><a href="espacios.php">Espacios</a></li>
+                        <li class="scroll"><a href="servicios.php">Servicios</a></li>
                         <li class="scroll"><a href="#contact">Contactanos</a></li>
                     </ul>
                 </div>
