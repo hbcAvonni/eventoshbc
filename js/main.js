@@ -1,19 +1,17 @@
 jQuery(function($) {'use strict',
 	
 	//Countdown js
-	 $("#countdown").countdown({
-			date: "11 October 2025 23:59:59",
-			format: "on"
-		},
-		
-		function() {
-			// callback function
-		});
+	 $("#countdown-tribute").countdown({
+		date: "11 October 2025 23:59:59",
+		format: "on"
+	});
 	
+	$("#countdown-sbk").countdown({
+		date: "06 June 2025 13:59:59",
+		format: "on"
+	});
 
-	
 	//Scroll Menu
-
 	function menuToggle()
 	{
 		var windowWidth = $(window).width();
@@ -33,7 +31,7 @@ jQuery(function($) {'use strict',
 		}
 	}
 
-	menuToggle();
+	// menuToggle();
 	
 	
 	// Carousel Auto Slide Off
@@ -43,108 +41,164 @@ jQuery(function($) {'use strict',
 
 
 	// Contact form validation
-	var form = $('.contact-form');
-	form.submit(function () {'use strict',
-		$this = $(this);
-		$.post($(this).attr('action'), function(data) {
-			$this.prev().text(data.message).fadeIn().delay(3000).fadeOut();
-		},'json');
-		return false;
-	});
+	const formContact = document.getElementById("main-contact-form");
+	if (formContact) {
+		document.querySelector("#main-contact-form").addEventListener("submit", async function (event) {
+			event.preventDefault(); // Evita el envío tradicional del formulario
+		
+			let img = document.getElementById("imgUsuario");
+			let formData = new FormData(this); // Captura los datos del formulario
+			let fileInput = this.querySelector("input[name='foto']"); // Selecciona el input de la imagen
+			let file = fileInput.files[0]; // Obtiene el archivo seleccionado
+		
+			if (file) {
+				let reader = new FileReader();
+				reader.readAsDataURL(file); // Convierte la imagen a base64
+				reader.onload = async function () {
+					let base64Image = reader.result.split(",")[1]; // Extrae solo la parte de datos base64
+					formData.append("fotoBase64", base64Image); // Agrega la imagen al formulario
+		
+					let response = await fetch(event.target.action, {
+						method: "POST",
+						body: formData
+					});
+		
+					let data = await response.text();
+					$("#result").hide().html('<div class="status alert alert-success">' + data + '</div>').slideDown(200);
+					event.target.reset(); // Borra el formulario después de enviarlo
+					img.src= 'https://placehold.co/400x600';
+				};
+			} else {
+				// Si no hay imagen, envía solo los datos del formulario
+				let response = await fetch(event.target.action, {
+					method: "POST",
+					body: formData
+				});
+		
+				let data = await response.text();
+				$("#result").hide().html('<div class="status alert alert-success">' + data + '</div>').slideDown(200);
+				event.target.reset(); // Borra el formulario después de enviarlo
+				img.src= 'https://placehold.co/400x600';
+			}
+		});
+	}
+
+	// Contact form validation
+	const formCompraEntradas = document.getElementById("contact-form");
+	if (formCompraEntradas) {
+		document.querySelector("#contact-form").addEventListener("submit", async function (event) {
+			event.preventDefault(); // Evita el envío tradicional del formulario
+
+			let formData = new FormData(this); // Captura los datos del formulario
+		
+			// Si no hay imagen, envía solo los datos del formulario
+			let response = await fetch(event.target.action, {
+				method: "POST",
+				body: formData
+			});
+
+			let data = await response.text();
+			$("#result").hide().html('<div class="status alert alert-success">' + data + '</div>').slideDown(200);
+			event.target.reset(); // Borra el formulario después de enviarlo
+		});
+	}
 
 	$( window ).resize(function() {
 		menuToggle();
 	});
 
-	$('.main-nav ul').onePageNav({
-		currentClass: 'active',
-	    changeHash: false,
-	    scrollSpeed: 900,
-	    scrollOffset: 0,
-	    scrollThreshold: 0.3,
-	    filter: ':not(.no-scroll)'
+	$(document).ready(function () {
+		$('.scroll a').on('click', function (event) {	
+			var target = $(this).attr('href'); // Obtiene el ID del destino
+			if ($(target).length) {
+				$('html, body').animate({
+					scrollTop: $(target).offset().top
+				}, 900);
+	
+				// Elimina la clase "active" de todos los elementos y la añade al clicado
+				$('.scroll').removeClass('active');
+				$(this).parent().addClass('active');
+			}
+		});
+	
+		// Detectar el scroll y actualizar la clase "active" en el menú
+		$(window).on('scroll', function () {
+			var scrollPos = $(window).scrollTop();
+	
+			$('.scroll a').each(function () {
+				var target = $(this).attr('href');
+				if ($(target).length) {
+					var sectionTop = $(target).offset().top - 50; // Ajuste para detectar correctamente
+					var sectionBottom = sectionTop + $(target).outerHeight();
+	
+					if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+						$('.scroll').removeClass('active');
+						$(this).parent().addClass('active');
+					}
+				}
+			});
+		});
 	});
 
 });
 
+function googleTranslateElementInit() {
+	new google.translate.TranslateElement({ pageLanguage: 'es' }, 'google_translate_element');
+}
 
-// Google Map Customization
-// (function(){
+function changeLanguage(item) {
+	var lang = item.getAttribute("data-lang");
+	var select = document.querySelector(".goog-te-combo");
+	if (select) {
+		select.value = lang;
+		select.dispatchEvent(new Event("change"));
+	}
+}
 
-// 	var map;
+function abrirPopPup(event) {
+    var imgSrc = event.currentTarget.getAttribute("data-hover");
 
-// 	map = new GMaps({
-// 		el: '#gmap',
-// 		lat: 37.42037671938043,
-// 		lng: -6.004178902333268,
-// 		scrollwheel:true,
-// 		zoom: 16,
-// 		zoomControl : true,
-// 		panControl : true,
-// 		streetViewControl : true,
-// 		mapTypeControl: true,
-// 		overviewMapControl: true,
-// 		clickable: true
-// 	});
+    var popup = document.getElementById("customPopup");
+    var popupImage = document.getElementById("popupImage");
 
-// 	var image = 'images/map-icon.png';
-// 	map.addMarker({
-// 		lat: 37.42037671938043,
-// 		lng: -6.004178902333268,
-// 		icon: image,
-// 		animation: google.maps.Animation.DROP,
-// 		verticalAlign: 'bottom',
-// 		horizontalAlign: 'center',
-// 		backgroundColor: '#3e8bff',
-// 	});
+    if (!popup) {
+        popup = document.createElement("div");
+        popup.id = "customPopup";
+        popup.className = "popup-container";
 
+        popupImage = document.createElement("img");
+        popupImage.id = "popupImage";
+        popupImage.className = "popup-image";
 
-// 	var styles = [ 
+        var closeButton = document.createElement("span");
+        closeButton.innerHTML = "&times;";
+        closeButton.className = "popup-close";
 
-// 	{
-// 		"featureType": "road",
-// 		"stylers": [
-// 		{ "color": "#b4b4b4" }
-// 		]
-// 	},{
-// 		"featureType": "water",
-// 		"stylers": [
-// 		{ "color": "#d8d8d8" }
-// 		]
-// 	},{
-// 		"featureType": "landscape",
-// 		"stylers": [
-// 		{ "color": "#f1f1f1" }
-// 		]
-// 	},{
-// 		"elementType": "labels.text.fill",
-// 		"stylers": [
-// 		{ "color": "#000000" }
-// 		]
-// 	},{
-// 		"featureType": "poi",
-// 		"stylers": [
-// 		{ "color": "#d9d9d9" }
-// 		]
-// 	},{
-// 		"elementType": "labels.text",
-// 		"stylers": [
-// 		{ "saturation": 1 },
-// 		{ "weight": 0.1 },
-// 		{ "color": "#000000" }
-// 		]
-// 	}
+        closeButton.onclick = function() {
+            popup.style.display = "none";
+        };
 
-// 	];
+        popup.appendChild(closeButton);
+        popup.appendChild(popupImage);
+        document.body.appendChild(popup);
 
-// 	map.addStyle({
-// 		styledMapName:"Styled Map",
-// 		styles: styles,
-// 		mapTypeId: "map_style"  
-// 	});
+        // **Evento para cerrar el popup al hacer clic fuera de la imagen**
+        popup.addEventListener("click", function(e) {
+            if (e.target === popup) {
+                popup.style.display = "none";
+            }
+        });
+    }
 
-// 	map.setStyle("map_style");
-// }());
+    popupImage.src = imgSrc;
+    popup.style.display = "flex";
+}
 
-
-
+function validateEmail() {
+	$email = $("#email").val();
+	if ($email == "") {
+		return false;
+	}
+	var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+	return emailReg.test($email);
+}

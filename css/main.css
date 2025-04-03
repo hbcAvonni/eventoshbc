@@ -1,6 +1,12 @@
-@import url(http://fonts.googleapis.com/css?family=Dosis:400,200,300,500,600,700,800);
-@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300,200,700);
-
+@import url(https://fonts.googleapis.com/css?family=Dosis:400,200,300,500,600,700,800);
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300,200,700);
+:root {
+  --primary-color: #16728fb0;
+  --primary-color-oscuro: #0d617a;
+  --secondary-color: #f7ab24;
+  --text-color: #000;
+  --text-color-secundary: #fff;
+}
 
 /*************************
 *******Typography******
@@ -9,7 +15,7 @@
 body {
   font-family: 'Dosis', sans-serif;
   font-size: 17px;
-  color: #fff
+  color: var(--text-color);
 }
 
 
@@ -85,24 +91,11 @@ h2 {
   padding-left:20px;  
 }
 
-.social-icons .fa-facebook:hover {
-  color: #3B5997
-}
-
-.social-icons .fa-twitter:hover {
-  color:#29C5F6
-}
-
-.social-icons .fa-google-plus:hover {
-  color:#D13D2F
-}
-
-.social-icons .fa-youtube:hover{
-  color: #ec5538
+.social-icons .fa:hover {
+  color: var(--primary-color-oscuro);
 }
 
 .navbar-brand {
-  background-color: #1B7B98;
   height: 90px;
   margin-bottom: 20px;
   position: relative;
@@ -111,34 +104,32 @@ h2 {
 
 .navbar-brand img {
   position: absolute;
-  top: -35px;
+  width: 100%;
 }
 
 .navbar-right {
-  background-color: #1B7B98;
   padding:0 95px 0 0;
   opacity: .9
 }
 
 .navbar-right li a {
   padding: 35px 21px;
-  font-size: 22px;
+  font-size: 30px;
   color: #fff;
   text-transform: uppercase;
   font-family: 'Yanone Kaffeesatz', 'sans-serif';
-  font-weight: 300;
+  font-weight: 800;
 }
 
 .navbar-right li a:hover, 
 .navbar-right li a:focus,  
 .navbar-right .active a {
-  background-color: #fff;
-  color: #16728f
+  color: var(--primary-color-oscuro);
+  border-bottom: 2px solid var(--primary-color-oscuro);
 }
 
 
 .fixed-menu {
-  background-color: #1B7B98;
   position: fixed;
   top: 0;
 }
@@ -255,11 +246,6 @@ h2 {
 **************************/
 
 #explore {
-  background-color: #C34C39;
-  background-image: url("../images/event-bg.jpg");
-  background-position: center center;
-  background-size: auto;
-  background-repeat:no-repeat;
   position: relative;
   overflow: hidden;
   padding: 130px 0 100px;
@@ -273,18 +259,19 @@ h2 {
 
 #explore h2 {
   font-size: 42px;
+  font-weight: 900;
   text-transform: uppercase;
   text-align: center;
 }
 
-#countdown {
+.countdown {
   display: block;
   overflow: hidden;
   text-align: center;
   padding: 0
 }
 
-#countdown li {
+.countdown li {
   list-style: none;
   display:inline-block;
   margin-right: 40px;
@@ -294,11 +281,11 @@ h2 {
   position: relative;
 }
 
-#countdown li:last-child {
+.countdown li:last-child {
   margin-right: 0
 }
 
-#countdown li span {
+.countdown li span {
   display: block;
   font-size: 40px;
   font-weight: 700;
@@ -310,31 +297,31 @@ h2 {
   border-bottom: 1px solid #9e3e2e;
 }
 
-#countdown li .days {
+.countdown li .days {
   background-color: #45b29d;
   border-top: 1px solid #6ac1b1;
   border-left: 1px solid #6ac1b1;
 }
 
-#countdown li .hours {
+.countdown li .hours {
   background-color: #efc94c; 
   border-top: 1px solid #f2d470;
   border-left: 1px solid #f2d470;
 }
 
-#countdown li .minutes {
+.countdown li .minutes {
   background-color: #e27a3f;
   border-top: 1px solid #e89565;
   border-left: 1px solid #e89565;
 }
 
-#countdown li .seconds {
+.countdown li .seconds {
   background-color: #df5a49;
   border-top: 1px solid #e57b6d;
   border-left: 1px solid #e57b6d;
 }
 
-#countdown li:before {
+.countdown li:before {
   background-color: #FFFFFF;
   content: "";
   height: 11px;
@@ -344,7 +331,7 @@ h2 {
   width: 1px;
 }
 
-#countdown li:after {
+.countdown li:after {
   background-color: #FFFFFF;
   content: "";
   height: 11px;
@@ -386,16 +373,357 @@ h2 {
   margin-right: 3px;
 }
 
- 
+/*************************
+*******services CSS******
+**************************/
 
- /*************************
+#services, .info-event {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  padding: 2% 5%;
+  position: relative;
+  /* overflow: hidden; */
+  background-color: var(--primary-color); /* Un negro menos puro para contrastar con el humo */
+}
+
+/* Fondo de humo
+#services::before,
+#services::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(0, 45, 247, 0) 80%);
+  opacity: 0.6;
+  animation: smokeAnimation 8s infinite alternate ease-in-out;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(20px);
+}
+
+#services::after {
+  animation: smokeAnimation 12s infinite alternate ease-in-out;
+  opacity: 0.4;
+}
+
+@keyframes smokeAnimation {
+  0% {
+    transform: translateY(5%) scale(1.2);
+  }
+  100% {
+    transform: translateY(-5%) scale(1.4);
+  }
+} */
+
+.title-services h2 {
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#services .container-services {
+  display: flex;
+  width: 100%;
+  height: 435px;
+  position: relative; /* Mantener para el efecto de humo */
+}
+
+.card-services {
+  flex: 1;
+  width: 20%;
+  height: 100%;
+  background-size: 500% 100%;
+  background-position: center;
+  transition: background-image 0.5s ease-in-out;
+  border: 1px solid #f5f5f5;
+  cursor: pointer;
+  position: relative; /* Para asegurarse de que el texto quede dentro */
+  display: flex;
+  align-items: flex-end;
+  z-index: 1; /* Asegura que las tarjetas queden sobre el humo */
+}
+
+/* Define las posiciones de recorte para cada tarjeta */
+.card-services:nth-child(1) { background-position: 0% 0; }
+.card-services:nth-child(2) { background-position: 25% 0; }
+.card-services:nth-child(3) { background-position: 50% 0; }
+.card-services:nth-child(4) { background-position: 75% 0; }
+.card-services:nth-child(5) { background-position: 100% 0; }
+
+.sonido {
+  background-image: url('../images/slider/Sonido-Slider-1024x320.png');
+}
+
+.iluminacion {
+  background-image: url('../images/slider/Iluminacion-slider-1024x320.png');
+}
+
+.escenario {
+  background-image: url('../images/slider/Escenario-slider-1024x320.png');
+}
+
+.led {
+  background-image: url('../images/slider/LED-slider-1024x320.png');
+}
+
+.otrosSer {
+  background-image: url('../images/slider/Otros-slider-1024x320.png');
+}
+
+/* Estilos para el texto dentro de cada tarjeta */
+.card-services-text {
+  width: 100%;
+  text-align: center;
+  color: var(--text-color-secundary);
+  padding: 10px;
+  font-size: 25px;
+  font-weight: 800;
+  font-family: Arial, sans-serif;
+  position: absolute;
+  bottom: 0;
+}
+
+/*************************
+*******espacios CSS******
+**************************/
+
+#espacios {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  padding: 2% 5%;
+}
+
+.title-espacios h2 {
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#espacios .container-espacios {
+  display: flex;
+  width: 100%;
+  height: 435px;
+  gap: 2%;
+}
+
+.espacios-publicos, .espacios-privados, .espacios-cubiertos, .espacios-libres {
+  flex: 1;
+  height: 100%;
+  border: 1px solid #f5f5f5;
+  cursor: pointer;
+  position: relative; /* Necesario para posicionar el texto */
+  display: flex;
+  align-items: flex-end; /* Asegura que el texto quede abajo */
+  background-position: center center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.espacios-publicos {
+  background-image: url('../images/FUENLABRADA-scaled-1.jpg');
+}
+
+.espacios-privados {
+  background-image: url('../images/Brutal-Show-10.jpg');
+}
+
+.espacios-cubiertos {
+  background-image: url('../images/Las-ventas-Madrid.jpg');
+}
+
+.espacios-libres {
+  background-image: url('../images/l_pandora_sala.jpg');
+}
+
+.espacios-publicos::before, 
+.espacios-privados::before, 
+.espacios-cubiertos::before, 
+.espacios-libres::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(50%); /* Oscurece la imagen en lugar de usar opacity */
+  transition: filter 0.3s ease-in-out;
+}
+
+.espacios-publicos:hover::before, 
+.espacios-privados:hover::before, 
+.espacios-cubiertos:hover::before, 
+.espacios-libres:hover::before {
+  filter: brightness(100%); /* Al pasar el mouse, la imagen recupera su brillo */
+}
+
+/* Estilos para el texto dentro de cada tarjeta */
+.card-espacios-text {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 50px;
+  font-size: 25px;
+  font-weight: 800;
+  font-family: Arial, sans-serif;
+  position: relative; /* Ya no es absolute, para que no se vea afectado */
+  z-index: 1; /* Asegura que el texto esté encima de la imagen */
+}
+
+/*************************
+*******next-event & previous-event CSS******
+**************************/
+
+#next-event, 
+#previous-event,
+.info-event {
+  justify-content: center;
+  align-items: center;
+  padding: 2% 10%;
+}
+
+.title-next-event h2, 
+.title-previous-event h2, 
+.title-info-event h2 {
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.title-info-event img {
+  width: 20%;
+}
+
+#next-event .container-next-event, 
+#previous-event .container-previous-event, 
+.info-event .container-info-event {
+  display: flex;
+}
+
+#next-event .container-next-event, 
+#previous-event .container-previous-event {
+  width: 100%;
+  height: 435px;
+  gap: 2%;
+}
+
+.explore-sbk, .next-event-publicos, .next-event-privados, .next-event-cubiertos, .next-event-libres, 
+.previous-event-publicos, .previous-event-privados, .previous-event-cubiertos, .previous-event-libres {
+  flex: 1;
+  height: 100%;
+  border: 1px solid #f5f5f5;
+  cursor: pointer;
+  position: relative; /* Necesario para posicionar el texto */
+  display: flex;
+  align-items: flex-end; /* Asegura que el texto quede abajo */
+  background-color: var(--primary-color);
+  overflow: hidden;
+}
+
+.explore-sbk::before,
+.next-event-publicos::before, 
+.next-event-privados::before, 
+.next-event-cubiertos::before, 
+.next-event-libres::before,
+.previous-event-publicos::before, 
+.previous-event-privados::before, 
+.previous-event-cubiertos::before, 
+.previous-event-libres::before,
+.info-event::before,
+#services::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(50%); /* Oscurece la imagen en lugar de usar opacity */
+  transition: filter 0.3s ease-in-out;
+}
+
+.next-event-publicos:hover::before, 
+.next-event-privados:hover::before, 
+.next-event-cubiertos:hover::before, 
+.next-event-libres:hover::before, 
+.previous-event-publicos:hover::before, 
+.previous-event-privados:hover::before, 
+.previous-event-cubiertos:hover::before, 
+.previous-event-libres:hover::before {
+  filter: brightness(100%); /* Al pasar el mouse, la imagen recupera su brillo */
+}
+
+/* Estilos para el texto dentro de cada tarjeta */
+.card-next-event-text, 
+.card-previous-event-text,
+.title-info-event {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  font-size: 25px;
+  font-weight: 800;
+  font-family: Arial, sans-serif;
+  position: relative; /* Ya no es absolute, para que no se vea afectado */
+  z-index: 1; /* Asegura que el texto esté encima de la imagen */
+}
+
+/* Estilos para el texto dentro de cada tarjeta */
+.card-next-event-text, 
+.card-previous-event-text,
+.card-espacios-text {
+  color: var(--text-color-secundary);
+}
+
+.next-event-publicos {
+  background-image: url('../images/Poster-Flyers/IMG-20250219-WA0004.jpg');
+}
+
+.next-event-privados {
+  background-image: url('../images/Poster-Flyers/IMG-20250219-WA0007.jpg');
+}
+
+.next-event-cubiertos {
+  background-image: url('../images/Poster-Flyers/IMG-20250219-WA0008.jpg');
+}
+
+.next-event-libres {
+  background-image: url('../images/Poster-Flyers/IMG-20250219-WA0010.jpg');
+}
+
+.previous-event-publicos {
+  background-image: url('../images/Poster-Flyers/IMG-20250219-WA0001.jpg');
+}
+
+.previous-event-privados {
+  background-image: url('../images/Poster-Flyers/IMG-20250219-WA0002.jpg');
+}
+
+.previous-event-cubiertos {
+  background-image: url('../images/Poster-Flyers/IMG-20250219-WA0003.jpg');
+}
+
+.previous-event-libres {
+  background-image: url('../images/Poster-Flyers/IMG-20250219-WA0005.jpg');
+}
+
+/*************************
 *******Event CSS******
 **************************/
-#event {
+
+#event, #event1 {
   background-color: #33888F;
-  background-image: url("../images/performar-bg.jpg");
   background-position: 50% 0;
-  background-size: contain;
   position: relative;
   background-repeat: no-repeat;
 }
@@ -407,7 +735,7 @@ h2 {
 }
 
 
-#event h2 {
+#event h2, #event1 h2 {
   color: #FFFFFF;
   font-size: 36px;
   font-weight: 300;
@@ -461,17 +789,13 @@ h2 {
 *******About CSS**********
 **************************/
 
-#about {
-  background-image: url("../images/about-bg.jpg");
-  background-size: auto;
+#about-sbk {
+  background: #BA8B02;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #181818, #BA8B02);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #181818, #BA8B02); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-#about1 {
-  background-image: url("../images/slider/bg5.jpg");
-  background-size: cover;
-}
-
-#about, #about1 {
+#about, #about1, #about-sbk {
   background-position: center top;
   background-repeat:no-repeat;
   position: relative;  
@@ -596,26 +920,11 @@ h2 {
 /*************************
 ******Sponsor CSS****
 **************************/
-@keyframes color{
-  0%,
-  100%{
-    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
-  }
-  25%{
-    background: linear-gradient(to right, #2f2f8b, #3c2de4, #33298a);
-  }
-  50%{
-    background: linear-gradient(to right, #1e683d, #0b7942, #19522f);
-  }
-  75%{
-    background: linear-gradient(to right, #525e31, #54632b, #4c5319);
-  }
-}
 
 #sponsor {
-  animation: color 5s ease-in-out infinite;
-  /* background-color: #1881a2;
-  background-image: url("../images/sponsor-bg.jpg"); */
+  animation: color 10s ease-in-out infinite;
+  background-color: #1881a2;
+  background-image: url("../images/sponsor-bg.jpg");
   background-position:50% 0;
   background-size: cover;
   background-repeat:no-repeat;
@@ -670,31 +979,27 @@ h2 {
   right: 10%
 }
 
-
-/*************************
-******Map CSS****
-**************************/
-/* #map {
-  position: relative;
-}
-
-#gmap {
-  height:450px;  
-} */
-
-
 /*************************
 ******Contact CSS****
 **************************/
 
-.contact-section {
-  background-color: #f7ab24;
+.contact-registro {
+  padding-top: 10%;
+}
+
+.explore-registro {
   background-image: url("../images/contact-bg.jpg");
-  background-position:center bottom;
-  background-size:auto;
-  background-repeat:no-repeat;  
-  position: relative;
-  color: #FFFFFF !important;
+}
+
+.contact-section, .explore-registro {
+  background-position:center bottom !important;
+  background-size:auto !important;
+  background-repeat:no-repeat !important; 
+  position: relative !important;
+}
+
+.registro-contact .contact-section, .explore-registro {
+  background-position:center center !important;
 }
 
 .ear-piece {
@@ -707,9 +1012,28 @@ h2 {
   padding-top:47px;
 }
 
+.container-registro {
+  margin-left: 0;
+}
+
+.img-form {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 4%;
+  display: flex;
+  flex-wrap: wrap;
+  width: 40%;
+  border: 2px solid black;
+  border-radius: 20%;
+  object-fit: cover;
+}
+
+.btnComprar2 {
+  display: none;
+}
+
 #contact h3 {
   text-transform:inherit;
-  color: #FFFFFF;
   font-weight: bold;
 }
 
@@ -718,8 +1042,7 @@ h2 {
 }
 
 #contact address {
-  font-size: 18px;  
-  color: #FFFFFF;
+  font-size: 18px; 
   font-weight: bold; 
 }
 
@@ -753,12 +1076,13 @@ h2 {
 
 #contact-section .btn-primary {
   background-color: #FFFFFF;
-  color: #f7ab24;
+  color: var(--secondary-color);
   border: none;
   font-size: 24px;
   padding: 6px 42px;
   margin-bottom: 110px;
-  margin-top: 10px
+  margin-top: 10px;
+  border: 2px solid var(--secondary-color);
 }
 
 #contact-section .btn-primary:hover {
@@ -784,7 +1108,7 @@ h2 {
 }
 
 #footer a {
-  color:#f7ab24
+  color: var(--secondary-color);
 }
 
 #footer a:hover {
@@ -821,4 +1145,38 @@ body {
 .img-responsive2 {
   width: 100%;
   height: 180px !important;
+}
+
+/* Estilos del popup */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  display: none;
+}
+
+.popup-image {
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: rgba(137, 140, 143, 0.705);
+}
+
+/* Botón de cerrar */
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
 }

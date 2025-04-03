@@ -4353,7 +4353,6 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 .nav>li>a:hover,
 .nav>li>a:focus {
     text-decoration: none;
-    background-color: #eee
 }
 
 .nav>li.disabled>a {
@@ -6718,6 +6717,13 @@ button.close {
     -webkit-transition: .6s ease-in-out left;
     transition: .6s ease-in-out left;
     height: 100%;
+}
+
+.carousel-inner>.itemAbout {
+    background-color: #555353c2;
+    padding: 25px;
+    margin: 25px;
+    border-radius: 12px;
 }
 
 .carousel-inner>.item>img,
