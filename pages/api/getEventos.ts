@@ -15,8 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const ahora = new Date();
 
-  const eventosActivos = (rows as any[]).filter(evento => new Date(evento.endDate) >= ahora);
-  const eventosPasados = (rows as any[]).filter(evento => new Date(evento.endDate) < ahora);
+  const eventosActivos = (rows as Array<{ endDate: string }>).filter(evento => new Date(evento.endDate) >= ahora);
+  const eventosPasados = (rows as Array<{ endDate: string }>).filter(evento => new Date(evento.endDate) < ahora);
 
   console.log("Eventos Activos:", eventosActivos); 
   console.log("Eventos Pasados:", eventosPasados); 
