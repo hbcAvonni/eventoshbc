@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
+import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
 
 const SECRET_KEY = process.env.SECRET_KEY;
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
-export default async function handler(req, res) {
+export default withCors(async function handler(req, res) {
   if (req.method === 'POST') {
     const { username, password } = req.body;
 
@@ -22,4 +23,4 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ message: 'Método no permitido' });
   }
-}
+});

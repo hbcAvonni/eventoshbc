@@ -82,7 +82,7 @@ export default function Formulario() {
     }
 
     try {
-      const res = await fetch("/api/saveFormulario", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/saveFormulario`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

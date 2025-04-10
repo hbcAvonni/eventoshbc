@@ -22,7 +22,7 @@ export default function EventsSection() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("/api/getEventos");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getEventos`);
         if (!res.ok) throw new Error("Error al obtener eventos");
         const data = await res.json();
         setEvents(data.eventosActivos);

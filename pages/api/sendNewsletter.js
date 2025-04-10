@@ -42,7 +42,7 @@ export default async function handler(req, res) {
       });
 
       for (const subscriber of subscribers) {
-        const unsubscribeLink = `http://localhost:3000/api/unsubscribe?email=${encodeURIComponent(subscriber.email)}`;
+        const unsubscribeLink = `${process.env.NEXT_PUBLIC_API_URL}/unsubscribe?email=${encodeURIComponent(subscriber.email)}`;
 
         const mailOptions = {
           from: `"HBC Avonni" <${process.env.EMAIL_USER}>`,

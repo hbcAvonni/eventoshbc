@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import mysql from "mysql2/promise";
+import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default withCors(async function handler(req, res) {
+
+// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
   }
@@ -33,4 +36,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error("Error guardando el formulario:", error);
     return res.status(500).json({ error: "Error interno del servidor" });
   }
-}
+});

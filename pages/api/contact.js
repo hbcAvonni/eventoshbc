@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
+import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
 
-export default async function handler(req, res) {
+export default withCors(async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -52,4 +53,4 @@ export default async function handler(req, res) {
     console.error("Error al enviar el correo:", error);
     return res.status(500).json({ success: false, message: "Error al enviar el correo." });
   }
-}
+});

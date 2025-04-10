@@ -1,5 +1,6 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
+import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
 
 dotenv.config();
 
@@ -11,7 +12,9 @@ const dbConfig = {
   database: process.env.DB_NAME,
 };
 
-export default async function handler(req, res) {
+
+export default withCors(async function handler(req, res) {
+// export default async function handler(req, res) {
   if (req.method === 'GET') {
     const { email } = req.query;
 
@@ -32,4 +35,4 @@ export default async function handler(req, res) {
   } else {
     res.status(405).send("Método no permitido");
   }
-}
+});

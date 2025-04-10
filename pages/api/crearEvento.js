@@ -2,6 +2,7 @@ import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import mysql from 'mysql2/promise';
 import path from 'path';
+import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
 
 export const config = {
   api: {
@@ -9,7 +10,7 @@ export const config = {
   },
 };
 
-export default async function handler(req, res) {
+export default withCors(async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Método no permitido' });
   }
@@ -67,4 +68,4 @@ export default async function handler(req, res) {
       res.status(500).json({ message: 'Error al crear el evento' });
     }
   });
-}
+});

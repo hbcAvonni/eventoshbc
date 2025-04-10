@@ -45,7 +45,7 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchEventos = async () => {
       try {
-        const res = await fetch("/api/getEventos");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getEventos`);
         const data = await res.json();
 
         console.log('Eventos pasados:', data.eventosPasados);

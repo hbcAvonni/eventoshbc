@@ -1,7 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql2/promise';
+import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default withCors(async function handler(req, res) {
+
+// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const db = await mysql.createConnection({
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
@@ -22,4 +25,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log("Eventos Pasados:", eventosPasados); 
 
   res.status(200).json({ eventosActivos, eventosPasados });
-}
+});
