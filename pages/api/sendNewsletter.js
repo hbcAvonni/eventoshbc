@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import mysql from 'mysql2/promise';
+import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
 
 const SECRET_KEY = process.env.SECRET_KEY || 'mi_clave_secreta';
 
@@ -12,7 +13,7 @@ const db = await mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
-export default async function handler(req, res) {
+export default withCors(async function handler(req, res) {
   if (req.method === 'POST') {
     const token = req.headers.authorization?.split(' ')[1];
 
@@ -84,4 +85,4 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ message: 'Método no permitido' });
   }
-}
+});
