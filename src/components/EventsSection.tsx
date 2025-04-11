@@ -70,13 +70,13 @@ export default function EventsSection() {
               </div>
 
               <h3 className="text-white text-lg font-bold mb-1">{event.name}</h3>
-              <p className="text-white mb-2">{parseFloat(event.price).toFixed(2)} €</p>
+              {/* <p className="text-white mb-2">{parseFloat(event.price).toFixed(2)} €</p> */}
 
               <button
                 onClick={() => comprarEvento(event)}
                 className="bg-white hover:bg-gray-100 text-[var(--primary-red)] px-6 py-2 rounded font-bold transition-colors"
               >
-                COMPRAR
+                COMPRAR ENTRADAS
               </button>
             </div>
           ))}

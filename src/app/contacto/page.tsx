@@ -5,6 +5,13 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default function ContactPage() {
+
+  const [formData, setFormData] = useState({
+    nombre: "",
+    email: "",
+    message: "",
+  });
+
   const [status, setStatus] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,8 +29,16 @@ export default function ContactPage() {
   
     if (res.ok) {
       setStatus("Mensaje enviado correctamente. Recibirás respuesta en breve.");
+
       (e.target as HTMLFormElement).reset();
+      setFormData({
+        nombre: "",
+        email: "",
+        message: "",
+      });
     } else {
+      const errorData = await res.json(); // <-- leer el JSON del error
+      console.error("Error al enviar el mensaje:", errorData.message);
       setStatus("Hubo un error al enviar el mensaje. Inténtalo de nuevo.");
     }
   };

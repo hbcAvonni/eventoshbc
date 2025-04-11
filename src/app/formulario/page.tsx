@@ -93,7 +93,15 @@ export default function Formulario() {
       setStatus("Formulario enviado correctamente. Recibirás respuesta en breve.");
       setCooldown(300);  // Activamos el tiempo de espera de 5 minutos (300 segundos)
       setIsSubmitting(false);
+
       (e.target as HTMLFormElement).reset();
+      setFormData({
+        nombre: "",
+        apellidos: "",
+        telefono: "",
+        evento: evento || "",
+        email: "",
+      });
     } catch (error) {
       setStatus("Hubo un error al enviar el formulario. Inténtalo de nuevo.");
       setIsSubmitting(false);

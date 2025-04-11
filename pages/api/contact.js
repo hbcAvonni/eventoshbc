@@ -51,6 +51,6 @@ export default withCors(async function handler(req, res) {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error("Error al enviar el correo:", error);
-    return res.status(500).json({ success: false, message: "Error al enviar el correo." });
+    return res.status(500).json({ success: false, message: error.message || "Error desconocido" });
   }
 });

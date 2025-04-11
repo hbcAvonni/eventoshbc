@@ -45,25 +45,27 @@ export default async function handler(req, res) {
         const unsubscribeLink = `${process.env.NEXT_PUBLIC_API_URL}/unsubscribe?email=${encodeURIComponent(subscriber.email)}`;
 
         const mailOptions = {
-          from: `"HBC Avonni" <${process.env.EMAIL_USER}>`,
+          from: `"SBK Social" <${process.env.EMAIL_USER}>`,
           to: subscriber.email,
           subject: subject,
           text: `${message}\n\nPara darte de baja visita: ${unsubscribeLink}`,
           html: `
-            <p>${message}</p>
+            <div style="font-size: 20px; color: black; text-align: center;">
+              <p>${message}</p>
+            </div>
             <br />
             <br />
             <div style="font-size: 12px; color: #888888; text-align: center;">
               <p>Si no deseas seguir recibiendo nuestros correos, puedes darte de baja haciendo clic en el siguiente enlace:</p>
               <a href="${unsubscribeLink}" 
-                 style="display:inline-block;padding:10px 20px;background-color:#f0f0f0;color:#888888;border-radius:4px;text-decoration:none;">
+                 style="display:inline-block;padding:10px 20px;background-color:#f0f0f0;color:#888888;border-radius:4px;text-decoration:none;" target="_black">
                  Darse de baja
               </a>
             </div>
             <br />
             <br />
             <footer style="font-size: 10px; color: #888888; text-align: center;">
-              <p>HBC Avonni | Todos los derechos reservados</p>
+              <p>SBK Social | Todos los derechos reservados</p>
             </footer>
           `,
         };

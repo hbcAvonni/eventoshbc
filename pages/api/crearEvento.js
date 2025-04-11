@@ -6,7 +6,7 @@ import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estru
 
 export const config = {
   api: {
-    bodyParser: false, 
+    bodyParser: false,
   },
 };
 
@@ -44,7 +44,9 @@ export default withCors(async function handler(req, res) {
       const imagePath = path.join(dir, imageName);
       const dbImagePath = `/uploads/${imageName}`;
 
-      fs.renameSync(image.filepath, imagePath);
+      // fs.renameSync(image.filepath, imagePath);
+      fs.copyFileSync(image.filepath, imagePath);  // Copiar archivo
+      fs.unlinkSync(image.filepath);               // Eliminar archivo temporal
 
       const db = await mysql.createConnection({
         host: process.env.DB_HOST,
@@ -53,7 +55,7 @@ export default withCors(async function handler(req, res) {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
       });
-      
+
       const [result] = await db.execute(
         "INSERT INTO events (name, price, endDate, createdAt, image) VALUES (?, ?, ?, ?, ?)",
         [name, numericPrice, endDate, new Date(), dbImagePath]
