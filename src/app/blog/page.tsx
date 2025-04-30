@@ -25,7 +25,7 @@ const staticEntries: BlogEntry[] = [
   {
     id: 5,
     title: "3 formatos que están arrasando en eventos de marca",
-    image: "/assets/images/escenario.jpg",
+    image: "./assets/images/escenario.jpg",
     category: "Tendencias",
     content:
       "Desde sesiones acústicas íntimas hasta DJ sets en rooftops, los eventos de marca están apostando por la autenticidad y la experiencia directa. Te contamos qué formatos son los más solicitados en 2025.",
@@ -33,7 +33,7 @@ const staticEntries: BlogEntry[] = [
   {
     id: 6,
     title: "Nuevo artista confirmado para el verano 2025",
-    image: "/assets/images/artistas.jpg",
+    image: "./assets/images/artistas.jpg",
     category: "Noticias Breves",
     content:
       "¡Se viene un bombazo! Muy pronto anunciaremos un fichaje que va a dar mucho que hablar en los escenarios de este verano. Permanece atento a nuestras redes.",
@@ -80,7 +80,7 @@ export default function BlogPage() {
         {/* Hero */}
         <div
           className="relative h-[60vh] bg-cover bg-center flex items-center justify-center"
-          style={{ backgroundImage: "url(/assets/images/blog.jpg)" }}
+          style={{ backgroundImage: "url(./assets/images/blog.jpg)" }}
         >
           <div className="absolute inset-0 bg-black/60" />
           <div className="z-10 text-center px-4">

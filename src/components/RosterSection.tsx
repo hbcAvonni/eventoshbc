@@ -7,19 +7,19 @@ const artists = [
   {
     id: 1,
     name: "Abdón Alcaraz",
-    image: "/assets/images/alcaraz.jpg", 
+    image: "./assets/images/alcaraz.jpg", 
     slug: "Abdón Alcaraz",
   },
   {
     id: 2,
     name: "Rock",
-    image: "/assets/images/rock.jpg", 
+    image: "./assets/images/rock.jpg", 
     slug: "Rock",
   },
   {
     id: 3,
     name: "Monólogo",
-    image: "/assets/images/comedia.jpg", 
+    image: "./assets/images/comedia.jpg", 
     slug: "Monólogo",
   },
 ];

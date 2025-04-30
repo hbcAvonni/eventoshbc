@@ -7,37 +7,37 @@ const services = [
   {
     id: 1,
     title: "ORGANIZACIÓN Y PRODUCCIÓN DE EVENTOS",
-    image: "/assets/images/escenario.jpg",
+    image: "./assets/images/escenario.jpg",
     link: "/servicios#organizacion",
   },
   {
     id: 2,
     title: "PROMOCIÓN Y BOOKING DE ARTISTAS",
-    image: "/assets/images/artistas.jpg",
+    image: "./assets/images/artistas.jpg",
     link: "/servicios#booking",
   },
   {
     id: 3,
     title: "SONIDO E ILUMINACIÓN",
-    image: "/assets/images/sonido.jpg",
+    image: "./assets/images/sonido.jpg",
     link: "/servicios#sonido",
   },
   {
     id: 4,
     title: "VEHÍCULOS Y ESCENARIOS",
-    image: "/assets/images/camiones.jpg",
+    image: "./assets/images/camiones.jpg",
     link: "/servicios#vehiculos",
   },
   {
     id: 5,
     title: "INFRAESTRUCTURA Y EQUIPAMIENTOS",
-    image: "/assets/images/infraestructura.jpg",
+    image: "./assets/images/infraestructura.jpg",
     link: "/servicios#infraestructura",
   },
   {
     id: 6,
     title: "OTROS SERVICIOS",
-    image: "/assets/images/servicios.jpg",
+    image: "./assets/images/servicios.jpg",
     link: "/servicios#otros",
   },
 ];

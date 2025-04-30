@@ -9,17 +9,17 @@ const artists = [
   {
     id: 1,
     name: "Abdón Alcaraz",
-    image: "/assets/images/alcaraz.jpg",
+    image: "./assets/images/alcaraz.jpg",
   },
   {
     id: 2,
     name: "Rock",
-    image: "/assets/images/rock.jpg",
+    image: "./assets/images/rock.jpg",
   },
   {
     id: 3,
     name: "Monólogo",
-    image: "/assets/images/comedia.jpg",
+    image: "./assets/images/comedia.jpg",
   },
 ];
 
@@ -42,7 +42,7 @@ export default function RosterPage() {
         <div
           className="relative h-[50vh] bg-cover bg-center flex items-center justify-center"
           style={{
-            backgroundImage: "url(/assets/images/roster.jpg)",
+            backgroundImage: "url(./assets/images/roster.jpg)",
           }}
         >
           <div className="absolute inset-0 bg-black/60" />

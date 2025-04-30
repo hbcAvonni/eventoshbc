@@ -7,37 +7,37 @@ const services = [
   {
     id: "organizacion",
     title: "ORGANIZACIÓN Y PRODUCCIÓN DE EVENTOS",
-    image: "/assets/images/escenario.jpg",
+    image: "./assets/images/escenario.jpg",
     description: "Ofrecemos soluciones integrales en la organización y producción de eventos, encargándonos de todos los detalles para que puedas disfrutar sin preocupaciones. Contamos con amplia experiencia en eventos corporativos, festivales, conciertos y celebraciones privadas.",
   },
   {
     id: "booking",
     title: "PROMOCIÓN Y BOOKING DE ARTISTAS",
-    image: "/assets/images/artistas.jpg",
+    image: "./assets/images/artistas.jpg",
     description: "Gestionamos la contratación de artistas nacionales e internacionales para todo tipo de eventos. Trabajamos con un amplio roster de talentos y ofrecemos asesoramiento personalizado para encontrar el artista perfecto para cada ocasión.",
   },
   {
     id: "sonido",
     title: "SONIDO E ILUMINACIÓN",
-    image: "/assets/images/sonido.jpg",
+    image: "./assets/images/sonido.jpg",
     description: "Disponemos de equipos de sonido e iluminación de última generación para garantizar la mejor experiencia audiovisual en cualquier tipo de evento. Nuestro equipo técnico se encarga de la instalación, operación y desmontaje.",
   },
   {
     id: "vehiculos",
     title: "VEHÍCULOS Y ESCENARIOS",
-    image: "/assets/images/camiones.jpg",
+    image: "./assets/images/camiones.jpg",
     description: "Contamos con una flota de vehículos especializados y escenarios móviles adaptables a diferentes espacios y necesidades. Ofrecemos servicios de transporte y montaje para garantizar el éxito logístico de tu evento.",
   },
   {
     id: "infraestructura",
     title: "INFRAESTRUCTURA Y EQUIPAMIENTOS",
-    image: "/assets/images/infraestructura.jpg",
+    image: "./assets/images/infraestructura.jpg",
     description: "Proporcionamos toda la infraestructura necesaria para eventos: carpas, vallado, generadores, baños portátiles, mobiliario y más. Nos ocupamos de todos los aspectos logísticos para que tu evento se desarrolle sin contratiempos.",
   },
   {
     id: "otros",
     title: "OTROS SERVICIOS",
-    image: "/assets/images/servicios.jpg",
+    image: "./assets/images/servicios.jpg",
     description: "Ofrecemos servicios complementarios como catering, personal de seguridad, azafatas, fotografía y vídeo, diseño gráfico y comunicación, entre otros. Todo lo que necesitas para hacer de tu evento una experiencia única y memorable.",
   },
 ];
@@ -51,7 +51,7 @@ export default function ServiciosPage() {
         <div
           className="relative h-[50vh] bg-cover bg-center flex items-center justify-center"
           style={{
-            backgroundImage: "url(/assets/images/banner.jpg)",
+            backgroundImage: "url(./assets/images/banner.jpg)",
           }}
         >
           <div className="absolute inset-0 bg-black/60" />

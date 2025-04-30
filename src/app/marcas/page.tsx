@@ -6,12 +6,12 @@ const brands = [
   {
     id: 1,
     name: "Marca 1",
-    image: "/assets/images/fibro.png",
+    image: "./assets/images/fibro.png",
   },
   {
     id: 2,
     name: "Marca 2",
-    image: "/assets/images/albatros.png",
+    image: "./assets/images/albatros.png",
   },
 ];
 
@@ -24,7 +24,7 @@ export default function MarcasPage() {
         <div
           className="relative h-[50vh] bg-cover bg-center flex items-center justify-center"
           style={{
-            backgroundImage: "url('/assets/images/escenario.jpg')",
+            backgroundImage: "url('./assets/images/escenario.jpg')",
           }}
         >
           <div className="absolute inset-0 bg-black/60" />

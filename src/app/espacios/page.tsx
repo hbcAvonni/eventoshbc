@@ -6,22 +6,22 @@ const espacios = [
   {
     id: 1,
     name: "Espacios Públicos",
-    image: "/assets/images/publico.jpg",
+    image: "./assets/images/publico.jpg",
   },
   {
     id: 2,
     name: "Espacios Privados",
-    image: "/assets/images/privado.jpg",
+    image: "./assets/images/privado.jpg",
   },
   {
     id: 3,
     name: " Espacios Cubiertos",
-    image: "/assets/images/cubiertos.jpg",
+    image: "./assets/images/cubiertos.jpg",
   },
   {
     id: 4,
     name: "Espacios al Aire Libre",
-    image: "/assets/images/libre.jpg",
+    image: "./assets/images/libre.jpg",
   },
 ];
 
@@ -34,7 +34,7 @@ export default function EspaciosPage() {
         <div
           className="relative h-[50vh] bg-cover bg-center flex items-center justify-center"
           style={{
-            backgroundImage: "url('/assets/images/escenario.jpg')",
+            backgroundImage: "url('./assets/images/escenario.jpg')",
           }}
         >
           <div className="absolute inset-0 bg-black/60" />

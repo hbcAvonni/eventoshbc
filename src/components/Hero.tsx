@@ -8,7 +8,7 @@ export default function Hero() {
     <div
       className="relative min-h-screen flex items-center justify-center bg-cover bg-center text-white"
       style={{
-        backgroundImage: "url(/assets/images/concierto.jpg)",
+        backgroundImage: "url(./assets/images/concierto.jpg)",
       }}
     >
       <div className="absolute inset-0 bg-black/50" />

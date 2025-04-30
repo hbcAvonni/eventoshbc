@@ -40,7 +40,7 @@ export default function Footer() {
       <div
         className="w-full py-12 bg-cover bg-center relative"
         style={{
-          backgroundImage: "url(/assets/images/concierto.jpg)",
+          backgroundImage: "url(./assets/images/concierto.jpg)",
         }}
       >
         <div className="absolute inset-0 bg-black/40" />

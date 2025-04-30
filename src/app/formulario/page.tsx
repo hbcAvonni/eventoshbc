@@ -116,7 +116,7 @@ export default function Formulario() {
         <div
           className="relative h-[50vh] bg-cover bg-center flex items-center justify-center"
           style={{
-            backgroundImage: "url('/assets/images/concierto.jpg')",
+            backgroundImage: "url('./assets/images/concierto.jpg')",
           }}
         >
           <div className="absolute inset-0 bg-black/60" />
