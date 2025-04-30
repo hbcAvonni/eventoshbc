@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; 
+import CryptoJS from "crypto-js";
 
 interface Event {
-  id: number;
-  image: string;
-  name: string;
-  price: string;
-  endDate: string;
+  eve_id: number;
+  eve_imagen: string;
+  eve_nombre: string;
+  eve_precio: string;
+  eve_fecha: string;
 }
 
 export default function EventsSection() {
@@ -40,7 +41,14 @@ export default function EventsSection() {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   const comprarEvento = (event: Event) => {
-    router.push(`/formulario?evento=${encodeURIComponent(event.name)}`);
+    const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY;
+    if (!secretKey) {
+      console.error("La clave secreta no está definida en el entorno");
+      return;
+    }
+
+    const encryptedId = CryptoJS.AES.encrypt(event.eve_id.toString(), secretKey).toString();
+    router.push(`/formulario?evento=${encodeURIComponent(encryptedId)}`);
   };
 
   return (
@@ -52,12 +60,12 @@ export default function EventsSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {events.map((event) => (
-            <div key={event.id} className="flex flex-col items-center">
+            <div key={event.eve_id} className="flex flex-col items-center">
               <div className="relative w-full mb-4 overflow-hidden rounded-md" style={{ height: "400px" }}>
-                {event.image ? (
+                {event.eve_imagen ? (
                   <Image
-                    src={event.image}
-                    alt={event.name}
+                    src={event.eve_imagen}
+                    alt={event.eve_nombre}
                     width={300}
                     height={400}
                     className="object-cover w-full h-full"
@@ -69,8 +77,8 @@ export default function EventsSection() {
                 )}
               </div>
 
-              <h3 className="text-white text-lg font-bold mb-1">{event.name}</h3>
-              {/* <p className="text-white mb-2">{parseFloat(event.price).toFixed(2)} €</p> */}
+              <h3 className="text-white text-lg font-bold mb-1">{event.eve_nombre}</h3>
+              <p className="text-white mb-2">{parseFloat(event.eve_precio).toFixed(2)} €</p>
 
               <button
                 onClick={() => comprarEvento(event)}
