@@ -77,7 +77,7 @@ export default function EventsSection() {
                 )}
               </div>
 
-              <h3 className="text-white text-lg font-bold mb-1">{event.eve_nombre}</h3>
+              <h3 className="text-white text-lg mb-1">{event.eve_nombre}</h3>
               <p className="text-white mb-2">{parseFloat(event.eve_precio).toFixed(2)} €</p>
 
               <button
