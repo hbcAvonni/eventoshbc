@@ -14,10 +14,11 @@ interface BlogEntry {
 }
 
 interface EventoPasado {
-  id: number;
-  name: string;
-  image: string;
-  endDate: string;
+  eve_id: number;
+  eve_nombre: string;
+  eve_imagen: string;
+  eve_precio: string;
+  eve_fecha: string;
 }
 
 const staticEntries: BlogEntry[] = [
@@ -51,11 +52,11 @@ export default function BlogPage() {
         console.log('Eventos pasados:', data.eventosPasados);
 
         const formatted = data.eventosPasados.map((e: EventoPasado) => ({
-          id: e.id,
-          title: e.name,
-          image: e.image,
+          id: e.eve_id,
+          title: e.eve_nombre,
+          image: e.eve_imagen,
           category: "Eventos Pasados",
-          content: `Este evento finalizó el ${new Date(e.endDate).toLocaleDateString()}.`,
+          content: `Este evento finalizó el ${new Date(e.eve_fecha).toLocaleDateString()}.`,
         }));
 
         setEventosPasados(formatted);
