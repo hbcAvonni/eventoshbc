@@ -4,9 +4,12 @@ import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CryptoJS from "crypto-js";
 
 export default function Formulario() {
   const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const evento = searchParams?.get("evento");
 
   const [formData, setFormData] = useState({
@@ -15,6 +18,7 @@ export default function Formulario() {
     telefono: "",
     evento: "",
     email: "",
+    establecimiento: "",
   });
 
   const [status, setStatus] = useState<string>("");
@@ -27,11 +31,7 @@ export default function Formulario() {
     if (savedCooldown) {
       setCooldown(parseInt(savedCooldown));
     }
-
-    if (evento) {
-      setFormData((prev) => ({ ...prev, evento }));
-    }
-  }, [evento]);
+  }, []);
 
   useEffect(() => {
     if (cooldown > 0) {
@@ -48,6 +48,39 @@ export default function Formulario() {
       };
     }
   }, [cooldown]);
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      if (!evento) return;
+
+      try {
+        const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY;
+        if (!secretKey) {
+          console.error("La clave secreta no está definida en el entorno");
+          return;
+        }
+        const encryptedId = evento;
+        const bytes = CryptoJS.AES.decrypt(encryptedId, secretKey);
+        const decryptedId = bytes.toString(CryptoJS.enc.Utf8);
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getEvento?id=${decryptedId}`);
+        if (!res.ok) throw new Error("Error al obtener evento");
+
+        const data = await res.json();
+        setFormData((prev) => ({ 
+          ...prev, 
+          evento: data.rows[0].eve_nombre, 
+          establecimiento: data.rows[0].scbl_nombre 
+        }));
+      } catch (error: unknown) {
+        setError(error instanceof Error ? error.message : "Error desconocido");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvent();
+  }, [evento]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -101,12 +134,16 @@ export default function Formulario() {
         telefono: "",
         evento: evento || "",
         email: "",
+        establecimiento: "",
       });
     } catch (error) {
       setStatus("Hubo un error al enviar el formulario. Inténtalo de nuevo.");
       setIsSubmitting(false);
     }
   };
+
+  if (loading) return <p className="text-center text-white">Cargando eventos...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <>
@@ -201,6 +238,21 @@ export default function Formulario() {
                   id="evento"
                   name="evento"
                   value={formData.evento}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                  readOnly
+                />
+              </div>
+
+              <div>
+                <label htmlFor="establecimiento" className="block text-lg font-anton text-gray-700">
+                  Establecimiento
+                </label>
+                <input
+                  type="text"
+                  id="establecimiento"
+                  name="establecimiento"
+                  value={formData.establecimiento}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
                   readOnly
