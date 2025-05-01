@@ -70,7 +70,7 @@ export default function Formulario() {
         setFormData((prev) => ({ 
           ...prev, 
           evento: data.rows[0].eve_nombre, 
-          establecimiento: data.rows[0].scbl_nombre 
+          establecimiento: data.rows[0].scbl_nombre + " (" + data.rows[0].scbl_direccion + ")"
         }));
       } catch (error: unknown) {
         setError(error instanceof Error ? error.message : "Error desconocido");

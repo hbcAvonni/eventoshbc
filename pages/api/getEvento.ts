@@ -29,7 +29,7 @@ export default withCors(async function handler(req: NextApiRequest, res: NextApi
     }
 
     const [rows] = await db.execute(
-      'SELECT eve.*, scbl_nombre FROM eventos eve INNER JOIN sponsors_coll_brand_locals scbl ON scbl_id = eve_lugar AND scbl_tipo = "LOCALS" WHERE eve_id = ?',
+      'SELECT eve.*, scbl_nombre, scbl_direccion FROM eventos eve INNER JOIN sponsors_coll_brand_locals scbl ON scbl_id = eve_lugar AND scbl_tipo = "LOCALS" WHERE eve_id = ?',
       [id]
     );
 
