@@ -35,14 +35,14 @@ export default withCors(async function handler(req, res) {
 
       const image = Array.isArray(files.image) ? files.image[0] : files.image;
 
-      const dir = path.join(process.cwd(), 'public/uploads');
+      const dir = path.join(process.cwd(), 'public/uploads/eventos');
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
       }
 
       const imageName = image.originalFilename || image.newFilename || 'imagen.jpg';
       const imagePath = path.join(dir, imageName);
-      const dbImagePath = `/uploads/${imageName}`;
+      const dbImagePath = `./uploads/eventos/${imageName}`;
 
       // fs.renameSync(image.filepath, imagePath);
       fs.copyFileSync(image.filepath, imagePath);  // Copiar archivo
