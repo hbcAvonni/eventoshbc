@@ -8,16 +8,22 @@ import CryptoJS from "crypto-js";
 
 export default function Formulario() {
   const searchParams = useSearchParams();
+  const [eventImage, setEventImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const evento = searchParams?.get("evento");
+  const nombreEvento = "";
+  const establecimiento = "";
 
   const [formData, setFormData] = useState({
     nombre: "",
     apellidos: "",
+    edad: "",
     telefono: "",
     evento: "",
+    nombreEvento: "",
     email: "",
+    foto: "",
     establecimiento: "",
   });
 
@@ -67,9 +73,10 @@ export default function Formulario() {
         if (!res.ok) throw new Error("Error al obtener evento");
 
         const data = await res.json();
-        setFormData((prev) => ({ 
-          ...prev, 
-          evento: data.rows[0].eve_nombre, 
+        setFormData((prev) => ({
+          ...prev,
+          evento: decryptedId,
+          nombreEvento: data.rows[0].eve_nombre,
           establecimiento: data.rows[0].scbl_nombre + " (" + data.rows[0].scbl_direccion + ")"
         }));
       } catch (error: unknown) {
@@ -80,7 +87,7 @@ export default function Formulario() {
     };
 
     fetchEvent();
-  }, [evento]);
+  }, [evento, nombreEvento, establecimiento]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -89,53 +96,66 @@ export default function Formulario() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (isSubmitting) return; // Si ya está enviando el formulario, no permitir otro envío
-
+  
+    if (isSubmitting) return;
+  
     setIsSubmitting(true);
     setStatus("Enviando...");
-
-    // Validación del teléfono
-    if (formData.telefono.length < 9) {
-      setStatus("El teléfono debe tener al menos 9 dígitos.");
+  
+    // Validaciones básicas
+    if (formData.telefono.length < 9 || !/^\d+$/.test(formData.telefono)) {
+      setStatus("El teléfono debe tener al menos 9 dígitos y solo números.");
       setIsSubmitting(false);
       return;
     }
-    if (!/^\d+$/.test(formData.telefono)) {
-      setStatus("El teléfono solo puede contener números.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Validación de correo electrónico
+  
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
       setStatus("Por favor, ingrese un correo electrónico válido.");
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
+      const formPayload = new FormData();
+  
+      // Añadir campos de texto
+      for (const key in formData) {
+        formPayload.append(key, formData[key as keyof typeof formData]);
+      }
+  
+      // Añadir archivo
+      if (eventImage) {
+        formPayload.append("foto", eventImage);
+      }
+  
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/saveFormulario`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: formPayload,
       });
-
+  
       if (!res.ok) throw new Error("Error al enviar el formulario");
-
+  
       setStatus("Formulario enviado correctamente. Recibirás respuesta en breve.");
-      setCooldown(300);  // Activamos el tiempo de espera de 5 minutos (300 segundos)
+      setCooldown(100);
       setIsSubmitting(false);
-
+  
       (e.target as HTMLFormElement).reset();
       setFormData({
         nombre: "",
         apellidos: "",
+        edad: "",
         telefono: "",
         evento: evento || "",
+        nombreEvento: nombreEvento ||"",
         email: "",
-        establecimiento: "",
+        foto: "",
+        establecimiento: establecimiento ||"",
       });
+      setEventImage(null);
+
+      setTimeout(() => {
+        window.location.href = "./";
+      }, 1000);
     } catch (error) {
       setStatus("Hubo un error al enviar el formulario. Inténtalo de nuevo.");
       setIsSubmitting(false);
@@ -168,6 +188,30 @@ export default function Formulario() {
         <div className="bg-white py-12">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
+
+              <div>
+                <label htmlFor="nombreEvento" className="block text-lg font-anton text-gray-700">
+                  Evento
+                </label>
+                <input
+                  type="text"
+                  id="nombreEvento"
+                  name="nombreEvento"
+                  value={formData.nombreEvento}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                  readOnly
+                />
+                <input
+                  type="hidden"
+                  id="evento"
+                  name="evento"
+                  value={formData.evento}
+                  onChange={handleChange}
+                  readOnly
+                />
+              </div>
+
               <div>
                 <label htmlFor="nombre" className="block text-lg font-anton text-gray-700">
                   Nombre
@@ -193,6 +237,21 @@ export default function Formulario() {
                   name="apellidos"
                   required
                   value={formData.apellidos}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="edad" className="block text-lg font-anton text-gray-700">
+                  Edad
+                </label>
+                <input
+                  type="text"
+                  id="edad"
+                  name="edad"
+                  required
+                  value={formData.edad}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
                 />
@@ -230,17 +289,20 @@ export default function Formulario() {
               </div>
 
               <div>
-                <label htmlFor="evento" className="block text-lg font-anton text-gray-700">
-                  Evento
+                <label htmlFor="foto" className="block text-lg font-anton text-gray-700">
+                  Foto
                 </label>
                 <input
-                  type="text"
-                  id="evento"
-                  name="evento"
-                  value={formData.evento}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                  readOnly
+                  type="file"
+                  name="foto"
+                  id="foto"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setEventImage(e.target.files[0]);
+                    }
+                  }}
+                  className="w-full"
                 />
               </div>
 
