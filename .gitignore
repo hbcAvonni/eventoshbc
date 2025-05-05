@@ -42,3 +42,5 @@ next-env.d.ts
 
 # local env files
 .vscode
+public/uploads/inscritos
+public/uploads/temp
