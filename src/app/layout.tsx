@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Anton, Roboto, Raleway, Montserrat } from "next/font/google";
 import { ClientBody } from "./ClientBody"; // Fixed import of ClientBody component
+import "react-datepicker/dist/react-datepicker.css";
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 
