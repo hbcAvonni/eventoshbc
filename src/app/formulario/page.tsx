@@ -5,6 +5,10 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CryptoJS from "crypto-js";
+import DatePicker from "react-datepicker";
+import { registerLocale } from "react-datepicker";
+import { es } from "date-fns/locale";
+registerLocale("es", es);
 
 export default function Formulario() {
   const searchParams = useSearchParams();
@@ -12,19 +16,25 @@ export default function Formulario() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const evento = searchParams?.get("evento");
-  const nombreEvento = "";
-  const establecimiento = "";
+  const [datosEvento, setDatosEvento] = useState<{ idEvento: number; nombreEvento: string; minDate: string; maxDate: string; repetir: string }>({
+    idEvento: 0,
+    nombreEvento: "",
+    minDate: "",
+    maxDate: "",
+    repetir: "NO"
+  });
+  const [establecimiento, setEstablecimiento] = useState("");
+  const [disponibilidad, setDisponibilidad] = useState<{ efec_dia: string; efec_hora_inicio: string; efec_hora_fin: string }[]>([]);
 
   const [formData, setFormData] = useState({
+    evento: 0,
+    fecha: "",
     nombre: "",
     apellidos: "",
     edad: "",
     telefono: "",
-    evento: "",
-    nombreEvento: "",
     email: "",
     foto: "",
-    establecimiento: "",
   });
 
   const [status, setStatus] = useState<string>("");
@@ -75,10 +85,28 @@ export default function Formulario() {
         const data = await res.json();
         setFormData((prev) => ({
           ...prev,
-          evento: decryptedId,
-          nombreEvento: data.rows[0].eve_nombre,
-          establecimiento: data.rows[0].scbl_nombre + " (" + data.rows[0].scbl_direccion + ")"
+          evento: parseInt(decryptedId),
+          fecha: data.rows[0].eve_fecha
         }));
+        setDatosEvento({
+          idEvento: parseInt(decryptedId),
+          nombreEvento: data.rows[0].eve_nombre,
+          minDate: data.rows[0].eve_fecha,
+          maxDate: data.rows[0].eve_fecha_fin,
+          repetir: data.rows[0].eve_repetir
+        });
+        setEstablecimiento(data.rows[0].scbl_nombre + " (" + data.rows[0].scbl_direccion + ")");
+
+        if (data.rows[0].eve_repetir === "SI") {
+          const fetchFechas = async (eventoId: string) => {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getFechas?id=${eventoId}`);
+            if (!res.ok) return;
+            const data = await res.json();
+            setDisponibilidad(data.disponibilidad);
+          };
+  
+          await fetchFechas(decryptedId);
+        }
       } catch (error: unknown) {
         setError(error instanceof Error ? error.message : "Error desconocido");
       } finally {
@@ -87,75 +115,120 @@ export default function Formulario() {
     };
 
     fetchEvent();
-  }, [evento, nombreEvento, establecimiento]);
+  }, [evento]);
+
+  const esHoraPermitida = (fecha: Date) => {
+    const diaSemana = fecha.toLocaleDateString("es-ES", { weekday: "long" })
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toUpperCase();
+    const hora = fecha.getHours();
+    const minutos = fecha.getMinutes();
+    const minutosTotales = hora * 60 + minutos;
+
+    return disponibilidad.some(({ efec_dia, efec_hora_inicio, efec_hora_fin }) => {
+      if (efec_dia !== diaSemana) return false;
+
+      const [hIni, mIni] = efec_hora_inicio.split(":").map(Number);
+      const [hFin, mFin] = efec_hora_fin.split(":").map(Number);
+      const desde = hIni * 60 + mIni;
+      const hasta = hFin * 60 + mFin;
+
+      return minutosTotales >= desde && minutosTotales <= hasta;
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (datosEvento.repetir === "SI" && name === "fecha") {
+      const fechaSeleccionada = new Date(value);
+      const diaSemana = fechaSeleccionada.toLocaleDateString("es-ES", { weekday: "long" })
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toUpperCase();
+      const hora = fechaSeleccionada.toTimeString().slice(0, 5); // "HH:MM"
+
+      const diaValido = disponibilidad.find(
+        (d) =>
+          d.efec_dia === diaSemana &&
+          hora >= d.efec_hora_inicio.slice(0, 5) &&
+          hora <= d.efec_hora_fin.slice(0, 5)
+      );
+
+      if (!diaValido) {
+        setStatus(
+          `La fecha/hora seleccionada no está permitida. Días válidos: ${disponibilidad
+            .map((d) => `${d.efec_dia} (${d.efec_hora_inicio} - ${d.efec_hora_fin})`)
+            .join(", ")}`
+        );
+        return;
+      }
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (isSubmitting) return;
-  
+
     setIsSubmitting(true);
     setStatus("Enviando...");
-  
+
     // Validaciones básicas
     if (formData.telefono.length < 9 || !/^\d+$/.test(formData.telefono)) {
       setStatus("El teléfono debe tener al menos 9 dígitos y solo números.");
       setIsSubmitting(false);
       return;
     }
-  
+
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
       setStatus("Por favor, ingrese un correo electrónico válido.");
       setIsSubmitting(false);
       return;
     }
-  
+
     try {
       const formPayload = new FormData();
-  
+
       // Añadir campos de texto
       for (const key in formData) {
-        formPayload.append(key, formData[key as keyof typeof formData]);
+        const value = formData[key as keyof typeof formData];
+        if (value !== null && value !== undefined) {
+          formPayload.append(key, value.toString());
+        }
       }
-  
+
       // Añadir archivo
       if (eventImage) {
         formPayload.append("foto", eventImage);
       }
-  
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/saveFormulario`, {
         method: "POST",
         body: formPayload,
       });
-  
+
       if (!res.ok) throw new Error("Error al enviar el formulario");
-  
+
       setStatus("Formulario enviado correctamente. Recibirás respuesta en breve.");
-      setCooldown(100);
+      setCooldown(60);
       setIsSubmitting(false);
-  
+
       (e.target as HTMLFormElement).reset();
       setFormData({
+        evento: datosEvento.idEvento || 0,
+        fecha: datosEvento.minDate || "",
         nombre: "",
         apellidos: "",
         edad: "",
         telefono: "",
-        evento: evento || "",
-        nombreEvento: nombreEvento ||"",
         email: "",
         foto: "",
-        establecimiento: establecimiento ||"",
       });
       setEventImage(null);
-
-      setTimeout(() => {
-        window.location.href = "./";
-      }, 1000);
     } catch (error) {
       setStatus("Hubo un error al enviar el formulario. Inténtalo de nuevo.");
       setIsSubmitting(false);
@@ -197,7 +270,7 @@ export default function Formulario() {
                   type="text"
                   id="nombreEvento"
                   name="nombreEvento"
-                  value={formData.nombreEvento}
+                  value={datosEvento.nombreEvento}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
                   readOnly
@@ -211,6 +284,60 @@ export default function Formulario() {
                   readOnly
                 />
               </div>
+
+              {datosEvento.repetir === "SI" ? (
+                <div>
+                  <label htmlFor="fecha" className="block text-lg font-anton text-gray-700">
+                    Fecha
+                  </label>
+                  <DatePicker
+                    selected={formData.fecha ? new Date(formData.fecha) : null}
+                    onChange={(date: Date | null) => {
+                      if (!date) return;
+
+                      const year = date.getFullYear();
+                      const month = String(date.getMonth() + 1).padStart(2, "0");
+                      const day = String(date.getDate()).padStart(2, "0");
+                      const hours = String(date.getHours()).padStart(2, "0");
+                      const minutes = String(date.getMinutes()).padStart(2, "0");
+
+                      const localDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+                      setFormData((prev) => ({ ...prev, fecha: localDatetime }));
+                      setStatus("");
+                    }}
+                    locale="es"
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={60}
+                    dateFormat="Pp"
+                    minDate={datosEvento.minDate ? new Date(datosEvento.minDate) : undefined}
+                    maxDate={datosEvento.maxDate ? new Date(datosEvento.maxDate) : undefined}
+                    filterDate={(date) => {
+                      const dia = date.toLocaleDateString("es-ES", { weekday: "long" })
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "")
+                        .toUpperCase();
+                      return disponibilidad.some((d) => d.efec_dia === dia);
+                    }}
+                    filterTime={(time) => esHoraPermitida(time)}
+                    placeholderText="Selecciona fecha y hora"
+                    name="fecha"
+                    id="fecha"
+                    className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                  />
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  name="fecha"
+                  value={
+                    formData.fecha
+                      ? new Date(formData.fecha)
+                      : new Date(datosEvento.minDate)
+                  }
+                />
+              )}
 
               <div>
                 <label htmlFor="nombre" className="block text-lg font-anton text-gray-700">
@@ -314,7 +441,7 @@ export default function Formulario() {
                   type="text"
                   id="establecimiento"
                   name="establecimiento"
-                  value={formData.establecimiento}
+                  value={establecimiento}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
                   readOnly
