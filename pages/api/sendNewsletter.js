@@ -43,7 +43,7 @@ export default withCors(async function handler(req, res) {
       });
 
       for (const subscriber of subscribers) {
-        const unsubscribeLink = `${process.env.NEXT_PUBLIC_API_URL}/unsubscribe?email=${encodeURIComponent(subscriber.email)}`;
+        const unsubscribeLink = `./api/unsubscribe?email=${encodeURIComponent(subscriber.email)}`;
 
         const mailOptions = {
           from: `"SBK Social" <${process.env.EMAIL_USER}>`,

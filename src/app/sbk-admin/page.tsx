@@ -26,7 +26,7 @@ export default function SbkAdminPage(): JSX.Element {
     e.preventDefault();
     setLoadingLogin(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/generate-jwt`, {
+      const res = await fetch('./api/generate-jwt', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -53,7 +53,7 @@ export default function SbkAdminPage(): JSX.Element {
     setLoadingNewsletter(true);
     setNewsletterMessage(""); 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sendNewsletter`, {
+      const res = await fetch('./api/sendNewsletter', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export default function SbkAdminPage(): JSX.Element {
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/crearEvento`, {
+      const res = await fetch('./api/crearEvento', {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

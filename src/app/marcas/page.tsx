@@ -21,7 +21,7 @@ export default function MarcasPage() {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getBrands`);
+        const res = await fetch('./api/getBrands');
         if (!res.ok) throw new Error("Error al obtener las marcas");
         const data = await res.json();
         setBrands(data.rows);

@@ -92,7 +92,7 @@ export default function Formulario() {
         const bytes = CryptoJS.AES.decrypt(encryptedId, secretKey);
         const decryptedId = bytes.toString(CryptoJS.enc.Utf8);
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getEvento?id=${decryptedId}`);
+        const res = await fetch(`./api/getEvento?id=${decryptedId}`);
         if (!res.ok) throw new Error("Error al obtener evento");
 
         const data = await res.json();
@@ -113,7 +113,7 @@ export default function Formulario() {
 
         if (data.rows[0].eve_repetir === "SI") {
           const fetchFechas = async (eventoId: string) => {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getFechas?id=${eventoId}`);
+            const res = await fetch(`./api/getFechas?id=${eventoId}`);
             if (!res.ok) return;
             const data = await res.json();
             setDisponibilidad(data.disponibilidad);
@@ -220,7 +220,7 @@ export default function Formulario() {
         formPayload.append("foto", eventImage);
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/saveFormulario`, {
+      const res = await fetch('./api/saveFormulario', {
         method: "POST",
         body: formPayload,
       });
