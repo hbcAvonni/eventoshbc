@@ -24,7 +24,7 @@ export default withCors(async function handler(req, res) {
       });
 
       const [result] = await db.execute(
-        "INSERT INTO subscribers (email) VALUES (?)",
+        "INSERT INTO newsletter (news_email) VALUES (?)",
         [email]
       );
 
