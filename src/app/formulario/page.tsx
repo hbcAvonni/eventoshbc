@@ -16,15 +16,28 @@ export default function Formulario() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const evento = searchParams?.get("evento");
-  const [datosEvento, setDatosEvento] = useState<{ idEvento: number; nombreEvento: string; minDate: string; maxDate: string; repetir: string }>({
+  const [datosEvento, setDatosEvento] = useState<{
+    idEvento: number;
+    nombreEvento: string;
+    precio: string;
+    minDate: string;
+    maxDate: string;
+    repetir: string;
+    establecimiento: string
+  }>({
     idEvento: 0,
     nombreEvento: "",
+    precio: "",
     minDate: "",
     maxDate: "",
-    repetir: "NO"
+    repetir: "NO",
+    establecimiento: ""
   });
-  const [establecimiento, setEstablecimiento] = useState("");
-  const [disponibilidad, setDisponibilidad] = useState<{ efec_dia: string; efec_hora_inicio: string; efec_hora_fin: string }[]>([]);
+  const [disponibilidad, setDisponibilidad] = useState<{
+    efec_dia: string;
+    efec_hora_inicio: string;
+    efec_hora_fin: string
+  }[]>([]);
 
   const [formData, setFormData] = useState({
     evento: 0,
@@ -91,11 +104,12 @@ export default function Formulario() {
         setDatosEvento({
           idEvento: parseInt(decryptedId),
           nombreEvento: data.rows[0].eve_nombre,
+          precio: data.rows[0].eve_precio,
           minDate: data.rows[0].eve_fecha,
           maxDate: data.rows[0].eve_fecha_fin,
-          repetir: data.rows[0].eve_repetir
+          repetir: data.rows[0].eve_repetir,
+          establecimiento: data.rows[0].scbl_nombre + " (" + data.rows[0].scbl_direccion + ")"
         });
-        setEstablecimiento(data.rows[0].scbl_nombre + " (" + data.rows[0].scbl_direccion + ")");
 
         if (data.rows[0].eve_repetir === "SI") {
           const fetchFechas = async (eventoId: string) => {
@@ -104,7 +118,7 @@ export default function Formulario() {
             const data = await res.json();
             setDisponibilidad(data.disponibilidad);
           };
-  
+
           await fetchFechas(decryptedId);
         }
       } catch (error: unknown) {
@@ -334,12 +348,12 @@ export default function Formulario() {
                   value={
                     formData.fecha
                       ? new Date(formData.fecha).toLocaleString("es-ES", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
                       : new Date(datosEvento.minDate).toLocaleString("es-ES", {
                         year: "numeric",
                         month: "2-digit",
