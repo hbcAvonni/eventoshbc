@@ -264,10 +264,18 @@ export default function Formulario() {
           }}
         >
           <div className="absolute inset-0 bg-black/60" />
-          <div className="container mx-auto px-4 z-10 text-center">
-            <h1 className="text-5xl md:text-7xl font-anton text-white mb-6">
+          <div className="container mx-auto px-4 z-10 text-center text-white">
+            <h1 className="text-5xl md:text-7xl font-anton mb-6">
               FORMULARIO DE COMPRA
             </h1>
+
+            <h3 className="text-2xl md:text-4xl font-anton">
+              {datosEvento.nombreEvento} ( {datosEvento.precio} € )
+            </h3>
+
+            <h5 className="text-1xl md:text-1xl font-anton">
+              &#x1F4CD; Local: {datosEvento.establecimiento}
+            </h5>
           </div>
         </div>
 
@@ -275,29 +283,9 @@ export default function Formulario() {
         <div className="bg-white py-12">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
-
-              <div>
-                <label htmlFor="nombreEvento" className="block text-lg font-anton text-gray-700">
-                  Evento
-                </label>
-                <input
-                  type="text"
-                  id="nombreEvento"
-                  name="nombreEvento"
-                  value={datosEvento.nombreEvento}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                  readOnly
-                />
-                <input
-                  type="hidden"
-                  id="evento"
-                  name="evento"
-                  value={formData.evento}
-                  onChange={handleChange}
-                  readOnly
-                />
-              </div>
+              <input type="hidden" name="evento" value={formData.evento} />
+              <input type="hidden" name="costoEvento" value={datosEvento.precio} />
+              <input type="hidden" name="nombreEvento" value={datosEvento.nombreEvento} />
 
               {datosEvento.repetir === "SI" ? (
                 <div>
@@ -456,21 +444,6 @@ export default function Formulario() {
                     }
                   }}
                   className="w-full"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="establecimiento" className="block text-lg font-anton text-gray-700">
-                  Establecimiento
-                </label>
-                <input
-                  type="text"
-                  id="establecimiento"
-                  name="establecimiento"
-                  value={establecimiento}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                  readOnly
                 />
               </div>
 
