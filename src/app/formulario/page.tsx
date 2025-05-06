@@ -228,8 +228,34 @@ export default function Formulario() {
       if (!res.ok) throw new Error("Error al enviar el formulario");
 
       setStatus("Formulario enviado correctamente. Recibirás respuesta en breve.");
-      setCooldown(60);
-      setIsSubmitting(false);
+      setCooldown(30);
+
+      setStatus("Redirigiendo a Stripe...");
+
+      try {
+        const res = await fetch('./api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...formData,
+            costoEvento: datosEvento.precio,
+            nombreEvento: datosEvento.nombreEvento,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          throw new Error('No se pudo obtener la URL de Stripe');
+        }
+      } catch (err) {
+        setStatus("Error al redirigir a Stripe.");
+        console.error(err);
+      } finally {
+        setIsSubmitting(false);
+      }
 
       (e.target as HTMLFormElement).reset();
       setFormData({
