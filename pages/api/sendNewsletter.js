@@ -43,11 +43,11 @@ export default withCors(async function handler(req, res) {
       });
 
       for (const subscriber of subscribers) {
-        const unsubscribeLink = `./api/unsubscribe?email=${encodeURIComponent(subscriber.email)}`;
+        const unsubscribeLink = `https://sbksocialclub.vercel.app/api/unsubscribe?email=${encodeURIComponent(subscriber.news_email)}`;
 
         const mailOptions = {
           from: `"SBK Social" <${process.env.EMAIL_USER}>`,
-          to: subscriber.email,
+          to: subscriber.news_email,
           subject: subject,
           text: `${message}\n\nPara darte de baja visita: ${unsubscribeLink}`,
           html: `
@@ -74,7 +74,7 @@ export default withCors(async function handler(req, res) {
         try {
           await transporter.sendMail(mailOptions);
         } catch (error) {
-          console.error(`Error al enviar correo a ${subscriber.email}:`, error);
+          console.error(`Error al enviar correo a ${subscriber.news_email}:`, error);
         }
       }
 
