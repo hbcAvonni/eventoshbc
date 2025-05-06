@@ -24,7 +24,7 @@ export default withCors(async function handler(req, res) {
     try {
       const decoded = jwt.verify(token, SECRET_KEY);
 
-      const [subscribers] = await db.execute("SELECT email FROM subscribers");
+      const [subscribers] = await db.execute("SELECT news_email FROM newsletter WHERE news_activo = 'SI'");
 
       const { subject, message } = req.body;
 

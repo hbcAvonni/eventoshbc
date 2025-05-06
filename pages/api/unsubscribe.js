@@ -25,7 +25,7 @@ export default withCors(async function handler(req, res) {
     const db = await mysql.createConnection(dbConfig);
 
     try {
-      await db.execute("DELETE FROM subscribers WHERE email = ?", [email]);
+      await db.execute("UPDATE newsletter SET news_activo = 'NO' WHERE news_email = ?", [email]);
       res.redirect('/unsubscribe-success');
     } catch (error) {
       res.status(500).send("Error al darse de baja");
