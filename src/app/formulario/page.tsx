@@ -19,6 +19,7 @@ export default function Formulario() {
   const [datosEvento, setDatosEvento] = useState<{
     idEvento: number;
     nombreEvento: string;
+    descripcion: string;
     precio: string;
     minDate: string;
     maxDate: string;
@@ -27,6 +28,7 @@ export default function Formulario() {
   }>({
     idEvento: 0,
     nombreEvento: "",
+    descripcion: "",
     precio: "",
     minDate: "",
     maxDate: "",
@@ -104,6 +106,7 @@ export default function Formulario() {
         setDatosEvento({
           idEvento: parseInt(decryptedId),
           nombreEvento: data.rows[0].eve_nombre,
+          descripcion: data.rows[0].eve_descripcion || "",
           precio: data.rows[0].eve_precio,
           minDate: data.rows[0].eve_fecha,
           maxDate: data.rows[0].eve_fecha_fin,
@@ -294,203 +297,234 @@ export default function Formulario() {
             <h1 className="text-5xl md:text-7xl font-anton mb-6">
               FORMULARIO DE COMPRA
             </h1>
-
-            <h3 className="text-2xl md:text-4xl font-anton">
-              {datosEvento.nombreEvento} ( {datosEvento.precio} € )
-            </h3>
-
-            <h5 className="text-1xl md:text-1xl font-anton">
-              &#x1F4CD; Local: {datosEvento.establecimiento}
-            </h5>
           </div>
         </div>
 
-        {/* Formulario de Compra */}
         <div className="bg-white py-12">
           <div className="container mx-auto px-4">
-            <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
-              <input type="hidden" name="evento" value={formData.evento} />
-              <input type="hidden" name="costoEvento" value={datosEvento.precio} />
-              <input type="hidden" name="nombreEvento" value={datosEvento.nombreEvento} />
+            <div className="flex flex-col md:flex-row gap-10">
 
-              {datosEvento.repetir === "SI" ? (
-                <div>
-                  <label htmlFor="fecha" className="block text-lg font-anton text-gray-700">
-                    Fecha
-                  </label>
-                  <DatePicker
-                    selected={formData.fecha ? new Date(formData.fecha) : null}
-                    onChange={(date: Date | null) => {
-                      if (!date) return;
-
-                      const year = date.getFullYear();
-                      const month = String(date.getMonth() + 1).padStart(2, "0");
-                      const day = String(date.getDate()).padStart(2, "0");
-                      const hours = String(date.getHours()).padStart(2, "0");
-                      const minutes = String(date.getMinutes()).padStart(2, "0");
-
-                      const localDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
-
-                      setFormData((prev) => ({ ...prev, fecha: localDatetime }));
-                      setStatus("");
-                    }}
-                    locale="es"
-                    showTimeSelect
-                    timeFormat="HH:mm"
-                    timeIntervals={60}
-                    dateFormat="Pp"
-                    minDate={datosEvento.minDate ? new Date(datosEvento.minDate) : undefined}
-                    maxDate={datosEvento.maxDate ? new Date(datosEvento.maxDate) : undefined}
-                    filterDate={(date) => {
-                      const dia = date.toLocaleDateString("es-ES", { weekday: "long" })
-                        .normalize("NFD")
-                        .replace(/[\u0300-\u036f]/g, "")
-                        .toUpperCase();
-                      return disponibilidad.some((d) => d.efec_dia === dia);
-                    }}
-                    filterTime={(time) => esHoraPermitida(time)}
-                    placeholderText="Selecciona fecha y hora"
-                    name="fecha"
-                    id="fecha"
-                    className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                  />
-                </div>
-              ) : (
-                <input
-                  type="hidden"
-                  name="fecha"
-                  value={
-                    formData.fecha
-                      ? new Date(formData.fecha).toLocaleString("es-ES", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                      : new Date(datosEvento.minDate).toLocaleString("es-ES", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                  }
-                />
-              )}
-
-              <div>
-                <label htmlFor="nombre" className="block text-lg font-anton text-gray-700">
-                  Nombre
-                </label>
-                <input
-                  type="text"
-                  id="nombre"
-                  name="nombre"
-                  required
-                  value={formData.nombre}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="apellidos" className="block text-lg font-anton text-gray-700">
-                  Apellidos
-                </label>
-                <input
-                  type="text"
-                  id="apellidos"
-                  name="apellidos"
-                  required
-                  value={formData.apellidos}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="edad" className="block text-lg font-anton text-gray-700">
-                  Edad
-                </label>
-                <input
-                  type="text"
-                  id="edad"
-                  name="edad"
-                  required
-                  value={formData.edad}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="telefono" className="block text-lg font-anton text-gray-700">
-                  Teléfono
-                </label>
-                <input
-                  type="tel"
-                  id="telefono"
-                  name="telefono"
-                  required
-                  value={formData.telefono}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                  minLength={9} // Validación mínima de 9 dígitos
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-lg font-anton text-gray-700">
-                  Correo Electrónico
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="foto" className="block text-lg font-anton text-gray-700">
-                  Foto
-                </label>
-                <input
-                  type="file"
-                  name="foto"
-                  id="foto"
-                  accept="image/*"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setEventImage(e.target.files[0]);
-                    }
-                  }}
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <button
-                  type="submit"
-                  className="w-full py-3 px-4 bg-[#60A5FA] text-white font-anton font-semibold rounded-md shadow-lg transition duration-300 hover:bg-[#3B82F6] focus:outline-none focus:ring-2 focus:ring-[#60A5FA]"
-                  disabled={isSubmitting || cooldown > 0}
-                >
-                  {cooldown > 0
-                    ? `Espere ${cooldown} segundos`
-                    : "Enviar"}
-                </button>
-              </div>
-
-              {status && (
-                <p className="text-center font-anton text-lg text-[#3B82F6] mt-4">
-                  {status}
+              {/* DESCRIPCIÓN DEL EVENTO */}
+              <div className="md:w-1/2 space-y-6">
+                <h2 className="text-3xl font-anton text-[#3B82F6]">
+                  {datosEvento.nombreEvento} ( {datosEvento.precio} € )
+                </h2>
+                <p className="text-md text-gray-700 leading-relaxed whitespace-pre-line">
+                  {datosEvento.descripcion.replace(/\\n/g, "\n").split("\n").map((line, index) => (
+                    <span key={index}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
                 </p>
-              )}
-            </form>
+                <p className="text-lg font-anton text-gray-800">
+                  &#x1F4CD; Local: {datosEvento.establecimiento}
+                </p>
+              </div>
+
+              {/* FORMULARIO */}
+              <div className="md:w-1/2">
+                <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
+                  <input type="hidden" name="evento" value={formData.evento} />
+                  <input type="hidden" name="costoEvento" value={datosEvento.precio} />
+                  <input type="hidden" name="nombreEvento" value={datosEvento.nombreEvento} />
+
+                  {datosEvento.repetir === "SI" ? (
+                    <div>
+                      <label htmlFor="fecha" className="block text-lg font-anton text-gray-700">
+                        Fecha
+                      </label>
+                      <DatePicker
+                        selected={
+                          formData.fecha
+                            ? new Date(formData.fecha)
+                            : (() => {
+                              if (!datosEvento.minDate || disponibilidad.length === 0) return null;
+
+                              const baseDate = new Date(datosEvento.minDate);
+                              const [hora, minutos] = disponibilidad[0].efec_hora_inicio.split(":").map(Number);
+
+                              baseDate.setHours(hora);
+                              baseDate.setMinutes(minutos);
+                              baseDate.setSeconds(0);
+                              baseDate.setMilliseconds(0);
+
+                              return baseDate;
+                            })()
+                        }
+                        onChange={(date: Date | null) => {
+                          if (!date) return;
+
+                          const year = date.getFullYear();
+                          const month = String(date.getMonth() + 1).padStart(2, "0");
+                          const day = String(date.getDate()).padStart(2, "0");
+                          const hours = String(date.getHours()).padStart(2, "0");
+                          const minutes = String(date.getMinutes()).padStart(2, "0");
+
+                          const localDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+                          setFormData((prev) => ({ ...prev, fecha: localDatetime }));
+                          setStatus("");
+                        }}
+                        locale="es"
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={30}
+                        dateFormat="Pp"
+                        minDate={datosEvento.minDate ? new Date(datosEvento.minDate) : undefined}
+                        maxDate={datosEvento.maxDate ? new Date(datosEvento.maxDate) : undefined}
+                        filterDate={(date) => {
+                          const dia = date.toLocaleDateString("es-ES", { weekday: "long" })
+                            .normalize("NFD")
+                            .replace(/[\u0300-\u036f]/g, "")
+                            .toUpperCase();
+                          return disponibilidad.some((d) => d.efec_dia === dia);
+                        }}
+                        filterTime={(time) => esHoraPermitida(time)}
+                        placeholderText="Selecciona fecha y hora"
+                        name="fecha"
+                        id="fecha"
+                        className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                      />
+                    </div>
+                  ) : (
+                    <input
+                      type="hidden"
+                      name="fecha"
+                      value={
+                        formData.fecha
+                          ? new Date(formData.fecha).toLocaleString("es-ES", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                          : new Date(datosEvento.minDate).toLocaleString("es-ES", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                      }
+                    />
+                  )}
+
+                  <div>
+                    <label htmlFor="nombre" className="block text-lg font-anton text-gray-700">
+                      Nombre
+                    </label>
+                    <input
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      required
+                      value={formData.nombre}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="apellidos" className="block text-lg font-anton text-gray-700">
+                      Apellidos
+                    </label>
+                    <input
+                      type="text"
+                      id="apellidos"
+                      name="apellidos"
+                      required
+                      value={formData.apellidos}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="edad" className="block text-lg font-anton text-gray-700">
+                      Edad
+                    </label>
+                    <input
+                      type="text"
+                      id="edad"
+                      name="edad"
+                      required
+                      value={formData.edad}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="telefono" className="block text-lg font-anton text-gray-700">
+                      Teléfono
+                    </label>
+                    <input
+                      type="tel"
+                      id="telefono"
+                      name="telefono"
+                      required
+                      value={formData.telefono}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                      minLength={9} // Validación mínima de 9 dígitos
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-lg font-anton text-gray-700">
+                      Correo Electrónico
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="foto" className="block text-lg font-anton text-gray-700">
+                      Foto
+                    </label>
+                    <input
+                      type="file"
+                      name="foto"
+                      id="foto"
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files[0]) {
+                          setEventImage(e.target.files[0]);
+                        }
+                      }}
+                      className="w-full"
+                    />
+                  </div>
+
+                  <div>
+                    <button
+                      type="submit"
+                      className="w-full py-3 px-4 bg-[#60A5FA] text-white font-anton font-semibold rounded-md shadow-lg transition duration-300 hover:bg-[#3B82F6] focus:outline-none focus:ring-2 focus:ring-[#60A5FA]"
+                      disabled={isSubmitting || cooldown > 0}
+                    >
+                      {cooldown > 0
+                        ? `Espere ${cooldown} segundos`
+                        : "Enviar"}
+                    </button>
+                  </div>
+
+                  {status && (
+                    <p className="text-center font-anton text-lg text-[#3B82F6] mt-4">
+                      {status}
+                    </p>
+                  )}
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </main>
