@@ -42,5 +42,8 @@ next-env.d.ts
 
 # local env files
 .vscode
-public/uploads/inscritos
-public/uploads/temp
+public/uploads/inscritos/*
+!/public/uploads/inscritos/.gitkeep
+
+/public/uploads/temp/*
+!/public/uploads/temp/.gitkeep
