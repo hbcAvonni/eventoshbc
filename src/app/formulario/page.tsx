@@ -336,9 +336,8 @@ export default function Formulario() {
                       </label>
                       <DatePicker
                         selected={
-                          formData.fecha
-                            ? new Date(formData.fecha)
-                            : (() => {
+                          datosEvento.minDate
+                            ? (() => {
                               if (!datosEvento.minDate || disponibilidad.length === 0) return null;
 
                               const baseDate = new Date(datosEvento.minDate);
@@ -351,6 +350,7 @@ export default function Formulario() {
 
                               return baseDate;
                             })()
+                            : new Date(formData.fecha)
                         }
                         onChange={(date: Date | null) => {
                           if (!date) return;
