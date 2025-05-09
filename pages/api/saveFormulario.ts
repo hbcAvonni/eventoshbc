@@ -2,7 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable, { File, Fields, Files } from 'formidable';
 import { withCors } from '@/lib/withCors';
 import mysql from 'mysql2/promise';
-import { withCors } from '../../lib/withCors';
+import s3 from '@/lib/s3';
+import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
 
 export const config = {
   api: {
@@ -10,10 +12,8 @@ export const config = {
   },
 };
 
-// Función helper para parsear el formulario como promesa
 function parseForm(req: NextApiRequest): Promise<{ fields: Fields; files: Files }> {
   const form = formidable({
-    uploadDir: path.join(process.cwd(), 'public/uploads/temp'),
     keepExtensions: true,
     multiples: false,
   });
@@ -26,7 +26,7 @@ function parseForm(req: NextApiRequest): Promise<{ fields: Fields; files: Files 
   });
 }
 
-export default withCors(async (req, res) => {
+export default withCors(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
@@ -35,14 +35,6 @@ export default withCors(async (req, res) => {
     const { fields, files } = await parseForm(req);
 
     const fecha = Array.isArray(fields.fecha) ? fields.fecha[0] : fields.fecha;
-    if (!fecha) {
-      return res.status(400).json({ error: "La fecha es obligatoria" });
-    }
-    const fechaStr = fecha as string;
-    const fechaFormateada = fechaStr.includes("T")
-      ? new Date(fechaStr)
-      : `${fechaStr} 00:00:00`;
-
     const nombre = Array.isArray(fields.nombre) ? fields.nombre[0] : fields.nombre;
     const apellidos = Array.isArray(fields.apellidos) ? fields.apellidos[0] : fields.apellidos;
     const telefono = Array.isArray(fields.telefono) ? fields.telefono[0] : fields.telefono;
@@ -50,24 +42,29 @@ export default withCors(async (req, res) => {
     const email = Array.isArray(fields.email) ? fields.email[0] : fields.email;
     const edad = Array.isArray(fields.edad) ? fields.edad[0] : fields.edad;
 
-    if (!nombre || !apellidos || !telefono || !evento || !email) {
+    if (!fecha || !nombre || !apellidos || !telefono || !evento || !email) {
       return res.status(400).json({ error: "Faltan campos obligatorios" });
     }
 
     const image = Array.isArray(files.foto) ? files.foto[0] : files.foto;
-    if (!image) {
+    if (!image || !image.filepath) {
       return res.status(400).json({ error: "No se proporcionó la imagen correctamente" });
     }
 
-    const dir = path.join(process.cwd(), 'public/uploads/inscritos');
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const fileContent = fs.readFileSync(image.filepath);
+    const fileExt = image.originalFilename?.split('.').pop();
+    const s3Key = `inscritos/${uuidv4()}.${fileExt}`;
+    const s3Params = {
+      Bucket: process.env.S3_BUCKET_NAME!,
+      Key: s3Key,
+      Body: fileContent,
+      ContentType: image.mimetype || 'image/jpeg',
+    };
 
-    const imageName = image.originalFilename || image.newFilename || 'imagen.jpg';
-    const imagePath = path.join(dir, imageName);
-    const dbImagePath = `./uploads/inscritos/${imageName}`;
+    const uploadResult = await s3.upload(s3Params).promise();
+    const imageUrl = uploadResult.Location;
 
-    fs.copyFileSync(image.filepath, imagePath);
-    fs.unlinkSync(image.filepath);
+    const fechaFormateada = fecha.includes("T") ? new Date(fecha) : `${fecha} 00:00:00`;
 
     const db = await mysql.createConnection({
       host: process.env.DB_HOST,
@@ -78,12 +75,14 @@ export default withCors(async (req, res) => {
     });
 
     await db.execute(
-      "INSERT INTO eventos_inscripcion (epi_evento, epi_fecha, epi_nombre, epi_apellidos, epi_edad, epi_telefono, epi_email, epi_foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [evento, fechaFormateada, nombre, apellidos, edad, telefono, email, dbImagePath]
+      `INSERT INTO eventos_inscripcion
+        (epi_evento, epi_fecha, epi_nombre, epi_apellidos, epi_edad, epi_telefono, epi_email, epi_foto)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [evento, fechaFormateada, nombre, apellidos, edad, telefono, email, imageUrl]
     );
-    await db.end();
 
-    return res.status(200).json({ message: "Formulario guardado con éxito" });
+    await db.end();
+    return res.status(200).json({ message: "Formulario guardado con éxito", fotoUrl: imageUrl });
   } catch (error) {
     console.error("Error inesperado:", error);
     return res.status(500).json({ error: "Error inesperado del servidor" });
