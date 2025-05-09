@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql2/promise';
-import { withCors } from '../../lib/withCors';
+import { withCors } from '@/lib/withCors';
 
 export default withCors(async function handler(req, res) {
     try {

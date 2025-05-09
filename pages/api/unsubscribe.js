@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
-import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
+import { withCors } from '@/lib/withCors'; // Ajusta el path según tu estructura
 
 dotenv.config();
 

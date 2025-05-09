@@ -2,7 +2,7 @@ import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import mysql from 'mysql2/promise';
 import path from 'path';
-import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
+import { withCors } from '@/lib/withCors'; // Ajusta el path según tu estructura
 
 export const config = {
   api: {

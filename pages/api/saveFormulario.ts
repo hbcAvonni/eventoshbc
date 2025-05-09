@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable, { File, Fields, Files } from 'formidable';
-import fs from 'fs';
-import path from 'path';
+import { withCors } from '@/lib/withCors';
 import mysql from 'mysql2/promise';
 import { withCors } from '../../lib/withCors';
 

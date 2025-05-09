@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import mysql from 'mysql2/promise';
-import { withCors } from '../../lib/withCors';
+import { withCors } from '@/lib/withCors';
 
 const SECRET_KEY = process.env.SECRET_KEY;
 

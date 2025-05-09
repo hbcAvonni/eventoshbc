@@ -1,7 +1,7 @@
 // pages/api/create-checkout-session.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
-import { withCors } from '../../lib/withCors';
+import { withCors } from '@/lib/withCors';
 
 const stripe = new Stripe(process.env.STRIPE_SECRETS_KEY!);
 

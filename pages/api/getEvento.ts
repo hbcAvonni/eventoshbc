@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql2/promise';
-import { withCors } from '../../lib/withCors';
+import { withCors } from '@/lib/withCors';
 
 type EventoCompleto = {
   eve_id: number;

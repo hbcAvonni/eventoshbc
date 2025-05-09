@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { withCors } from '../../lib/withCors'; // Ajusta el path según tu estructura
+import { withCors } from '@/lib/withCors'; // Ajusta el path según tu estructura
 
 export default withCors(async function handler(req, res) {
   if (req.method !== "POST") {
