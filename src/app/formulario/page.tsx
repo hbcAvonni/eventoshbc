@@ -229,6 +229,7 @@ export default function Formulario() {
       });
 
       if (!res.ok) throw new Error("Error al enviar el formulario");
+      const dataF = await res.json();
 
       setStatus("Formulario enviado correctamente. Recibirás respuesta en breve.");
       setCooldown(30);
@@ -241,6 +242,7 @@ export default function Formulario() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...formData,
+            idInscripcion: dataF.idRegistro,
             costoEvento: datosEvento.precio,
             nombreEvento: datosEvento.nombreEvento,
           }),
