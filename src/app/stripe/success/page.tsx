@@ -19,10 +19,17 @@ export default function SuccessPage() {
     const encryptedNombreEvento = searchParams?.get("92f90dbcb244ccbaea462dbaf7982258aa915717") ?? ""; // nombreEvento en SHA1
     const encryptedFecha = searchParams?.get("c01a46e22e8d9c203a5a1ae07b5f2904780020d2") ?? ""; // fecha en SHA1
     const encryptedIdInscripcion = searchParams?.get("e73b8b9715be39953d9cd56ee7f1bda1329567ae") ?? ""; // idInscripcion en SHA1
-    const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY;
-    if (!secretKey) {
-        console.error("La clave secreta no está definida en el entorno");
-        return;
+    const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
+    const [claveValida, setClaveValida] = useState(true);
+    useEffect(() => {
+        if (!secretKey) {
+            console.error("La clave secreta no está definida en el entorno");
+            setClaveValida(false);
+        }
+    }, [secretKey]);
+
+    if (!claveValida) {
+        return <p className="text-center text-red-500">Error: clave secreta no definida.</p>;
     }
     const bytesNombre = CryptoJS.AES.decrypt(encryptedNombre, secretKey);
     const nombre = bytesNombre.toString(CryptoJS.enc.Utf8);

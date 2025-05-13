@@ -1,7 +1,7 @@
 // pages/cancel.tsx
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import CryptoJS from "crypto-js";
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -9,10 +9,17 @@ export default function CancelPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const encryptedIdInscripcion = searchParams?.get("e73b8b9715be39953d9cd56ee7f1bda1329567ae") ?? ""; // idInscripcion en SHA1
-    const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY;
-    if (!secretKey) {
-        console.error("La clave secreta no está definida en el entorno");
-        return;
+    const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
+    const [claveValida, setClaveValida] = useState(true);
+    useEffect(() => {
+        if (!secretKey) {
+            console.error("La clave secreta no está definida en el entorno");
+            setClaveValida(false);
+        }
+    }, [secretKey]);
+
+    if (!claveValida) {
+        return <p className="text-center text-red-500">Error: clave secreta no definida.</p>;
     }
     const bytesIdInscripcion = CryptoJS.AES.decrypt(encryptedIdInscripcion, secretKey);
     const idInscripcion = bytesIdInscripcion.toString(CryptoJS.enc.Utf8);
