@@ -20,17 +20,14 @@ export default function SuccessPage() {
     const encryptedFecha = searchParams?.get("c01a46e22e8d9c203a5a1ae07b5f2904780020d2") ?? ""; // fecha en SHA1
     const encryptedIdInscripcion = searchParams?.get("e73b8b9715be39953d9cd56ee7f1bda1329567ae") ?? ""; // idInscripcion en SHA1
     const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
-    const [claveValida, setClaveValida] = useState(true);
+    const [errorClave, setErrorClave] = useState<string | null>(null);
+
     useEffect(() => {
         if (!secretKey) {
             console.error("La clave secreta no está definida en el entorno");
-            setClaveValida(false);
+            setErrorClave("Error: clave secreta no definida.");
         }
     }, [secretKey]);
-
-    if (!claveValida) {
-        return <p className="text-center text-red-500">Error: clave secreta no definida.</p>;
-    }
     const bytesNombre = CryptoJS.AES.decrypt(encryptedNombre, secretKey);
     const nombre = bytesNombre.toString(CryptoJS.enc.Utf8);
     const bytesApellidos = CryptoJS.AES.decrypt(encryptedApellidos, secretKey);
@@ -154,6 +151,10 @@ export default function SuccessPage() {
             doc.save(`entrada_${nombreEventoSanitizado}_${ticketNumber}.pdf`);
         }
     };
+
+    if (errorClave) {
+        return <p className="text-center text-red-500">{errorClave}</p>;
+    }
 
     return (
         <main className="flex flex-col items-center justify-center min-h-screen bg-white text-center px-4">
