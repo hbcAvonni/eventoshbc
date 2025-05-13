@@ -74,15 +74,20 @@ export default withCors(async (req: NextApiRequest, res: NextApiResponse) => {
       database: process.env.DB_NAME,
     });
 
-    await db.execute(
+    const [result] = await db.execute(
       `INSERT INTO eventos_inscripcion
-        (epi_evento, epi_fecha, epi_nombre, epi_apellidos, epi_edad, epi_telefono, epi_email, epi_foto)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    (epi_evento, epi_fecha, epi_nombre, epi_apellidos, epi_edad, epi_telefono, epi_email, epi_foto)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [evento, fechaFormateada, nombre, apellidos, edad, telefono, email, imageUrl]
-    );
+    ) as mysql.ResultSetHeader[];
+    const insertedId = result.insertId;
 
     await db.end();
-    return res.status(200).json({ message: "Formulario guardado con éxito", fotoUrl: imageUrl });
+    return res.status(200).json({
+      message: "Formulario guardado con éxito",
+      fotoUrl: imageUrl,
+      idRegistro: insertedId,
+    });
   } catch (error) {
     console.error("Error inesperado:", error);
     return res.status(500).json({ error: "Error inesperado del servidor" });
