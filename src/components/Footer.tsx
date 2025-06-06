@@ -49,9 +49,8 @@ export default function Footer() {
           <div className="bg-blue-400 p-8 rounded-lg">
             <h3 className="text-white text-2xl mb-4 font-anton">CONTACTA CON NOSOTROS</h3>
             <p className="text-white text-xl mb-4">+34 624 83 94 39</p>
-            <a href="mailto:info@sbksocialclub.com" className="text-white">
-              info@sbksocialclub.com | info@taikoproductions.com
-            </a>
+            <a href="mailto:info@sbksocialclub.com" className="text-white">info@sbksocialclub.com | </a>
+            <a href="mailto:info@taikoproductions.com" className="text-white">info@taikoproductions.com</a>
           </div>
 
           {/* Redes Sociales */}
@@ -74,6 +73,12 @@ export default function Footer() {
               <a href="https://www.linkedin.com/company/sbksocial/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+                </svg>
+              </a>
+              {/* whatsapp */}
+              <a href="https://wa.me/34624839439" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.002 2.003c-7.75 0-14.003 6.252-14.003 14.003 0 2.47.646 4.888 1.873 7.017L2 30l7.146-1.87A13.946 13.946 0 0016.002 30c7.75 0 14.003-6.252 14.003-14.003S23.752 2.003 16.002 2.003zm0 25.451a11.404 11.404 0 01-5.817-1.582l-.418-.248-4.246 1.11 1.13-4.14-.27-.43a11.385 11.385 0 01-1.742-6.062c0-6.278 5.107-11.386 11.386-11.386 6.28 0 11.386 5.108 11.386 11.386 0 6.279-5.106 11.386-11.386 11.386zm6.266-8.584c-.345-.173-2.041-1.008-2.358-1.123-.316-.115-.547-.173-.777.173s-.892 1.123-1.093 1.347c-.2.222-.4.25-.744.086-.345-.173-1.46-.537-2.78-1.71-1.027-.916-1.72-2.05-1.92-2.395-.2-.346-.022-.533.151-.705.155-.155.345-.4.518-.6.173-.2.23-.345.345-.575.115-.23.057-.432-.028-.605-.086-.173-.777-1.873-1.064-2.575-.28-.673-.566-.582-.777-.582-.2 0-.432-.029-.662-.029-.23 0-.6.086-.913.432-.316.346-1.2 1.17-1.2 2.858s1.229 3.314 1.4 3.547c.173.23 2.421 3.693 5.865 5.177.82.354 1.46.566 1.96.726.823.262 1.571.225 2.16.137.658-.098 2.041-.834 2.33-1.637.287-.802.287-1.49.2-1.637-.086-.144-.316-.23-.66-.403z" />
                 </svg>
               </a>
             </div>
