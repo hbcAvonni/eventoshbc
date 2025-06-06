@@ -1,6 +1,17 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+
+interface Local {
+  scbl_id: number;
+  scbl_nombre: string;
+  scbl_web: string;
+  scbl_direccion: string;
+  scbl_imagen: string;
+}
 
 const espacios = [
   {
@@ -26,6 +37,27 @@ const espacios = [
 ];
 
 export default function EspaciosPage() {
+  const [locals, setLocals] = useState<Local[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchLocals = async () => {
+      try {
+        const res = await fetch('./api/getLocals');
+        if (!res.ok) throw new Error("Error al obtener las marcas");
+        const data = await res.json();
+        setLocals(data.rows);
+      } catch (error: unknown) {
+        setError(error instanceof Error ? error.message : "Error desconocido");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLocals();
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -42,6 +74,41 @@ export default function EspaciosPage() {
             <h1 className="text-5xl md:text-7xl font-anton text-white mb-6">
               ESPACIOS
             </h1>
+          </div>
+        </div>
+
+        {/* Local Grid */}
+        <div className="bg-white py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 items-center">
+              {
+                loading ? (
+                  <p className="text-center text-gray-500">Cargando Colaboradores...</p>
+                ) : error ? (
+                  <p className="text-center text-red-500">{error}</p>
+                ) : (locals.map((local) => (
+                  <a
+                    href={local.scbl_web ?? "javascript:void(0);"}
+                    target={local.scbl_web ? "_blank" : ""}
+                    rel="noopener noreferrer"
+                    key={local.scbl_id}
+                  >
+                    <div
+                      key={local.scbl_id}
+                      className="flex items-center justify-center p-6 bg-gray-600 rounded-xl shadow-md hover:shadow-xl transition duration-300"
+                    >
+                      <Image
+                        src={local.scbl_imagen}
+                        alt={local.scbl_nombre}
+                        width={200}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
+                  </a>
+                )))
+              }
+            </div>
           </div>
         </div>
 
