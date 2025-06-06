@@ -48,9 +48,9 @@ export default function Footer() {
           {/* Contact Info */}
           <div className="bg-blue-400 p-8 rounded-lg">
             <h3 className="text-white text-2xl mb-4 font-anton">CONTACTA CON NOSOTROS</h3>
-            <p className="text-white text-xl mb-4">+34 613 68 53 04</p>
+            <p className="text-white text-xl mb-4">+34 624 83 94 39</p>
             <a href="mailto:info@sbksocialclub.com" className="text-white">
-              info@sbksocialclub.com
+              info@sbksocialclub.com | info@taikoproductions.com
             </a>
           </div>
 
