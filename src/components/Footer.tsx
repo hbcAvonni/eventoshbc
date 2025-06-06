@@ -110,7 +110,7 @@ export default function Footer() {
           {/* SBK SOCIAL */}
           <div className="mb-4">
             <Link href="/" className="text-[var(--primary-red)] text-2xl font-anton">
-              SBK SOCIAL
+              SBK SOCIAL | TAIKO PRODUCTIONS
             </Link>
           </div>
           {/* Links Section */}
