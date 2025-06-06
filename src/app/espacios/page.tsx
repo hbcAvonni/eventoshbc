@@ -83,7 +83,7 @@ export default function EspaciosPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 items-center">
               {
                 loading ? (
-                  <p className="text-center text-gray-500">Cargando Colaboradores...</p>
+                  <p className="text-center text-gray-500">Cargando Locales...</p>
                 ) : error ? (
                   <p className="text-center text-red-500">{error}</p>
                 ) : (locals.map((local) => (
