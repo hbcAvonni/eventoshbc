@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter, Anton, Roboto, Raleway, Montserrat } from "next/font/google";
 import { ClientBody } from "./ClientBody"; // Fixed import of ClientBody component
 import "react-datepicker/dist/react-datepicker.css";
+import FloatingButton from '@/components/FloatingButton';
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 
@@ -46,6 +47,7 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${inter.variable} ${anton.variable} ${roboto.variable} ${raleway.variable} ${montserrat.variable}`}>
         <ClientBody>{children}</ClientBody>
+        <FloatingButton />
       </body>
     </html>
   );
