@@ -111,7 +111,7 @@ export default function Formulario() {
           minDate: data.rows[0].eve_fecha,
           maxDate: data.rows[0].eve_fecha_fin,
           repetir: data.rows[0].eve_repetir,
-          establecimiento: data.rows[0].scbl_nombre + " (" + data.rows[0].scbl_direccion + ")"
+          establecimiento: data.rows[0].eve_lugar ? data.rows[0].scbl_nombre + " (" + data.rows[0].scbl_direccion + ")" : ""
         });
 
         if (data.rows[0].eve_repetir === "SI") {
@@ -305,67 +305,104 @@ export default function Formulario() {
         <div className="bg-white py-12">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row gap-10">
-
               {/* DESCRIPCIÓN DEL EVENTO */}
               <div className="md:w-1/2 space-y-6">
                 <h2 className="text-3xl font-anton text-[#3B82F6]">
                   {datosEvento.nombreEvento} ( {datosEvento.precio} € )
                 </h2>
                 <p className="text-md text-gray-700 leading-relaxed whitespace-pre-line">
-                  {datosEvento.descripcion.replace(/\\n/g, "\n").split("\n").map((line, index) => (
-                    <span key={index}>
-                      {line}
-                      <br />
-                    </span>
-                  ))}
+                  {datosEvento.descripcion
+                    .replace(/\\n/g, "\n")
+                    .split("\n")
+                    .map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
                 </p>
-                <p className="text-lg font-anton text-gray-800">
-                  &#x1F4CD; Local: {datosEvento.establecimiento}
-                </p>
+                {datosEvento.establecimiento !== "" ? (
+                  <p className="text-lg font-anton text-gray-800">
+                    &#x1F4CD; Local: {datosEvento.establecimiento}
+                  </p>
+                ) : null}
               </div>
 
               {/* FORMULARIO */}
               <div className="md:w-1/2">
-                <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
+                <form
+                  onSubmit={handleSubmit}
+                  className="max-w-2xl mx-auto space-y-6"
+                >
                   <input type="hidden" name="evento" value={formData.evento} />
-                  <input type="hidden" name="costoEvento" value={datosEvento.precio} />
-                  <input type="hidden" name="nombreEvento" value={datosEvento.nombreEvento} />
+                  <input
+                    type="hidden"
+                    name="costoEvento"
+                    value={datosEvento.precio}
+                  />
+                  <input
+                    type="hidden"
+                    name="nombreEvento"
+                    value={datosEvento.nombreEvento}
+                  />
 
                   {datosEvento.repetir === "SI" ? (
                     <div>
-                      <label htmlFor="fecha" className="block text-lg font-anton text-gray-700">
+                      <label
+                        htmlFor="fecha"
+                        className="block text-lg font-anton text-gray-700"
+                      >
                         Fecha
                       </label>
                       <DatePicker
                         selected={
                           datosEvento.minDate
                             ? (() => {
-                              if (!datosEvento.minDate || disponibilidad.length === 0) return null;
+                                if (
+                                  !datosEvento.minDate ||
+                                  disponibilidad.length === 0
+                                )
+                                  return null;
 
-                              const baseDate = new Date(datosEvento.minDate);
-                              const [hora, minutos] = disponibilidad[0].efec_hora_inicio.split(":").map(Number);
+                                const baseDate = new Date(datosEvento.minDate);
+                                const [hora, minutos] =
+                                  disponibilidad[0].efec_hora_inicio
+                                    .split(":")
+                                    .map(Number);
 
-                              baseDate.setHours(hora);
-                              baseDate.setMinutes(minutos);
-                              baseDate.setSeconds(0);
-                              baseDate.setMilliseconds(0);
+                                baseDate.setHours(hora);
+                                baseDate.setMinutes(minutos);
+                                baseDate.setSeconds(0);
+                                baseDate.setMilliseconds(0);
 
-                              return baseDate;
-                            })()
+                                return baseDate;
+                              })()
                             : new Date(formData.fecha)
                         }
                         onChange={(date: Date | null) => {
                           if (!date) return;
 
                           const year = date.getFullYear();
-                          const month = String(date.getMonth() + 1).padStart(2, "0");
+                          const month = String(date.getMonth() + 1).padStart(
+                            2,
+                            "0"
+                          );
                           const day = String(date.getDate()).padStart(2, "0");
-                          const hours = String(date.getHours()).padStart(2, "0");
-                          const minutes = String(date.getMinutes()).padStart(2, "0");
+                          const hours = String(date.getHours()).padStart(
+                            2,
+                            "0"
+                          );
+                          const minutes = String(date.getMinutes()).padStart(
+                            2,
+                            "0"
+                          );
 
                           const localDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
-                          setFormData((prev) => ({ ...prev, fecha: localDatetime }));
+                          setFormData((prev) => ({
+                            ...prev,
+                            fecha: localDatetime,
+                          }));
                           setStatus("");
                         }}
                         locale="es"
@@ -373,10 +410,19 @@ export default function Formulario() {
                         timeFormat="HH:mm"
                         timeIntervals={30}
                         dateFormat="Pp"
-                        minDate={datosEvento.minDate ? new Date(datosEvento.minDate) : undefined}
-                        maxDate={datosEvento.maxDate ? new Date(datosEvento.maxDate) : undefined}
+                        minDate={
+                          datosEvento.minDate
+                            ? new Date(datosEvento.minDate)
+                            : undefined
+                        }
+                        maxDate={
+                          datosEvento.maxDate
+                            ? new Date(datosEvento.maxDate)
+                            : undefined
+                        }
                         filterDate={(date) => {
-                          const dia = date.toLocaleDateString("es-ES", { weekday: "long" })
+                          const dia = date
+                            .toLocaleDateString("es-ES", { weekday: "long" })
                             .normalize("NFD")
                             .replace(/[\u0300-\u036f]/g, "")
                             .toUpperCase();
@@ -396,25 +442,31 @@ export default function Formulario() {
                       value={
                         formData.fecha
                           ? new Date(formData.fecha).toLocaleString("es-ES", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                          : new Date(datosEvento.minDate).toLocaleString("es-ES", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : new Date(datosEvento.minDate).toLocaleString(
+                              "es-ES",
+                              {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )
                       }
                     />
                   )}
 
                   <div>
-                    <label htmlFor="nombre" className="block text-lg font-anton text-gray-700">
+                    <label
+                      htmlFor="nombre"
+                      className="block text-lg font-anton text-gray-700"
+                    >
                       Nombre
                     </label>
                     <input
@@ -429,7 +481,10 @@ export default function Formulario() {
                   </div>
 
                   <div>
-                    <label htmlFor="apellidos" className="block text-lg font-anton text-gray-700">
+                    <label
+                      htmlFor="apellidos"
+                      className="block text-lg font-anton text-gray-700"
+                    >
                       Apellidos
                     </label>
                     <input
@@ -444,7 +499,10 @@ export default function Formulario() {
                   </div>
 
                   <div>
-                    <label htmlFor="edad" className="block text-lg font-anton text-gray-700">
+                    <label
+                      htmlFor="edad"
+                      className="block text-lg font-anton text-gray-700"
+                    >
                       Edad
                     </label>
                     <input
@@ -459,7 +517,10 @@ export default function Formulario() {
                   </div>
 
                   <div>
-                    <label htmlFor="telefono" className="block text-lg font-anton text-gray-700">
+                    <label
+                      htmlFor="telefono"
+                      className="block text-lg font-anton text-gray-700"
+                    >
                       Teléfono
                     </label>
                     <input
@@ -475,7 +536,10 @@ export default function Formulario() {
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-lg font-anton text-gray-700">
+                    <label
+                      htmlFor="email"
+                      className="block text-lg font-anton text-gray-700"
+                    >
                       Correo Electrónico
                     </label>
                     <input
@@ -490,7 +554,10 @@ export default function Formulario() {
                   </div>
 
                   <div>
-                    <label htmlFor="foto" className="block text-lg font-anton text-gray-700">
+                    <label
+                      htmlFor="foto"
+                      className="block text-lg font-anton text-gray-700"
+                    >
                       Foto
                     </label>
                     <input
@@ -513,9 +580,7 @@ export default function Formulario() {
                       className="w-full py-3 px-4 bg-[#60A5FA] text-white font-anton font-semibold rounded-md shadow-lg transition duration-300 hover:bg-[#3B82F6] focus:outline-none focus:ring-2 focus:ring-[#60A5FA]"
                       disabled={isSubmitting || cooldown > 0}
                     >
-                      {cooldown > 0
-                        ? `Espere ${cooldown} segundos`
-                        : "Enviar"}
+                      {cooldown > 0 ? `Espere ${cooldown} segundos` : "Enviar"}
                     </button>
                   </div>
 

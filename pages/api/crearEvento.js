@@ -37,7 +37,7 @@ export default withCors(async function handler(req, res) {
       const endDate = endDateRaw ? new Date(endDateRaw) : null;
 
       const maxPeopleStr = getField('maxPeople');
-      const maxPeople = maxPeopleStr !== undefined ? parseInt(maxPeopleStr, 10) : null;
+      const maxPeople = maxPeopleStr !== undefined ? parseInt(maxPeopleStr, 10) : "Aforo";
 
       const shortDescription = getField('shortDescription') || '';
       const longDescription = getField('longDescription') || '';
@@ -48,6 +48,8 @@ export default withCors(async function handler(req, res) {
       const recurringScheduleRaw = Array.isArray(fields.recurringSchedule) ? fields.recurringSchedule[0] : fields.recurringSchedule;
 
       const recurringSchedule = recurringScheduleRaw ? JSON.parse(recurringScheduleRaw) : [];
+      const localRaw = getField('local');
+      const local = localRaw !== "" ? parseInt(localRaw, 10) : null;
 
       if (isNaN(price)) {
         return res.status(400).json({ message: 'Precio inválido' });
@@ -87,8 +89,8 @@ export default withCors(async function handler(req, res) {
       // Guardar en la tabla eventos
       const [result] = await db.execute(
         `INSERT INTO eventos 
-        (eve_nombre, eve_descripcion, eve_imagen, eve_detalles, eve_fecha, eve_fecha_fin, eve_precio, eve_cupos, eve_repetir) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        (eve_nombre, eve_descripcion, eve_imagen, eve_detalles, eve_fecha, eve_fecha_fin, eve_precio, eve_cupos, eve_repetir, eve_lugar) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           name,
           longDescription,
@@ -98,7 +100,8 @@ export default withCors(async function handler(req, res) {
           endDate,
           price,
           maxPeople,
-          isRecurring
+          isRecurring,
+          local
         ]
       );
 
