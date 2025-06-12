@@ -60,7 +60,7 @@ export default function EventsSection() {
           EVENTOS
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {eventsPasados.map((event) => (
             <div key={event.eve_id} className="flex flex-col items-center">
               <div className="relative w-full mb-4 overflow-hidden rounded-md" style={{ height: "400px" }}>
@@ -91,9 +91,6 @@ export default function EventsSection() {
               </button>
             </div>
           ))}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {events.map((event) => (
             <div key={event.eve_id} className="flex flex-col items-center">
               <div className="relative w-full mb-4 overflow-hidden rounded-md" style={{ height: "400px" }}>
