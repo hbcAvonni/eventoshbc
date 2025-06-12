@@ -16,6 +16,7 @@ interface Event {
 
 export default function EventsSection() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [eventsPasados, setEventsPasados] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -27,6 +28,7 @@ export default function EventsSection() {
         if (!res.ok) throw new Error("Error al obtener eventos");
         const data = await res.json();
         setEvents(data.eventosActivos);
+        setEventsPasados(data.eventosPasados);
       } catch (error: unknown) {
         setError(error instanceof Error ? error.message : "Error desconocido");
       } finally {
@@ -57,6 +59,39 @@ export default function EventsSection() {
         <h2 className="text-4xl md:text-5xl font-anton text-center text-white mb-12">
           EVENTOS
         </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-3">
+          {eventsPasados.map((event) => (
+            <div key={event.eve_id} className="flex flex-col items-center">
+              <div className="relative w-full mb-4 overflow-hidden rounded-md" style={{ height: "400px" }}>
+                {event.eve_imagen ? (
+                  <Image
+                    onClick={() => comprarEvento(event)}
+                    src={event.eve_imagen}
+                    alt={event.eve_nombre}
+                    width={300}
+                    height={400}
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <div className="bg-gray-200 w-full h-full flex items-center justify-center">
+                    <span>No Image Available</span>
+                  </div>
+                )}
+              </div>
+
+              <h3 className="text-white text-lg mb-1">{event.eve_nombre}</h3>
+              <p className="text-white mb-2">{event.eve_detalles ?? ""}</p>
+
+              <button
+                onClick={() => comprarEvento(event)}
+                className="bg-white hover:bg-gray-100 text-[var(--primary-red)] px-6 py-2 rounded font-bold transition-colors"
+              >
+                MAS INFORMACIÓN
+              </button>
+            </div>
+          ))}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {events.map((event) => (
