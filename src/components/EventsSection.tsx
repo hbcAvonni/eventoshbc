@@ -117,7 +117,7 @@ export default function EventsSection() {
                 onClick={() => comprarEvento(event)}
                 className="bg-white hover:bg-gray-100 text-[var(--primary-red)] px-6 py-2 rounded font-bold transition-colors"
               >
-                MAS INFORMACIÓN
+                COMPRAR ENTRADA
               </button>
             </div>
           ))}
