@@ -1,5 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+interface Local {
+  scbl_id: number;
+  scbl_nombre: string;
+  scbl_direccion: string;
+}
 
 export default function SbkAdminPage(): JSX.Element {
   const getStoredToken = (): string => {
@@ -25,6 +31,7 @@ export default function SbkAdminPage(): JSX.Element {
   const [newsletterMessage, setNewsletterMessage] = useState("");
 
   const [eventImage, setEventImage] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [eventName, setEventName] = useState("");
   const [eventPrice, setEventPrice] = useState("");
   const [maxPeople, setMaxPeople] = useState("");
@@ -39,11 +46,29 @@ export default function SbkAdminPage(): JSX.Element {
     end: string;
   };
   const [recurringSchedule, setRecurringSchedule] = useState<DaySchedule[]>([]);
-  const [eventMessage, setEventMessage] = useState("");
+  const [locals, setLocals] = useState<Local[]>([]);
+  const [local, setLocal] = useState("");
 
+  const [eventMessage, setEventMessage] = useState("");
   const [loadingLogin, setLoadingLogin] = useState(false);
   const [loadingNewsletter, setLoadingNewsletter] = useState(false);
   const [loadingEvent, setLoadingEvent] = useState(false);
+
+  useEffect(() => {
+    const fetchLocals = async () => {
+      try {
+        const res = await fetch('./api/getLocals');
+        if (!res.ok) throw new Error("Error al obtener los locales");
+        const data = await res.json();
+        setLocals(data.rows);
+      } catch (error: unknown) {
+        setStatus("error");
+        setLoginMessage(error instanceof Error ? error.message : "No se pudieron cargar los locales");
+      }
+    };
+
+    fetchLocals();
+  }, []);
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,6 +134,11 @@ export default function SbkAdminPage(): JSX.Element {
     setIsRecurring("NO");
     setEndDateTime("");
     setRecurringSchedule([]);
+    setLocal("");
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const crearEvento = async (e: React.FormEvent) => {
@@ -123,7 +153,9 @@ export default function SbkAdminPage(): JSX.Element {
       }
       formData.append("name", eventName);
       formData.append("price", parseFloat(eventPrice).toString());
-      formData.append("maxPeople", maxPeople);
+      if (maxPeople) {
+        formData.append("maxPeople", maxPeople);
+      }
       formData.append("shortDescription", shortDescription);
       formData.append("longDescription", longDescription);
       formData.append("startDateTime", startDateTime);
@@ -131,6 +163,9 @@ export default function SbkAdminPage(): JSX.Element {
       if (isRecurring === "SI") {
         formData.append("endDateTime", endDateTime);
         formData.append("recurringSchedule", JSON.stringify(recurringSchedule));
+      }
+      if (local) {
+        formData.append("local", local);
       }
 
       const res = await fetch('./api/crearEvento', {
@@ -220,6 +255,7 @@ export default function SbkAdminPage(): JSX.Element {
               <input
                 type="file"
                 accept="image/*"
+                ref={fileInputRef}
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
                     setEventImage(e.target.files[0]);
@@ -360,6 +396,20 @@ export default function SbkAdminPage(): JSX.Element {
                   </div>
                 </>
               )}
+
+              <label className="block font-semibold">Local del evento</label>
+              <select
+                value={local}
+                onChange={(e) => setLocal(e.target.value)}
+                className="w-full border p-2 rounded"
+              >
+                <option value="">Seleccione un local</option>
+                {locals.map((local) => (
+                  <option key={local.scbl_id} value={local.scbl_id}>
+                    {local.scbl_nombre} ({local.scbl_direccion})
+                  </option>
+                ))}
+              </select>
 
               <button
                 type="submit"
