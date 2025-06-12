@@ -11,7 +11,7 @@ export default withCors(async function handler(req, res) {
     database: process.env.DB_NAME,
   });
 
-  const [rows] = await db.execute('SELECT * FROM sponsors_coll_brand_locals WHERE scbl_tipo = "BRAND"');
+  const [rows] = await db.execute('SELECT * FROM sponsors_coll_brand_locals WHERE scbl_tipo = "ASSOCIATION"');
 
   res.status(200).json({ rows });
 });

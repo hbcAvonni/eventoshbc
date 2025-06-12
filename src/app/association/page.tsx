@@ -21,8 +21,8 @@ export default function MarcasPage() {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const res = await fetch('./api/getBrands');
-        if (!res.ok) throw new Error("Error al obtener las marcas");
+        const res = await fetch('./api/getAssociations');
+        if (!res.ok) throw new Error("Error al obtener las asociaciones");
         const data = await res.json();
         setBrands(data.rows);
       } catch (error: unknown) {
@@ -49,7 +49,7 @@ export default function MarcasPage() {
           <div className="absolute inset-0 bg-black/60" />
           <div className="container mx-auto px-4 z-10 text-center">
             <h1 className="text-5xl md:text-7xl font-anton text-white mb-6">
-              MARCAS
+              ASOCIACIONES
             </h1>
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function MarcasPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 items-center">
               {
                 loading ? (
-                  <p className="text-center text-gray-500">Cargando marcas...</p>
+                  <p className="text-center text-gray-500">Cargando asociaciones...</p>
                 ) : error ? (
                   <p className="text-center text-red-500">{error}</p>
                 ) : ( brands.map((brand) => (
