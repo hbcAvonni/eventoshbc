@@ -119,6 +119,7 @@ export default function Footer() {
             <Link href="/politica-de-privacidad" className="text-sm text-[var(--primary-dark)]">POLÍTICA DE PRIVACIDAD</Link>
             <Link href="/politica-de-cookies" className="text-sm text-[var(--primary-dark)]">POLÍTICA DE COOKIES</Link>
             <Link href="/contacto" className="text-sm text-[var(--primary-dark)]">CONTACTO</Link>
+            <Link href="/sbk-admin" className="text-sm text-[var(--primary-dark)]">PANEL ADMINISTRATIVO</Link>
           </div>
         </div>
       </div>
