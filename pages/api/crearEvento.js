@@ -1,8 +1,9 @@
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import mysql from 'mysql2/promise';
-import path from 'path';
-import { withCors } from '@/lib/withCors'; // Ajusta el path según tu estructura
+import { withCors } from '@/lib/withCors';
+import s3 from '@/lib/s3';
+import { v4 as uuidv4 } from 'uuid';
 
 export const config = {
   api: {
@@ -22,32 +23,59 @@ export default withCors(async function handler(req, res) {
       console.error('Error al parsear el formulario:', err);
       return res.status(500).json({ message: 'Error al procesar el formulario' });
     }
+    const getField = (fieldName) => {
+      const field = fields[fieldName];
+      return Array.isArray(field) ? field[0] : field;
+    };
 
     try {
-      const name = Array.isArray(fields.name) ? fields.name[0] : fields.name;
-      const priceStr = Array.isArray(fields.price) ? fields.price[0] : fields.price;
-      const endDate = Array.isArray(fields.endDate) ? fields.endDate[0] : fields.endDate;
+      const name = getField('name') || '';
+      const priceStr = getField('price');
+      const price = priceStr !== undefined ? parseFloat(priceStr) : null;
 
-      const numericPrice = parseFloat(priceStr);
-      if (isNaN(numericPrice)) {
+      const endDateRaw = getField('endDateTime');
+      const endDate = endDateRaw ? new Date(endDateRaw) : null;
+
+      const maxPeopleStr = getField('maxPeople');
+      const maxPeople = maxPeopleStr !== undefined ? parseInt(maxPeopleStr, 10) : null;
+
+      const shortDescription = getField('shortDescription') || '';
+      const longDescription = getField('longDescription') || '';
+      const startDateTimeRaw = getField('startDateTime');
+      const startDateTime = startDateTimeRaw ? new Date(startDateTimeRaw) : new Date();
+
+      const isRecurring = getField('isRecurring') || 'NO';
+      const recurringScheduleRaw = Array.isArray(fields.recurringSchedule) ? fields.recurringSchedule[0] : fields.recurringSchedule;
+
+      const recurringSchedule = recurringScheduleRaw ? JSON.parse(recurringScheduleRaw) : [];
+
+      if (isNaN(price)) {
         return res.status(400).json({ message: 'Precio inválido' });
       }
 
-      const image = Array.isArray(files.image) ? files.image[0] : files.image;
+      // Validación y subida de imagen a S3
+      let imageUrl = null;
 
-      const dir = path.join(process.cwd(), 'public/uploads/eventos');
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
+      if (files.image) {
+        const image = Array.isArray(files.image) ? files.image[0] : files.image;
+
+        if (image?.filepath) {
+          const fileContent = fs.readFileSync(image.filepath);
+          const fileExt = image.originalFilename?.split('.').pop() || "jpg";
+          const s3Key = `eventos/${uuidv4()}.${fileExt}`;
+          const s3Params = {
+            Bucket: process.env.S3_BUCKET_NAME,
+            Key: s3Key,
+            Body: fileContent,
+            ContentType: image.mimetype || 'image/jpeg',
+          };
+
+          const uploadResult = await s3.upload(s3Params).promise();
+          imageUrl = uploadResult.Location;
+        }
       }
 
-      const imageName = image.originalFilename || image.newFilename || 'imagen.jpg';
-      const imagePath = path.join(dir, imageName);
-      const dbImagePath = `./uploads/eventos/${imageName}`;
-
-      // fs.renameSync(image.filepath, imagePath);
-      fs.copyFileSync(image.filepath, imagePath);  // Copiar archivo
-      fs.unlinkSync(image.filepath);               // Eliminar archivo temporal
-
+      // Conexión a la base de datos
       const db = await mysql.createConnection({
         host: process.env.DB_HOST,
         port: Number(process.env.DB_PORT),
@@ -56,14 +84,48 @@ export default withCors(async function handler(req, res) {
         database: process.env.DB_NAME,
       });
 
+      // Guardar en la tabla eventos
       const [result] = await db.execute(
-        "INSERT INTO events (name, price, endDate, createdAt, image) VALUES (?, ?, ?, ?, ?)",
-        [name, numericPrice, endDate, new Date(), dbImagePath]
+        `INSERT INTO eventos 
+        (eve_nombre, eve_descripcion, eve_imagen, eve_detalles, eve_fecha, eve_fecha_fin, eve_precio, eve_cupos, eve_repetir) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          name,
+          longDescription,
+          imageUrl,
+          shortDescription,
+          startDateTime,
+          endDate,
+          price,
+          maxPeople,
+          isRecurring
+        ]
       );
 
+      const eventId = result.insertId;
+
+      // Guardar horarios si es recurrente
+      if (isRecurring === 'SI' && Array.isArray(recurringSchedule)) {
+        for (const entry of recurringSchedule) {
+          const dia = entry.day?.toUpperCase();
+          const horaInicio = entry.start;
+          const horaFin = entry.end;
+
+          // Verificar valores
+          if (dia && horaInicio && horaFin) {
+            await db.execute(
+              `INSERT INTO eventos_fechas (efec_evento, efec_dia, efec_hora_inicio, efec_hora_fin)
+              VALUES (?, ?, ?, ?)`,
+              [eventId, dia, horaInicio, horaFin]
+            );
+          }
+        }
+      }
+
+      await db.end();
       res.status(201).json({
         message: 'Evento creado exitosamente',
-        eventId: result.insertId
+        eventId: eventId
       });
     } catch (error) {
       console.error('Error al crear el evento:', error);
