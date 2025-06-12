@@ -71,7 +71,7 @@ export default function EventsSection() {
                     alt={event.eve_nombre}
                     width={300}
                     height={400}
-                    className="object-cover w-full h-full"
+                    className="object-contain w-full h-full"
                   />
                 ) : (
                   <div className="bg-gray-200 w-full h-full flex items-center justify-center">
@@ -101,7 +101,7 @@ export default function EventsSection() {
                     alt={event.eve_nombre}
                     width={300}
                     height={400}
-                    className="object-cover w-full h-full"
+                    className="object-contain w-full h-full"
                   />
                 ) : (
                   <div className="bg-gray-200 w-full h-full flex items-center justify-center">
