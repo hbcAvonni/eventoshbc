@@ -10,7 +10,7 @@ interface Event {
   eve_id: number;
   eve_imagen: string;
   eve_nombre: string;
-  eve_precio: string;
+  eve_detalles: string;
   eve_fecha: string;
 }
 
@@ -55,7 +55,7 @@ export default function EventsSection() {
     <section className="py-12 bg-[var(--primary-red)]">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-anton text-center text-white mb-12">
-          PRÓXIMOS EVENTOSs
+          EVENTOS
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -64,6 +64,7 @@ export default function EventsSection() {
               <div className="relative w-full mb-4 overflow-hidden rounded-md" style={{ height: "400px" }}>
                 {event.eve_imagen ? (
                   <Image
+                    onClick={() => comprarEvento(event)}
                     src={event.eve_imagen}
                     alt={event.eve_nombre}
                     width={300}
@@ -78,13 +79,13 @@ export default function EventsSection() {
               </div>
 
               <h3 className="text-white text-lg mb-1">{event.eve_nombre}</h3>
-              <p className="text-white mb-2">{parseFloat(event.eve_precio).toFixed(2)} €</p>
+              <p className="text-white mb-2">{event.eve_detalles ?? ""}</p>
 
               <button
                 onClick={() => comprarEvento(event)}
                 className="bg-white hover:bg-gray-100 text-[var(--primary-red)] px-6 py-2 rounded font-bold transition-colors"
               >
-                COMPRAR ENTRADAS
+                MAS INFORMACIÓN
               </button>
             </div>
           ))}
