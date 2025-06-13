@@ -2,6 +2,8 @@
 
 import type React from "react";
 import { useState, useEffect } from "react";
+import { usePathname } from 'next/navigation';
+import FloatingButton from '@/components/FloatingButton';
 
 interface ClientBodyProps {
   children: React.ReactNode;
@@ -9,6 +11,8 @@ interface ClientBodyProps {
 
 export function ClientBody({ children }: ClientBodyProps) {
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith('/sbk-admin');
 
   useEffect(() => {
     setMounted(true);
@@ -18,5 +22,8 @@ export function ClientBody({ children }: ClientBodyProps) {
     return null;
   }
 
-  return <>{children}</>;
+  return <>
+    {children}
+    {!isAdmin && <FloatingButton />}
+    </>;
 }

@@ -47,7 +47,6 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${inter.variable} ${anton.variable} ${roboto.variable} ${raleway.variable} ${montserrat.variable}`}>
         <ClientBody>{children}</ClientBody>
-        <FloatingButton />
       </body>
     </html>
   );
