@@ -60,6 +60,7 @@ export default function Formulario() {
   const [status, setStatus] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [cooldown, setCooldown] = useState<number>(0);  // Tiempo de espera en segundos
+  const [eventoFinalizado, setEventoFinalizado] = useState(false);
 
   useEffect(() => {
     // Recuperar el cooldown desde localStorage cuando el componente se monta
@@ -138,6 +139,13 @@ export default function Formulario() {
           };
 
           await fetchFechas(decryptedId);
+        }
+
+        if (data.rows[0].eve_fecha_fin) {
+          const fin = new Date(data.rows[0].eve_fecha_fin);
+          if (fin < new Date()) {
+            setEventoFinalizado(true);
+          }
         }
       } catch (error: unknown) {
         setError(error instanceof Error ? error.message : "Error desconocido");
@@ -323,7 +331,7 @@ export default function Formulario() {
               {/* DESCRIPCIÓN DEL EVENTO */}
               <div className="md:w-1/2 space-y-6">
                 <h2 className="text-3xl font-anton text-[#3B82F6]">
-                  {datosEvento.nombreEvento} ( {datosEvento.precio} € )
+                  {datosEvento.nombreEvento} {!eventoFinalizado && ` ( ${datosEvento.precio} € )`}
                 </h2>
                 <p className="text-md text-gray-700 leading-relaxed whitespace-pre-line">
                   {datosEvento.descripcion
@@ -343,36 +351,36 @@ export default function Formulario() {
                 ))}
               </div>
 
-              {/* FORMULARIO */}
-              <div className="md:w-1/2">
-                <form
-                  onSubmit={handleSubmit}
-                  className="max-w-2xl mx-auto space-y-6"
-                >
-                  <input type="hidden" name="evento" value={formData.evento} />
-                  <input
-                    type="hidden"
-                    name="costoEvento"
-                    value={datosEvento.precio}
-                  />
-                  <input
-                    type="hidden"
-                    name="nombreEvento"
-                    value={datosEvento.nombreEvento}
-                  />
+              {!eventoFinalizado ? ( /* FORMULARIO */
+                <div className="md:w-1/2">
+                  <form
+                    onSubmit={handleSubmit}
+                    className="max-w-2xl mx-auto space-y-6"
+                  >
+                    <input type="hidden" name="evento" value={formData.evento} />
+                    <input
+                      type="hidden"
+                      name="costoEvento"
+                      value={datosEvento.precio}
+                    />
+                    <input
+                      type="hidden"
+                      name="nombreEvento"
+                      value={datosEvento.nombreEvento}
+                    />
 
-                  {datosEvento.repetir === "SI" ? (
-                    <div>
-                      <label
-                        htmlFor="fecha"
-                        className="block text-lg font-anton text-gray-700"
-                      >
-                        Fecha
-                      </label>
-                      <DatePicker
-                        selected={
-                          datosEvento.minDate
-                            ? (() => {
+                    {datosEvento.repetir === "SI" ? (
+                      <div>
+                        <label
+                          htmlFor="fecha"
+                          className="block text-lg font-anton text-gray-700"
+                        >
+                          Fecha
+                        </label>
+                        <DatePicker
+                          selected={
+                            datosEvento.minDate
+                              ? (() => {
                                 if (
                                   !datosEvento.minDate ||
                                   disponibilidad.length === 0
@@ -392,78 +400,78 @@ export default function Formulario() {
 
                                 return baseDate;
                               })()
-                            : new Date(formData.fecha)
-                        }
-                        onChange={(date: Date | null) => {
-                          if (!date) return;
+                              : new Date(formData.fecha)
+                          }
+                          onChange={(date: Date | null) => {
+                            if (!date) return;
 
-                          const year = date.getFullYear();
-                          const month = String(date.getMonth() + 1).padStart(
-                            2,
-                            "0"
-                          );
-                          const day = String(date.getDate()).padStart(2, "0");
-                          const hours = String(date.getHours()).padStart(
-                            2,
-                            "0"
-                          );
-                          const minutes = String(date.getMinutes()).padStart(
-                            2,
-                            "0"
-                          );
+                            const year = date.getFullYear();
+                            const month = String(date.getMonth() + 1).padStart(
+                              2,
+                              "0"
+                            );
+                            const day = String(date.getDate()).padStart(2, "0");
+                            const hours = String(date.getHours()).padStart(
+                              2,
+                              "0"
+                            );
+                            const minutes = String(date.getMinutes()).padStart(
+                              2,
+                              "0"
+                            );
 
-                          const localDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
+                            const localDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
-                          setFormData((prev) => ({
-                            ...prev,
-                            fecha: localDatetime,
-                          }));
-                          setStatus("");
-                        }}
-                        locale="es"
-                        showTimeSelect
-                        timeFormat="HH:mm"
-                        timeIntervals={30}
-                        dateFormat="Pp"
-                        minDate={
-                          datosEvento.minDate
-                            ? new Date(datosEvento.minDate)
-                            : undefined
-                        }
-                        maxDate={
-                          datosEvento.maxDate
-                            ? new Date(datosEvento.maxDate)
-                            : undefined
-                        }
-                        filterDate={(date) => {
-                          const dia = date
-                            .toLocaleDateString("es-ES", { weekday: "long" })
-                            .normalize("NFD")
-                            .replace(/[\u0300-\u036f]/g, "")
-                            .toUpperCase();
-                          return disponibilidad.some((d) => d.efec_dia === dia);
-                        }}
-                        filterTime={(time) => esHoraPermitida(time)}
-                        placeholderText="Selecciona fecha y hora"
+                            setFormData((prev) => ({
+                              ...prev,
+                              fecha: localDatetime,
+                            }));
+                            setStatus("");
+                          }}
+                          locale="es"
+                          showTimeSelect
+                          timeFormat="HH:mm"
+                          timeIntervals={30}
+                          dateFormat="Pp"
+                          minDate={
+                            datosEvento.minDate
+                              ? new Date(datosEvento.minDate)
+                              : undefined
+                          }
+                          maxDate={
+                            datosEvento.maxDate
+                              ? new Date(datosEvento.maxDate)
+                              : undefined
+                          }
+                          filterDate={(date) => {
+                            const dia = date
+                              .toLocaleDateString("es-ES", { weekday: "long" })
+                              .normalize("NFD")
+                              .replace(/[\u0300-\u036f]/g, "")
+                              .toUpperCase();
+                            return disponibilidad.some((d) => d.efec_dia === dia);
+                          }}
+                          filterTime={(time) => esHoraPermitida(time)}
+                          placeholderText="Selecciona fecha y hora"
+                          name="fecha"
+                          id="fecha"
+                          className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                        />
+                      </div>
+                    ) : (
+                      <input
+                        type="hidden"
                         name="fecha"
-                        id="fecha"
-                        className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                      />
-                    </div>
-                  ) : (
-                    <input
-                      type="hidden"
-                      name="fecha"
-                      value={
-                        formData.fecha
-                          ? new Date(formData.fecha).toLocaleString("es-ES", {
+                        value={
+                          formData.fecha
+                            ? new Date(formData.fecha).toLocaleString("es-ES", {
                               year: "numeric",
                               month: "2-digit",
                               day: "2-digit",
                               hour: "2-digit",
                               minute: "2-digit",
                             })
-                          : new Date(datosEvento.minDate).toLocaleString(
+                            : new Date(datosEvento.minDate).toLocaleString(
                               "es-ES",
                               {
                                 year: "numeric",
@@ -473,139 +481,146 @@ export default function Formulario() {
                                 minute: "2-digit",
                               }
                             )
-                      }
-                    />
-                  )}
-
-                  <div>
-                    <label
-                      htmlFor="nombre"
-                      className="block text-lg font-anton text-gray-700"
-                    >
-                      Nombre
-                    </label>
-                    <input
-                      type="text"
-                      id="nombre"
-                      name="nombre"
-                      required
-                      value={formData.nombre}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="apellidos"
-                      className="block text-lg font-anton text-gray-700"
-                    >
-                      Apellidos
-                    </label>
-                    <input
-                      type="text"
-                      id="apellidos"
-                      name="apellidos"
-                      required
-                      value={formData.apellidos}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="edad"
-                      className="block text-lg font-anton text-gray-700"
-                    >
-                      Edad
-                    </label>
-                    <input
-                      type="text"
-                      id="edad"
-                      name="edad"
-                      required
-                      value={formData.edad}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="telefono"
-                      className="block text-lg font-anton text-gray-700"
-                    >
-                      Teléfono
-                    </label>
-                    <input
-                      type="tel"
-                      id="telefono"
-                      name="telefono"
-                      required
-                      value={formData.telefono}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                      minLength={9} // Validación mínima de 9 dígitos
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-lg font-anton text-gray-700"
-                    >
-                      Correo Electrónico
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="foto"
-                      className="block text-lg font-anton text-gray-700"
-                    >
-                      Foto
-                    </label>
-                    <input
-                      type="file"
-                      name="foto"
-                      id="foto"
-                      accept="image/*"
-                      onChange={(e) => {
-                        if (e.target.files && e.target.files[0]) {
-                          setEventImage(e.target.files[0]);
                         }
-                      }}
-                      className="w-full"
-                    />
-                  </div>
+                      />
+                    )}
 
-                  <div>
-                    <button
-                      type="submit"
-                      className="w-full py-3 px-4 bg-[#60A5FA] text-white font-anton font-semibold rounded-md shadow-lg transition duration-300 hover:bg-[#3B82F6] focus:outline-none focus:ring-2 focus:ring-[#60A5FA]"
-                      disabled={isSubmitting || cooldown > 0}
-                    >
-                      {cooldown > 0 ? `Espere ${cooldown} segundos` : "Enviar"}
-                    </button>
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="nombre"
+                        className="block text-lg font-anton text-gray-700"
+                      >
+                        Nombre
+                      </label>
+                      <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        required
+                        value={formData.nombre}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                      />
+                    </div>
 
-                  {status && (
-                    <p className="text-center font-anton text-lg text-[#3B82F6] mt-4">
-                      {status}
-                    </p>
-                  )}
-                </form>
-              </div>
+                    <div>
+                      <label
+                        htmlFor="apellidos"
+                        className="block text-lg font-anton text-gray-700"
+                      >
+                        Apellidos
+                      </label>
+                      <input
+                        type="text"
+                        id="apellidos"
+                        name="apellidos"
+                        required
+                        value={formData.apellidos}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="edad"
+                        className="block text-lg font-anton text-gray-700"
+                      >
+                        Edad
+                      </label>
+                      <input
+                        type="text"
+                        id="edad"
+                        name="edad"
+                        required
+                        value={formData.edad}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="telefono"
+                        className="block text-lg font-anton text-gray-700"
+                      >
+                        Teléfono
+                      </label>
+                      <input
+                        type="tel"
+                        id="telefono"
+                        name="telefono"
+                        required
+                        value={formData.telefono}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                        minLength={9} // Validación mínima de 9 dígitos
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-lg font-anton text-gray-700"
+                      >
+                        Correo Electrónico
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-4 py-3 border border-[#60A5FA] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#60A5FA] focus:border-[#60A5FA] font-anton"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="foto"
+                        className="block text-lg font-anton text-gray-700"
+                      >
+                        Foto
+                      </label>
+                      <input
+                        type="file"
+                        name="foto"
+                        id="foto"
+                        accept="image/*"
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            setEventImage(e.target.files[0]);
+                          }
+                        }}
+                        className="w-full"
+                      />
+                    </div>
+
+                    <div>
+                      <button
+                        type="submit"
+                        className="w-full py-3 px-4 bg-[#60A5FA] text-white font-anton font-semibold rounded-md shadow-lg transition duration-300 hover:bg-[#3B82F6] focus:outline-none focus:ring-2 focus:ring-[#60A5FA]"
+                        disabled={isSubmitting || cooldown > 0}
+                      >
+                        {cooldown > 0 ? `Espere ${cooldown} segundos` : "Enviar"}
+                      </button>
+                    </div>
+
+                    {status && (
+                      <p className="text-center font-anton text-lg text-[#3B82F6] mt-4">
+                        {status}
+                      </p>
+                    )}
+                  </form>
+                </div>
+              ) : (
+                <div className="md:w-1/2 flex items-center justify-center h-full">
+                  <p className="text-lg font-anton text-red-500">
+                    Aqui se mostraran las imagenes del evento, cuando ya ha finalizado.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
