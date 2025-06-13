@@ -8,6 +8,11 @@ interface Local {
     scbl_nombre: string;
     scbl_direccion: string;
 }
+interface LocalDB {
+    scbl_id: number;
+    scbl_nombre: string;
+    scbl_direccion: string;
+}
 
 interface Option {
     value: number;
@@ -19,6 +24,11 @@ type DaySchedule = {
     start: string;
     end: string;
 };
+interface DiaDB {
+    efec_dia: string;
+    efec_hora_inicio: string;
+    efec_hora_fin: string;
+}
 
 export default function EditarEventoPage() {
     const searchParams = useSearchParams();
@@ -79,7 +89,7 @@ export default function EditarEventoPage() {
 
             if (evento.eve_repetir === "SI") {
                 setEndDateTime(formatDateForInput(evento.eve_fecha_fin));
-                const diasFormateados = dias.map((d: any) => ({
+                const diasFormateados = (dias as DiaDB[]).map((d) => ({
                     day: d.efec_dia,
                     start: d.efec_hora_inicio,
                     end: d.efec_hora_fin
@@ -87,7 +97,7 @@ export default function EditarEventoPage() {
                 setRecurringSchedule(diasFormateados);
             }
 
-            const selected = locals.map((loc: any) => ({
+            const selected = (locals as LocalDB[]).map((loc) => ({
                 value: loc.scbl_id,
                 label: `${loc.scbl_nombre} (${loc.scbl_direccion})`
             }));
