@@ -337,7 +337,7 @@ export default function Formulario() {
                     ))}
                 </p>
                 {locals.map((local) => (
-                  <p className="text-lg font-anton text-gray-800">
+                  <p key={local.scbl_id} className="text-lg font-anton text-gray-800">
                     &#x1F4CD; Local: {local.scbl_nombre} ({local.scbl_direccion})
                   </p>
                 ))}
