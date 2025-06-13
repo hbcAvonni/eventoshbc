@@ -1,125 +1,148 @@
-"use client";
-import React, { useState, useRef, useEffect } from "react";
-import Select from "react-select";
+'use client';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import CryptoJS from "crypto-js";
 
-interface Local {
-    scbl_id: number;
-    scbl_nombre: string;
-    scbl_direccion: string;
+interface Evento {
+    eve_id: number;
+    eve_nombre: string;
+    eve_fecha: string;
+    eve_precio: number;
+    eve_lugar: string;
+    idEncript: string;
 }
 
-interface Option {
-    value: number;
-    label: string;
-}
+export default function EventosPage() {
+    const [eventos, setEventos] = useState<Evento[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
-type DaySchedule = {
-    day: string;
-    start: string;
-    end: string;
-};
+    const filteredEventos = eventos.filter(evento =>
+        evento.eve_nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-export default function CrearEventoPage() {
-    const [eventImage, setEventImage] = useState<File | null>(null);
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [eventName, setEventName] = useState("");
-    const [eventPrice, setEventPrice] = useState("");
-    const [maxPeople, setMaxPeople] = useState("");
-    const [shortDescription, setShortDescription] = useState("");
-    const [longDescription, setLongDescription] = useState("");
-    const [startDateTime, setStartDateTime] = useState("");
-    const [isRecurring, setIsRecurring] = useState("NO");
-    const [endDateTime, setEndDateTime] = useState("");
-    const [recurringSchedule, setRecurringSchedule] = useState<DaySchedule[]>([]);
-    const [localOptions, setLocalOptions] = useState<Option[]>([]);
-    const [selectedLocales, setSelectedLocales] = useState<Option[]>([]);
-    const [eventMessage, setEventMessage] = useState("");
-    const [loadingEvent, setLoadingEvent] = useState(false);
+    const totalPages = Math.ceil(filteredEventos.length / itemsPerPage);
+    const paginatedEventos = filteredEventos.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
     useEffect(() => {
-        const fetchLocals = async () => {
-            const res = await fetch("/api/getLocals");
-            const data = await res.json();
-            const options = data.rows.map((local: Local) => ({
-                value: local.scbl_id,
-                label: `${local.scbl_nombre} (${local.scbl_direccion})`,
-            }));
-            setLocalOptions(options);
+        const fetchEventos = async () => {
+            try {
+                const res = await fetch('/api/getEventos');
+                const data = await res.json();
+                setEventos(data.rows || []);
+            } catch (err) {
+                setError("No se pudieron cargar los eventos.");
+            } finally {
+                setLoading(false);
+            }
         };
 
-        fetchLocals();
+        fetchEventos();
     }, []);
 
-    const crearEvento = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoadingEvent(true);
-        setEventMessage("");
-
+    const eliminarEvento = async (id: number) => {
+        if (!confirm("¿Seguro que quieres eliminar este evento?")) return;
         try {
-            const stored = localStorage.getItem("tokenData");
-            const token = stored ? JSON.parse(stored).token : "";
-            const formData = new FormData();
-            if (eventImage) formData.append("image", eventImage);
-            formData.append("name", eventName);
-            formData.append("price", parseFloat(eventPrice).toString());
-            if (maxPeople) formData.append("maxPeople", maxPeople);
-            formData.append("shortDescription", shortDescription);
-            formData.append("longDescription", longDescription);
-            formData.append("startDateTime", startDateTime);
-            formData.append("isRecurring", isRecurring);
-            if (isRecurring === "SI") {
-                formData.append("endDateTime", endDateTime);
-                formData.append("recurringSchedule", JSON.stringify(recurringSchedule));
-            }
-            formData.append(
-                "locales",
-                JSON.stringify(selectedLocales.map((loc) => loc.value))
-            );
+            const tokenData = localStorage.getItem('tokenData');
+            const token = tokenData ? JSON.parse(tokenData).token : '';
 
-            const res = await fetch("/api/crearEvento", {
-                method: "POST",
-                headers: { Authorization: `Bearer ${token}` },
-                body: formData,
+            const res = await fetch(`/api/eliminarEvento?id=${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
-            const data = await res.json();
-            setEventMessage(data.message);
 
-            if (res.ok && fileInputRef.current) fileInputRef.current.value = "";
-        } catch {
-            setEventMessage("Error al crear el evento");
-        } finally {
-            setLoadingEvent(false);
+            if (res.ok) {
+                setEventos(prev => prev.filter(e => e.eve_id !== id));
+            } else {
+                alert("Error al eliminar el evento.");
+            }
+        } catch (err) {
+            alert("Error en la solicitud.");
         }
     };
 
     return (
-        <form onSubmit={crearEvento} className="space-y-4">
-            <h2 className="text-2xl font-semibold mb-4">Crear Evento</h2>
-            <input type="file" accept="image/*" ref={fileInputRef} onChange={(e) => e.target.files && setEventImage(e.target.files[0])} className="w-full" />
-            <input type="text" placeholder="Nombre del Evento" value={eventName} onChange={(e) => setEventName(e.target.value)} className="w-full border p-2 rounded" />
-            <input type="text" placeholder="Precio del Evento" value={eventPrice} onChange={(e) => setEventPrice(e.target.value)} className="w-full border p-2 rounded" />
-            <input type="number" placeholder="Cantidad de personas" value={maxPeople} onChange={(e) => setMaxPeople(e.target.value)} className="w-full border p-2 rounded" />
-            <input type="text" placeholder="Descripción corta" value={shortDescription} onChange={(e) => setShortDescription(e.target.value)} className="w-full border p-2 rounded" />
-            <textarea placeholder="Descripción larga" value={longDescription} onChange={(e) => setLongDescription(e.target.value)} rows={4} className="w-full border p-2 rounded"></textarea>
-            <label className="block font-semibold">Fecha y hora de inicio</label>
-            <input type="datetime-local" value={startDateTime} onChange={(e) => setStartDateTime(e.target.value)} className="w-full border p-2 rounded" />
-            <label className="block font-semibold">¿Evento recurrente?</label>
-            <select value={isRecurring} onChange={(e) => setIsRecurring(e.target.value)} className="w-full border p-2 rounded">
-                <option value="NO">NO</option>
-                <option value="SI">SI</option>
-            </select>
-            {isRecurring === "SI" && (
+        <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">Lista de Eventos</h2>
+                <Link
+                    href="/sbk-admin/dashboard/eventos/crearEvento"
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                    Crear Evento
+                </Link>
+            </div>
+
+            {loading ? (
+                <p>Cargando eventos...</p>
+            ) : error ? (
+                <p className="text-red-500">{error}</p>
+            ) : (
                 <>
-                    <label className="block font-semibold">Fecha y hora de fin</label>
-                    <input type="datetime-local" value={endDateTime} onChange={(e) => setEndDateTime(e.target.value)} className="w-full border p-2 rounded" />
+                    <input
+                        type="text"
+                        placeholder="Buscar evento..."
+                        className="border px-3 py-2 mb-4 rounded w-full md:w-1/3"
+                        value={searchTerm}
+                        onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            setCurrentPage(1); // Reinicia la página cuando cambie la búsqueda
+                        }}
+                    />
+                    <table className="w-full border border-gray-300 text-left">
+                        <thead className="bg-gray-100">
+                            <tr>
+                                <th className="p-2 border">Nombre</th>
+                                <th className="p-2 border">Fecha</th>
+                                <th className="p-2 border">Precio</th>
+                                <th className="p-2 border">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {paginatedEventos.map((evento) => (
+                                <tr key={evento.eve_id}>
+                                    <td className="p-2 border">{evento.eve_nombre}</td>
+                                    <td className="p-2 border">{new Date(evento.eve_fecha).toLocaleString()}</td>
+                                    <td className="p-2 border">{evento.eve_precio} €</td>
+                                    <td className="p-2 border space-x-2">
+                                        <Link
+                                            href={`/sbk-admin/dashboard/eventos/editarEvento?id=${evento.eve_id}`}
+                                            className="bg-yellow-400 text-white px-2 py-1 rounded"
+                                        >
+                                            Editar
+                                        </Link>
+                                        <button
+                                            className="bg-red-500 text-white px-2 py-1 rounded"
+                                            onClick={() => eliminarEvento(evento.eve_id)}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="flex justify-center mt-4 space-x-2">
+                        {Array.from({ length: totalPages }, (_, i) => (
+                            <button
+                                key={i}
+                                className={`px-3 py-1 border rounded ${currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-white'}`}
+                                onClick={() => setCurrentPage(i + 1)}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
                 </>
             )}
-            <label className="block font-semibold mb-2">Locales del evento</label>
-            <Select isMulti options={localOptions} value={selectedLocales} onChange={(selected) => setSelectedLocales(selected as Option[])} />
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4" disabled={loadingEvent}>
-                {loadingEvent ? "Creando Evento..." : "Crear Evento"}
-            </button>
-            {eventMessage && <p className="text-green-700 mt-2">{eventMessage}</p>}
-        </form>
+        </div>
     );
 }

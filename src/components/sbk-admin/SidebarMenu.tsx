@@ -11,7 +11,7 @@ const SidebarMenu = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('tokenData');
-        router.push('/sbk-admin');
+        router.push('/');
     };
 
     return (

@@ -104,6 +104,7 @@ export default function Formulario() {
         if (!res.ok) throw new Error("Error al obtener evento");
 
         const data = await res.json();
+        console.log(data);
         setFormData((prev) => ({
           ...prev,
           evento: parseInt(decryptedId),
@@ -118,28 +119,8 @@ export default function Formulario() {
           maxDate: data.rows[0].eve_fecha_fin,
           repetir: data.rows[0].eve_repetir,
         });
-
-        if (data.rows[0]) {
-          const fetchLocals = async (eventoId: string) => {
-            const res = await fetch(`./api/getLocalsEvent?id=${eventoId}`);
-            if (!res.ok) return;
-            const data = await res.json();
-            setLocals(data.rows);
-          };
-
-          await fetchLocals(decryptedId);
-        }
-
-        if (data.rows[0].eve_repetir === "SI") {
-          const fetchFechas = async (eventoId: string) => {
-            const res = await fetch(`./api/getFechas?id=${eventoId}`);
-            if (!res.ok) return;
-            const data = await res.json();
-            setDisponibilidad(data.disponibilidad);
-          };
-
-          await fetchFechas(decryptedId);
-        }
+        setLocals(data.rowsLocals);
+        setDisponibilidad(data.rowsDias);
 
         if (data.rows[0].eve_fecha_fin) {
           const fin = new Date(data.rows[0].eve_fecha_fin);
@@ -371,27 +352,18 @@ export default function Formulario() {
 
                     {datosEvento.repetir === "SI" ? (
                       <div>
-                        <label
-                          htmlFor="fecha"
-                          className="block text-lg font-anton text-gray-700"
-                        >
+                        <label htmlFor="fecha" className="block text-lg font-anton text-gray-700">
                           Fecha
                         </label>
                         <DatePicker
                           selected={
-                            datosEvento.minDate
-                              ? (() => {
-                                if (
-                                  !datosEvento.minDate ||
-                                  disponibilidad.length === 0
-                                )
-                                  return null;
+                            formData.fecha
+                              ? new Date(formData.fecha)
+                              : (() => {
+                                if (!datosEvento.minDate || disponibilidad.length === 0) return null;
 
                                 const baseDate = new Date(datosEvento.minDate);
-                                const [hora, minutos] =
-                                  disponibilidad[0].efec_hora_inicio
-                                    .split(":")
-                                    .map(Number);
+                                const [hora, minutos] = disponibilidad[0].efec_hora_inicio.split(":").map(Number);
 
                                 baseDate.setHours(hora);
                                 baseDate.setMinutes(minutos);
@@ -400,32 +372,19 @@ export default function Formulario() {
 
                                 return baseDate;
                               })()
-                              : new Date(formData.fecha)
                           }
                           onChange={(date: Date | null) => {
                             if (!date) return;
 
                             const year = date.getFullYear();
-                            const month = String(date.getMonth() + 1).padStart(
-                              2,
-                              "0"
-                            );
+                            const month = String(date.getMonth() + 1).padStart(2, "0");
                             const day = String(date.getDate()).padStart(2, "0");
-                            const hours = String(date.getHours()).padStart(
-                              2,
-                              "0"
-                            );
-                            const minutes = String(date.getMinutes()).padStart(
-                              2,
-                              "0"
-                            );
+                            const hours = String(date.getHours()).padStart(2, "0");
+                            const minutes = String(date.getMinutes()).padStart(2, "0");
 
                             const localDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
-                            setFormData((prev) => ({
-                              ...prev,
-                              fecha: localDatetime,
-                            }));
+                            setFormData((prev) => ({ ...prev, fecha: localDatetime }));
                             setStatus("");
                           }}
                           locale="es"
@@ -433,19 +392,10 @@ export default function Formulario() {
                           timeFormat="HH:mm"
                           timeIntervals={30}
                           dateFormat="Pp"
-                          minDate={
-                            datosEvento.minDate
-                              ? new Date(datosEvento.minDate)
-                              : undefined
-                          }
-                          maxDate={
-                            datosEvento.maxDate
-                              ? new Date(datosEvento.maxDate)
-                              : undefined
-                          }
+                          minDate={datosEvento.minDate ? new Date(datosEvento.minDate) : undefined}
+                          maxDate={datosEvento.maxDate ? new Date(datosEvento.maxDate) : undefined}
                           filterDate={(date) => {
-                            const dia = date
-                              .toLocaleDateString("es-ES", { weekday: "long" })
+                            const dia = date.toLocaleDateString("es-ES", { weekday: "long" })
                               .normalize("NFD")
                               .replace(/[\u0300-\u036f]/g, "")
                               .toUpperCase();
@@ -471,16 +421,13 @@ export default function Formulario() {
                               hour: "2-digit",
                               minute: "2-digit",
                             })
-                            : new Date(datosEvento.minDate).toLocaleString(
-                              "es-ES",
-                              {
-                                year: "numeric",
-                                month: "2-digit",
-                                day: "2-digit",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              }
-                            )
+                            : new Date(datosEvento.minDate).toLocaleString("es-ES", {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
                         }
                       />
                     )}
