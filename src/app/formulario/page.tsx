@@ -10,6 +10,12 @@ import { registerLocale } from "react-datepicker";
 import { es } from "date-fns/locale";
 registerLocale("es", es);
 
+interface Local {
+  scbl_id: number;
+  scbl_nombre: string;
+  scbl_direccion: string;
+}
+
 export default function Formulario() {
   const searchParams = useSearchParams();
   const [eventImage, setEventImage] = useState<File | null>(null);
@@ -24,7 +30,6 @@ export default function Formulario() {
     minDate: string;
     maxDate: string;
     repetir: string;
-    establecimiento: string
   }>({
     idEvento: 0,
     nombreEvento: "",
@@ -32,8 +37,7 @@ export default function Formulario() {
     precio: "",
     minDate: "",
     maxDate: "",
-    repetir: "NO",
-    establecimiento: ""
+    repetir: "NO"
   });
   const [disponibilidad, setDisponibilidad] = useState<{
     efec_dia: string;
@@ -51,6 +55,7 @@ export default function Formulario() {
     email: "",
     foto: "",
   });
+  const [locals, setLocals] = useState<Local[]>([]);
 
   const [status, setStatus] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -111,8 +116,18 @@ export default function Formulario() {
           minDate: data.rows[0].eve_fecha,
           maxDate: data.rows[0].eve_fecha_fin,
           repetir: data.rows[0].eve_repetir,
-          establecimiento: data.rows[0].eve_lugar ? data.rows[0].scbl_nombre + " (" + data.rows[0].scbl_direccion + ")" : ""
         });
+
+        if (data.rows[0]) {
+          const fetchLocals = async (eventoId: string) => {
+            const res = await fetch(`./api/getLocalsEvent?id=${eventoId}`);
+            if (!res.ok) return;
+            const data = await res.json();
+            setLocals(data.rows);
+          };
+
+          await fetchLocals(decryptedId);
+        }
 
         if (data.rows[0].eve_repetir === "SI") {
           const fetchFechas = async (eventoId: string) => {
@@ -321,11 +336,11 @@ export default function Formulario() {
                       </span>
                     ))}
                 </p>
-                {datosEvento.establecimiento !== "" ? (
+                {locals.map((local) => (
                   <p className="text-lg font-anton text-gray-800">
-                    &#x1F4CD; Local: {datosEvento.establecimiento}
+                    &#x1F4CD; Local: {local.scbl_nombre} ({local.scbl_direccion})
                   </p>
-                ) : null}
+                ))}
               </div>
 
               {/* FORMULARIO */}

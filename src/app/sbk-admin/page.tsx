@@ -1,10 +1,16 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import Select from 'react-select';
 
 interface Local {
   scbl_id: number;
   scbl_nombre: string;
   scbl_direccion: string;
+}
+
+interface Option {
+  value: number;
+  label: string;
 }
 
 export default function SbkAdminPage(): JSX.Element {
@@ -47,7 +53,10 @@ export default function SbkAdminPage(): JSX.Element {
   };
   const [recurringSchedule, setRecurringSchedule] = useState<DaySchedule[]>([]);
   const [locals, setLocals] = useState<Local[]>([]);
-  const [local, setLocal] = useState("");
+  const [local, setLocal] = useState<string[]>([]);
+
+  const [localOptions, setLocalOptions] = useState<Option[]>([]);
+  const [selectedLocales, setSelectedLocales] = useState<Option[]>([]);
 
   const [eventMessage, setEventMessage] = useState("");
   const [loadingLogin, setLoadingLogin] = useState(false);
@@ -61,7 +70,14 @@ export default function SbkAdminPage(): JSX.Element {
         if (!res.ok) throw new Error("Error al obtener los locales");
         const data = await res.json();
         setLocals(data.rows);
-      } catch (error: unknown) {
+
+        const options: Option[] = data.rows.map((local: Local) => ({
+          value: local.scbl_id,
+          label: `${local.scbl_nombre} (${local.scbl_direccion})`,
+        }));
+
+        setLocalOptions(options);
+      } catch (error) {
         setStatus("error");
         setLoginMessage(error instanceof Error ? error.message : "No se pudieron cargar los locales");
       }
@@ -134,7 +150,10 @@ export default function SbkAdminPage(): JSX.Element {
     setIsRecurring("NO");
     setEndDateTime("");
     setRecurringSchedule([]);
-    setLocal("");
+    setLocal([]);
+    setLocals([]);
+    setLocalOptions([]);
+    setSelectedLocales([]);
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -164,9 +183,8 @@ export default function SbkAdminPage(): JSX.Element {
         formData.append("endDateTime", endDateTime);
         formData.append("recurringSchedule", JSON.stringify(recurringSchedule));
       }
-      if (local) {
-        formData.append("local", local);
-      }
+      const selectedIds = selectedLocales.map((loc) => loc.value);
+      formData.append("locales", JSON.stringify(selectedIds));
 
       const res = await fetch('./api/crearEvento', {
         method: "POST",
@@ -397,19 +415,15 @@ export default function SbkAdminPage(): JSX.Element {
                 </>
               )}
 
-              <label className="block font-semibold">Local del evento</label>
-              <select
-                value={local}
-                onChange={(e) => setLocal(e.target.value)}
-                className="w-full border p-2 rounded"
-              >
-                <option value="">Seleccione un local</option>
-                {locals.map((local) => (
-                  <option key={local.scbl_id} value={local.scbl_id}>
-                    {local.scbl_nombre} ({local.scbl_direccion})
-                  </option>
-                ))}
-              </select>
+              <label className="block font-semibold mb-2">Locales del evento</label>
+              <Select
+                isMulti
+                options={localOptions}
+                value={selectedLocales}
+                onChange={(selected) => setSelectedLocales(selected as Option[])}
+                className="react-select-container"
+                classNamePrefix="react-select"
+              />
 
               <button
                 type="submit"

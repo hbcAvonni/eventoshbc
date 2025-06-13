@@ -33,23 +33,23 @@ export default withCors(async function handler(req, res) {
       const priceStr = getField('price');
       const price = priceStr !== undefined ? parseFloat(priceStr) : null;
 
+      const startDateTimeRaw = getField('startDateTime');
+      const startDateTime = startDateTimeRaw ? new Date(startDateTimeRaw) : new Date();
       const endDateRaw = getField('endDateTime');
-      const endDate = endDateRaw ? new Date(endDateRaw) : null;
+      const endDate = endDateRaw ? new Date(endDateRaw) : startDateTime;
 
       const maxPeopleStr = getField('maxPeople');
       const maxPeople = maxPeopleStr !== undefined ? parseInt(maxPeopleStr, 10) : "Aforo";
 
       const shortDescription = getField('shortDescription') || '';
       const longDescription = getField('longDescription') || '';
-      const startDateTimeRaw = getField('startDateTime');
-      const startDateTime = startDateTimeRaw ? new Date(startDateTimeRaw) : new Date();
 
       const isRecurring = getField('isRecurring') || 'NO';
       const recurringScheduleRaw = Array.isArray(fields.recurringSchedule) ? fields.recurringSchedule[0] : fields.recurringSchedule;
 
       const recurringSchedule = recurringScheduleRaw ? JSON.parse(recurringScheduleRaw) : [];
-      const localRaw = getField('local');
-      const local = localRaw !== "" ? parseInt(localRaw, 10) : null;
+      const localRaw = getField('locales');
+      const locales = localRaw ? JSON.parse(localRaw) : [];
 
       if (isNaN(price)) {
         return res.status(400).json({ message: 'Precio inválido' });
@@ -89,8 +89,8 @@ export default withCors(async function handler(req, res) {
       // Guardar en la tabla eventos
       const [result] = await db.execute(
         `INSERT INTO eventos 
-        (eve_nombre, eve_descripcion, eve_imagen, eve_detalles, eve_fecha, eve_fecha_fin, eve_precio, eve_cupos, eve_repetir, eve_lugar) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        (eve_nombre, eve_descripcion, eve_imagen, eve_detalles, eve_fecha, eve_fecha_fin, eve_precio, eve_cupos, eve_repetir) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           name,
           longDescription,
@@ -100,12 +100,25 @@ export default withCors(async function handler(req, res) {
           endDate,
           price,
           maxPeople,
-          isRecurring,
-          local
+          isRecurring
         ]
       );
 
       const eventId = result.insertId;
+
+      // Guardar locales
+      if (locales && Array.isArray(locales)) {
+        for (const local of locales) {
+          // Verificar valores
+          if (local) {
+            await db.execute(
+              `INSERT INTO evento_establecimiento (eves_evento, eves_establecimiento)
+              VALUES (?, ?)`,
+              [eventId, local]
+            );
+          }
+        }
+      }
 
       // Guardar horarios si es recurrente
       if (isRecurring === 'SI' && Array.isArray(recurringSchedule)) {
