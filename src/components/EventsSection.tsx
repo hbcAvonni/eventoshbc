@@ -63,7 +63,7 @@ export default function EventsSection() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {eventsPasados.map((event) => (
             <div key={event.eve_id} className="flex flex-col items-center">
-              <div className="relative w-full mb-4 overflow-hidden rounded-md" style={{ height: "400px" }}>
+              <div className="relative w-full mb-4 overflow-hidden rounded-md bg-black" style={{ height: "400px" }}>
                 {event.eve_imagen ? (
                   <Image
                     onClick={() => comprarEvento(event)}
@@ -71,7 +71,7 @@ export default function EventsSection() {
                     alt={event.eve_nombre}
                     width={300}
                     height={400}
-                    className="object-contain w-full h-full"
+                    className="w-full h-full"
                   />
                 ) : (
                   <div className="bg-gray-200 w-full h-full flex items-center justify-center">
@@ -93,7 +93,7 @@ export default function EventsSection() {
           ))}
           {events.map((event) => (
             <div key={event.eve_id} className="flex flex-col items-center">
-              <div className="relative w-full mb-4 overflow-hidden rounded-md" style={{ height: "400px" }}>
+              <div className="relative w-full mb-4 overflow-hidden rounded-md bg-black" style={{ height: "400px" }}>
                 {event.eve_imagen ? (
                   <Image
                     onClick={() => comprarEvento(event)}
@@ -101,7 +101,7 @@ export default function EventsSection() {
                     alt={event.eve_nombre}
                     width={300}
                     height={400}
-                    className="object-contain w-full h-full"
+                    className="w-full h-full"
                   />
                 ) : (
                   <div className="bg-gray-200 w-full h-full flex items-center justify-center">
