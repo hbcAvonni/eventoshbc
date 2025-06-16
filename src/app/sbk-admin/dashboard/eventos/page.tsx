@@ -141,10 +141,12 @@ export default function EventosPage() {
                                         <td className="p-2 border">{evento.eve_cupos}</td>
                                         <td className="p-2 border">{evento.eve_precio} €</td>
                                         <td className="p-2 border">
-                                            {format(toZonedTime(new Date(evento.eve_fecha), zonaEspaña), "EEEE, dd 'de' MMMM 'del' yyyy 'a las' HH:mm", { locale: es })}
+                                            {format(toZonedTime(evento.eve_fecha.replace(' ', 'T'), zonaEspaña),
+                                                "EEEE, dd 'de' MMMM 'del' yyyy 'a las' HH:mm", { locale: es })}
                                         </td>
                                         <td className="p-2 border">
-                                            {format(toZonedTime(new Date(evento.eve_fecha_fin), zonaEspaña), "EEEE, dd 'de' MMMM 'del' yyyy 'a las' HH:mm", { locale: es })}
+                                            {format(toZonedTime(evento.eve_fecha_fin.replace(' ', 'T'), zonaEspaña),
+                                                "EEEE, dd 'de' MMMM 'del' yyyy 'a las' HH:mm", { locale: es })}
                                         </td>
                                         <td className={`p-2 border font-semibold ${color}`}>{estado}</td>
                                         <td className="p-2 border space-x-2 flex items-center">
