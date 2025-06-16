@@ -15,9 +15,6 @@ export default function GaleriaEventoPage() {
     const searchParams = useSearchParams();
     const eventId = searchParams?.get("id") ?? "";
 
-    if (!eventId) {
-        return <p className="p-6 text-red-600">Error: evento no especificado.</p>;
-    }
     const [imagenes, setImagenes] = useState<ImagenGaleria[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
@@ -35,20 +32,16 @@ export default function GaleriaEventoPage() {
         }
     }, []);
 
-    useEffect(() => {
-        if (eventId) fetchImagenes();
-    }, [eventId]);
-
     const fetchImagenes = async () => {
         const res = await fetch(`/api/getGaleria?id=${eventId}`);
         const data = await res.json();
         setImagenes(data.rows || []);
     };
 
-    const handleImageClick = (index: number) => {
-        const imageList = document.querySelectorAll(".galeria-img");
-        imageList[index]?.scrollIntoView({ behavior: "smooth", block: "center" });
-    };
+    useEffect(() => {
+        if (eventId) fetchImagenes();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [eventId]);
 
     const handleUpload = async () => {
         if (!selectedFile || !eventId) return;
@@ -76,6 +69,10 @@ export default function GaleriaEventoPage() {
         fetchImagenes();
     };
 
+    if (!eventId) {
+        return <p className="p-6 text-red-600">Error: evento no especificado.</p>;
+    }
+
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-4">
@@ -98,7 +95,10 @@ export default function GaleriaEventoPage() {
                                 src={img.evga_imagen}
                                 alt={`Imagen ${index + 1}`}
                                 className="w-64 h-64 rounded shadow-md cursor-pointer galeria-img"
-                                onClick={() => { setCurrentIndex(index); setIsViewerOpen(true); }}
+                                onClick={() => {
+                                    setCurrentIndex(index);
+                                    setIsViewerOpen(true);
+                                }}
                             />
                             <button
                                 onClick={() => eliminarImagen(img.evga_id)}
@@ -156,6 +156,7 @@ export default function GaleriaEventoPage() {
                     </button>
                 </div>
             </Modal>
+
             {isViewerOpen && (
                 <Lightbox
                     open={isViewerOpen}
