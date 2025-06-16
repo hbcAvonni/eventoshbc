@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import RosterSection from "@/components/RosterSection";
 import EventsSection from "@/components/EventsSection";
-import ServicesSection from "@/components/ServicesSection";
+import ParthersSection from "@/components/ParthersSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
       <Hero />
       <RosterSection />
       <EventsSection />
-      <ServicesSection />
+      <ParthersSection />
       <Footer />
     </main>
   );
