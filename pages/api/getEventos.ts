@@ -19,8 +19,18 @@ export default withCors(async function handler(req: NextApiRequest, res: NextApi
     const zoned = toZonedTime(date, 'Europe/Madrid');
     return zoned.toISOString().slice(0, 19);
   };
+  interface EventoDB {
+    eve_id: number;
+    eve_nombre: string;
+    eve_cupos: string;
+    eve_fecha: string | Date;
+    eve_fecha_fin: string | Date;
+    eve_precio: number;
+    eve_lugar: string;
+    idEncript: string;
+  }
 
-  const rows = (rawRows as any[]).map(row => ({
+  const rows = (rawRows as EventoDB[]).map(row => ({
     ...row,
     eve_fecha: toMadridIso(row.eve_fecha),
     eve_fecha_fin: toMadridIso(row.eve_fecha_fin),
