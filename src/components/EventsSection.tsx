@@ -1,9 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { toZonedTime } from 'date-fns-tz';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -23,7 +20,6 @@ interface Event {
 }
 
 export default function EventsSection() {
-  const zonaEspaña = 'Europe/Madrid';
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
