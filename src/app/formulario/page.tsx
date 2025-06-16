@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SeccionGaleria from "@/components/SeccionGaleria";
 import CryptoJS from "crypto-js";
 import DatePicker from "react-datepicker";
 import { registerLocale } from "react-datepicker";
@@ -301,7 +302,7 @@ export default function Formulario() {
           <div className="absolute inset-0 bg-black/60" />
           <div className="container mx-auto px-4 z-10 text-center text-white">
             <h1 className="text-5xl md:text-7xl font-anton mb-6">
-              FORMULARIO DE COMPRA
+              Información del evento
             </h1>
           </div>
         </div>
@@ -561,17 +562,14 @@ export default function Formulario() {
                     )}
                   </form>
                 </div>
-              ) : (
-                <div className="md:w-1/2 flex items-center justify-center h-full">
-                  <p className="text-lg font-anton text-red-500">
-                    Aqui se mostraran las imagenes del evento, cuando ya ha finalizado.
-                  </p>
-                </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
       </main>
+      {(eventoFinalizado || new Date(datosEvento.maxDate) >= new Date()) && (
+        <SeccionGaleria eventoId={datosEvento.idEvento} />
+      )}
       <Footer />
     </>
   );
