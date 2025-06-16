@@ -128,7 +128,7 @@ export default function EventosPage() {
                                     estado = 'Próximamente';
                                     color = 'text-blue-600';
                                 } else if (ahora >= fechaInicio && ahora <= fechaFin) {
-                                    estado = 'En proceso';
+                                    estado = 'En curso';
                                     color = 'text-green-600';
                                 } else {
                                     estado = 'Finalizado';
