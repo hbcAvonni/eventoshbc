@@ -35,15 +35,15 @@ export default function ParthersSection() {
   }, []);
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-10 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-5xl md:text-6xl font-anton text-center text-[var(--primary-red)] mb-5">
+        <h2 className="text-3xl md:text-4xl font-anton text-center text-[var(--primary-red)] mb-5">
           NUESTROS PARTHERS
         </h2>
 
         <div className="bg-white py-5">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 items-center">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 items-center">
               {
                 loading ? (
                   <p className="text-center text-gray-500">Cargando Parthers...</p>
@@ -58,12 +58,12 @@ export default function ParthersSection() {
                   >
                     <div
                       key={parther.scbl_id}
-                      className="flex items-center justify-center p-6 bg-gray-400 rounded-xl shadow-md hover:shadow-xl transition duration-300"
+                      className="flex items-center justify-center p-3 bg-gray-400 rounded-xl shadow-md hover:shadow-xl transition duration-300"
                     >
                       <Image
                         src={parther.scbl_imagen}
                         alt={parther.scbl_nombre}
-                        width={200}
+                        width={100}
                         height={100}
                         className="object-contain"
                       />
