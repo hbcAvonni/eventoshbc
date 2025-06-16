@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Select from "react-select";
 
 interface Local {
@@ -31,6 +31,7 @@ interface DiaDB {
 }
 
 export default function EditarEventoPage() {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const eventId = searchParams?.get("id");
 
@@ -143,6 +144,8 @@ export default function EditarEventoPage() {
             });
             const data = await res.json();
             setEventMessage(data.message);
+
+            if (res.ok) router.push('/sbk-admin/dashboard/eventos');
         } catch {
             setEventMessage("Error al editar el evento");
         } finally {
