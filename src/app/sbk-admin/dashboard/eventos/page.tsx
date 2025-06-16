@@ -1,18 +1,24 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import CryptoJS from "crypto-js";
+import { toZonedTime } from 'date-fns-tz';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+import { FiEdit, FiTrash2, FiImage } from 'react-icons/fi';
 
 interface Evento {
     eve_id: number;
     eve_nombre: string;
+    eve_cupos: string;
     eve_fecha: string;
+    eve_fecha_fin: string;
     eve_precio: number;
     eve_lugar: string;
     idEncript: string;
 }
 
 export default function EventosPage() {
+    const zonaEspaña = 'Europe/Madrid';
     const [eventos, setEventos] = useState<Evento[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -101,33 +107,74 @@ export default function EventosPage() {
                         <thead className="bg-gray-100">
                             <tr>
                                 <th className="p-2 border">Nombre</th>
-                                <th className="p-2 border">Fecha</th>
+                                <th className="p-2 border">Cupos</th>
                                 <th className="p-2 border">Precio</th>
+                                <th className="p-2 border">Fecha Inicio</th>
+                                <th className="p-2 border">Fecha Fin</th>
+                                <th className="p-2 border">Estado</th>
                                 <th className="p-2 border">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {paginatedEventos.map((evento) => (
-                                <tr key={evento.eve_id}>
-                                    <td className="p-2 border">{evento.eve_nombre}</td>
-                                    <td className="p-2 border">{new Date(evento.eve_fecha).toLocaleString()}</td>
-                                    <td className="p-2 border">{evento.eve_precio} €</td>
-                                    <td className="p-2 border space-x-2">
-                                        <Link
-                                            href={`/sbk-admin/dashboard/eventos/editarEvento?id=${evento.eve_id}`}
-                                            className="bg-yellow-400 text-white px-2 py-1 rounded"
-                                        >
-                                            Editar
-                                        </Link>
-                                        <button
-                                            className="bg-red-500 text-white px-2 py-1 rounded"
-                                            onClick={() => eliminarEvento(evento.eve_id)}
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {paginatedEventos.map((evento) => {
+                                const ahora = new Date();
+                                const fechaInicio = new Date(evento.eve_fecha);
+                                const fechaFin = new Date(evento.eve_fecha_fin);
+
+                                let estado = '';
+                                let color = '';
+
+                                if (ahora < fechaInicio) {
+                                    estado = 'Próximamente';
+                                    color = 'text-blue-600';
+                                } else if (ahora >= fechaInicio && ahora <= fechaFin) {
+                                    estado = 'En proceso';
+                                    color = 'text-green-600';
+                                } else {
+                                    estado = 'Finalizado';
+                                    color = 'text-red-600';
+                                }
+
+                                return (
+                                    <tr key={evento.eve_id}>
+                                        <td className="p-2 border">{evento.eve_nombre}</td>
+                                        <td className="p-2 border">{evento.eve_cupos}</td>
+                                        <td className="p-2 border">{evento.eve_precio} €</td>
+                                        <td className="p-2 border">
+                                            {format(toZonedTime(evento.eve_fecha, zonaEspaña), "EEEE, dd 'de' MMMM 'del' yyyy 'a las' HH:mm", { locale: es })}
+                                        </td>
+                                        <td className="p-2 border">
+                                            {format(toZonedTime(evento.eve_fecha_fin, zonaEspaña), "EEEE, dd 'de' MMMM 'del' yyyy 'a las' HH:mm", { locale: es })}
+                                        </td>
+                                        <td className={`p-2 border font-semibold ${color}`}>{estado}</td>
+                                        <td className="p-2 border space-x-2 flex items-center">
+                                            <Link
+                                                href={`/sbk-admin/dashboard/eventos/editarEvento?id=${evento.eve_id}`}
+                                                className="text-yellow-500 hover:text-yellow-600"
+                                                title="Editar evento"
+                                            >
+                                                <FiEdit size={18} />
+                                            </Link>
+                                            <button
+                                                className="text-red-500 hover:text-red-600"
+                                                onClick={() => eliminarEvento(evento.eve_id)}
+                                                title="Eliminar evento"
+                                            >
+                                                <FiTrash2 size={18} />
+                                            </button>
+                                            {fechaInicio <= ahora && (
+                                                <Link
+                                                    href={`/sbk-admin/dashboard/eventos/galeriaEvento?id=${evento.eve_id}`}
+                                                    className="text-blue-500 hover:text-blue-600"
+                                                    title="Gestionar galería"
+                                                >
+                                                    <FiImage size={18} />
+                                                </Link>
+                                            )}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                     <div className="flex justify-center mt-4 space-x-2">
