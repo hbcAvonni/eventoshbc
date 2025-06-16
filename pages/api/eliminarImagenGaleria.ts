@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import mysql from "mysql2/promise";
+import type { RowDataPacket } from "mysql2";
 import { S3 } from "aws-sdk";
 
 const s3 = new S3({
@@ -30,7 +31,7 @@ export default async function handler(
             database: process.env.DB_NAME!,
         });
 
-        const [rows]: any = await conn.execute(
+        const [rows]: [Array<{ evga_imagen: string } & RowDataPacket>, unknown] = await conn.execute(
             "SELECT evga_imagen FROM eventos_galeria WHERE evga_id = ?",
             [parseInt(id)]
         );
