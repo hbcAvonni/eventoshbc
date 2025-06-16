@@ -94,7 +94,7 @@ export default function GaleriaEventoPage() {
                             <img
                                 src={img.evga_imagen}
                                 alt={`Imagen ${index + 1}`}
-                                className="w-64 h-64 rounded shadow-md cursor-pointer galeria-img"
+                                className="w-full h-64 object-cover rounded shadow-md cursor-pointer galeria-img"
                                 onClick={() => {
                                     setCurrentIndex(index);
                                     setIsViewerOpen(true);
