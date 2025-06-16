@@ -4,6 +4,7 @@ import mysql from 'mysql2/promise';
 import { withCors } from '@/lib/withCors';
 import s3 from '@/lib/s3';
 import { v4 as uuidv4 } from 'uuid';
+import { toZonedTime } from 'date-fns-tz';
 
 export const config = {
   api: {
@@ -12,6 +13,7 @@ export const config = {
 };
 
 export default withCors(async function handler(req, res) {
+  const zonaMadrid = 'Europe/Madrid';
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Método no permitido' });
   }
@@ -34,9 +36,13 @@ export default withCors(async function handler(req, res) {
       const price = priceStr !== undefined ? parseFloat(priceStr) : null;
 
       const startDateTimeRaw = getField('startDateTime');
-      const startDateTime = startDateTimeRaw ? new Date(startDateTimeRaw) : new Date();
+      const startDateTime = startDateTimeRaw
+        ? toZonedTime(startDateTimeRaw, zonaMadrid)
+        : new Date();
       const endDateRaw = getField('endDateTime');
-      const endDate = endDateRaw ? new Date(endDateRaw) : startDateTime;
+      const endDate = endDateRaw
+        ? toZonedTime(endDateRaw, zonaMadrid)
+        : startDateTime;
 
       const maxPeopleStr = getField('maxPeople');
       const maxPeople = maxPeopleStr !== undefined ? parseInt(maxPeopleStr, 10) : "Aforo";
